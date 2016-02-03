@@ -1,0 +1,54 @@
+<?php
+/**
+ * 登录用户数据模型
+ * 
+ * @package    app
+ * @version    1.0
+ * @author     Ray zyr.wxl@gmail.com
+ * @license    MIT License
+ * @copyright  2015 PMonkey Team
+ * @link       http://mnzone.cn
+ *
+ * @extends  	\Orm\Auth_User
+ */
+
+class Model_User extends \Model\Auth_User
+{
+
+	/**
+	 * @var array	has_many relationships
+	 */
+	protected static $_has_one = array(
+		'people' => array(
+			'model_to' => 'Model_People',
+			'key_from' => 'user_id',
+			'key_to'   => 'user_id',
+		),
+		'wechat' => array(
+			'model_to' => 'Model_Wechat',
+			'key_from' => 'user_id',
+			'key_to'   => 'user_id',
+		),
+	);
+
+	public static function createUser($data){
+		$user_id = 0;
+
+		if( ! isset($data['profile_fields'])){
+			$data['profile_fields'] = [];
+		}
+		try{
+			$user_id = \Auth::create_user(
+				$data['username'],
+				$data['password'],
+				$data['email'],
+				$data['group_id'],
+				$data['profile_fields']
+			);	
+		}catch(SimpleUserUpdateException $e){
+			\Log::error('create user error message:' . $e->getMessage() . '; error data:' . json_encode($data));
+		}
+
+		return $user_id;
+	}
+}
