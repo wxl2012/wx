@@ -40,10 +40,10 @@ class Model_WXAccount extends \Orm\Model
 
     // EAV container for user metadata
     protected static $_eav = array(
-        /*'metadata' => array(
+        'metadata' => array(
             'attribute' => 'key',
             'value' => 'value',
-        ),*/
+        ),
     );
 
     /**
