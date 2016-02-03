@@ -19,6 +19,7 @@
  */
 abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 {
+	public $template = 'template';
 	protected $SESSION_WXACCOUNT_KEY = 'WXAccount';
 	protected $SESSION_SELLER_KEY = 'seller';
 	protected $SESSION_WECHAT_KEY = 'wechat';
