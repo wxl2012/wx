@@ -73,9 +73,31 @@ class Request {
 		$request->save();
     }
 
+	/**
+	 * 处理请求
+	 */
     public function handle(){
-
+		$handle = false;
+		switch ($this->data->MsgType) {
+			case 'text':
+				$handle = new \handler\mp\action\Text();
+				break;
+			case 'event':
+				$handle = new \handler\mp\action\Event();
+				break;
+			case 'voice':
+				$handle = new \handler\mp\action\Voice();
+				break;
+			case 'image':
+				$handle = new \handler\mp\action\Image();
+				break;
+			case 'video':
+				$handle = new \handler\mp\action\Video();
+				break;
+			case 'location':
+				$handle = new \handler\mp\action\Location();
+				break;
+		}
+		$handle->handle();
     }
-
-
 }
