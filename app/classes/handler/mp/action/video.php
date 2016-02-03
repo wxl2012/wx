@@ -14,7 +14,7 @@ namespace handler\mp\action;
 
 class Video extends Base {
 
-    function __construct($argument)
+    function __construct($argument = false)
     {
         # code...
     }

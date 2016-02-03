@@ -15,7 +15,7 @@ class Subscribe extends Event {
 
     private $event_type;
 
-    function __construct($argument)
+    function __construct($argument = false)
     {
         $this->event_type = $argument;
     }

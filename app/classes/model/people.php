@@ -80,7 +80,7 @@ class Model_People extends \Orm\Model
             'key_to'   => 'user_id',
         ),
         'properties' => array(
-            'model_to' => 'Model_PeopleMetadata',
+            'model_to' => 'Model_PeoplePropertie',
             'key_from' => 'user_id',
             'key_to'   => 'parent_id',
         )

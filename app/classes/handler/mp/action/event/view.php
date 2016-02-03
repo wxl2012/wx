@@ -13,7 +13,7 @@ namespace handler\mp\action;
 
 class View extends Event {
 
-    function __construct($argument)
+    function __construct($argument = false)
     {
         # code...
     }
