@@ -22,6 +22,6 @@ class Text extends Base {
     /**
      * 处理请求
      */
-    protected function handle(){
+    public function handle(){
     }
 }

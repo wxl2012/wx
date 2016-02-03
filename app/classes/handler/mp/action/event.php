@@ -22,7 +22,7 @@ class Event extends Base{
     /**
      * 处理请求
      */
-    protected function handle(){
+    public function handle(){
         $handle = false;
         switch($this->data->Event){
             case 'subscribe':
