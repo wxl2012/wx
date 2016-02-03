@@ -50,23 +50,23 @@ class Model_WXAccount extends \Orm\Model
      * @var array	has_many relationships
      */
     protected static $_has_many = array(
-        /*'metadata' => array(
+        'metadata' => array(
             'model_to' => '\Model_WXAccountMetadata',
             'key_from' => 'id',
             'key_to'   => 'parent_id'
-        )*/
+        )
     );
 
     /**
      * @var array	belongs_to relationships
      */
     protected static $_belongs_to = array(
-        /*'seller' => array(
+        'seller' => array(
             'model_to' => 'Model_Seller',
             'key_from' => 'seller_id',
             'key_to'   => 'id',
         ),
-        'sale' => array(
+        /*'sale' => array(
             'model_to' => 'Model_Sale',
             'key_from' => 'sale_id',
             'key_to'   => 'id',
