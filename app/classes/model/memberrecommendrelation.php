@@ -54,4 +54,17 @@ class Model_MemberRecommendRelation extends \Orm\Model{
             'key_to'   => 'user_id',
         ),
     );
+
+    /**
+     * 上级会员
+     * @param $id 会员ID
+     * @return array
+     */
+    public static function parentMember($id){
+        $members = \Model_MemberRecommendRelation::query()
+            ->where(['member_id' => $id])
+            ->order_by('depth', 'DESC')
+            ->get();
+        return $members;
+    }
 }

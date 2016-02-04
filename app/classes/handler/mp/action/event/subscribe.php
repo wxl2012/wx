@@ -37,6 +37,19 @@ class Subscribe extends Event {
      */
     private function none_scan(){
         \Log::error("未关注时的扫码关注操作:none_scan()");
+        $members = \Model_MemberRecommendRelation::parentMember(1);
+        $index = 1;
+        foreach($members as $member){
+            $data = [
+                'master_id' => $index > 1 ? $member->master_id : $member->member_id,
+                'member_id' => \Auth::get_user()->id,
+                'depth' => 1,
+                'from' => 'QRCODE'
+            ];
+            $relation = \Model_MemberRecommendRelation::forge($data);
+            $relation->save();
+            $index ++;
+        }
     }
 
     /**
