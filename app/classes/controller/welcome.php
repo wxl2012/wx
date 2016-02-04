@@ -66,18 +66,7 @@ class Controller_Welcome extends Controller
 	}
 
 	public function action_test(){
-		$members = \Model_MemberRecommendRelation::parentMember(3);
-		$index = 1;
-		foreach($members as $member){
-			$data = [
-				'master_id' => $index > 1 ? $member->master_id : $member->member_id,
-				'member_id' => 4,
-				'depth' => 1,
-				'from' => 'QRCODE'
-			];
-			$relation = \Model_MemberRecommendRelation::forge($data);
-			$relation->save();
-			$index ++;
-		}
+		$result = \Model_MemberRecommendRelation::addRelation(3, 4, 2);
+		die($result ? 'add success' : 'add error');
 	}
 }

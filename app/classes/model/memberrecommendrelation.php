@@ -63,8 +63,58 @@ class Model_MemberRecommendRelation extends \Orm\Model{
     public static function parentMember($id){
         $members = \Model_MemberRecommendRelation::query()
             ->where(['member_id' => $id])
-            ->order_by('depth', 'DESC')
+            ->order_by('depth', 'ASC')
             ->get();
         return $members;
+    }
+
+    /**
+     * 添加推荐关系
+     *
+     * @param $master_id    推荐人用户ID
+     * @param $member_id    被推荐人用户ID
+     * @param int $depth    关系深度
+     * @param string $from  推荐方式
+     * @return bool
+     * @throws Exception
+     */
+    public static function addRelation($master_id, $member_id, $depth = 2, $from = 'QRCODE'){
+
+        //查询被推荐人是否已存在关系库中
+        $members = \Model_MemberRecommendRelation::parentMember($master_id);
+        if($members){
+            return false;
+        }
+
+        //查询推荐人关系树
+        $members = \Model_MemberRecommendRelation::parentMember($master_id);
+
+        //添加一级推荐关系
+        $relation = \Model_MemberRecommendRelation::forge([
+            'master_id' => $master_id,
+            'member_id' => $member_id,
+            'depth' => 1,
+            'from' => $from
+        ]);
+        $relation->save();
+
+        //添加多级推荐关系
+        $index = 2;
+        foreach($members as $member){
+            if($depth < $index){
+                break;
+            }
+            $data = [
+                'master_id' => $member->master_id,
+                'member_id' => $member_id,
+                'depth' => $index,
+                'from' => $from
+            ];
+            $relation = \Model_MemberRecommendRelation::forge($data);
+            $relation->save();
+            $index ++;
+        }
+
+        return true;
     }
 }
