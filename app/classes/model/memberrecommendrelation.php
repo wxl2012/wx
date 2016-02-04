@@ -81,7 +81,7 @@ class Model_MemberRecommendRelation extends \Orm\Model{
     public static function addRelation($master_id, $member_id, $depth = 2, $from = 'QRCODE'){
 
         //查询被推荐人是否已存在关系库中
-        $members = \Model_MemberRecommendRelation::parentMember($master_id);
+        $members = \Model_MemberRecommendRelation::parentMember($member_id);
         if($members){
             return false;
         }
