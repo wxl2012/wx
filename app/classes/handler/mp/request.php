@@ -98,6 +98,10 @@ class Request {
 				$handle = new \handler\mp\action\Location();
 				break;
 		}
+		$handle->setWechat($this->wechat);
+		$handle->setAccount($this->account);
+		$handle->setPostData($this->data);
+		$handle->setSeller($this->seller);
 		$handle->handle();
     }
 }
