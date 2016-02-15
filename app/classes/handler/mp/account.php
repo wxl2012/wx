@@ -45,9 +45,9 @@ class Account {
         //是否创建用户登录信息
         if($account->is_subscribe_create_user){
             $params = [
-                'username' => "w{$account->id}#{$openid}",
+                'username' => "wx_{$openid}",
                 'password' => "w{$account->id}#{$openid}",
-                'email' => "{$openid}@{$account->id}.com",
+                'email' => "wx_{$openid}@{$account->id}.com",
                 'group_id' => $account->create_user_default_group
             ];
             $user_id = \Model_User::createUser($params);
@@ -63,7 +63,7 @@ class Account {
         //是否创建会员信息
         if($account->is_subscribe_create_member){
             $params = [
-                'no' => "w{$account->id}#{$openid}",
+                'no' => "{$account->seller_id}{$wechat->user_id}" . time(),
                 'user_id' => $wechat->user_id
             ];
             $member = \Model_Member::forge($params);
