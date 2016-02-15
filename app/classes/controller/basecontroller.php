@@ -67,7 +67,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 		\Session::set($this->SESSION_SELLER_KEY, $seller);
 	}
 
-	protected function show_mesage(){
+	protected function show_message(){
 		return \Response::forge(\View::forge('message/moblie'));
 	}
 }

@@ -88,7 +88,7 @@ class Controller_WXApi extends Controller_BaseController
 
 		if(! \Input::get('code', false)){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => '你拒绝授权，系统无法确认您的身份！系统中止！', 'title' => '错误']);
-			return $this->show_mesage();
+			return $this->show_message();
 		}
 
 		$this->account = \Session::get('WXAccount', \Model_WXAccount::find(1));
@@ -97,7 +97,7 @@ class Controller_WXApi extends Controller_BaseController
 		$result = json_decode($result->body);
 		if( ! isset($result->openid) || ! $result->openid){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => '未获取到OpenId!', 'title' => '错误']);
-			return $this->show_mesage();
+			return $this->show_message();
 		}
 
 		//跳转参数加openid
@@ -121,7 +121,7 @@ class Controller_WXApi extends Controller_BaseController
 		$result = json_decode($result->body);
 		if(isset($result->errcode)){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => $result->errmsg, 'title' => '错误']);
-			return $this->show_mesage();
+			return $this->show_message();
 		}
 
 		//查询微信用户信息是否存在
@@ -145,7 +145,7 @@ class Controller_WXApi extends Controller_BaseController
 		$wechatOpenID = handler\mp\Account::createWechatAccount($result->openid, $this->account);
 		if(! $wechatOpenID){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => '微信信息保存失败! 缺少必要信息,系统终止!', 'title' => '错误']);
-			return $this->show_mesage();
+			return $this->show_message();
 		}
 		$wechat = $wechatOpenID->wechat;
 		# 保存拉取到的用户信息
