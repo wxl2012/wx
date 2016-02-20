@@ -9,9 +9,9 @@
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
  */
-namespace handler\mp\action;
+namespace handler\mp\action\event;
 
-class View extends Event {
+class View extends \handler\mp\action\Event {
 
     function __construct($argument = false)
     {

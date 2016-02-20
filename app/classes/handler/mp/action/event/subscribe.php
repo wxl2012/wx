@@ -9,57 +9,46 @@
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
  */
-namespace handler\mp\action;
+namespace handler\mp\action\event;
 
-class Subscribe extends Event {
+class Subscribe extends \handler\mp\action\Event {
 
     private $event_type;
     private $qrcode_key;
 
-    function __construct($argument = false)
+    function __construct($eventType = false, $qrkey = false)
     {
-        $this->event_type = $argument;
+        $this->event_type = $eventType;
+        $this->qrcode_key = $qrkey;
     }
 
     public function handle(){
-        if(isset($this->data->EventKey) && isset($this->data->Ticket)){
-            $this->qrcode_key = str_replace('qrscene_', '', $this->data->EventKey);
-            //扫码关注
-            if($this->event_type == 'SCAN'){
-                $this->subscribe_scan();
-            }else{
-                $this->none_scan();
-            }
-        }else{
-            //正常关注
-            $this->normal();
+
+        if($this->event_type == 'SCAN'){
+            $this->scan();  //关注状态下扫码
+        }else if($this->event_type == 'subscribe'){
+            $this->subscribe();    //未关注状态下扫码或正常关注
         }
     }
 
     /**
-     * 扫码关注操作（未关注）
+     * 扫码操作
      */
-    private function none_scan(){
-        \Log::error("未关注时的扫码关注操作:none_scan()");
-
+    private function scan(){
         $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
         \Log::error($result ? '推荐关系已建立' : '推荐关系创建失败');
     }
 
     /**
-     * 扫码关注操作（已关注）
+     * 关注操作
      */
-    private function subscribe_scan(){
-        \Log::error("已关注时的扫码关注操作:subscribe_scan()");
-        $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
-        \Log::error($result ? '推荐关系已建立' : '推荐关系创建失败');
-    }
+    private function subscribe(){
 
-    /**
-     * 正常关注操作
-     */
-    private function normal(){
-        \Log::error("正常关注操作:normal()");
+        //是否扫码关注
+        if($this->qrcode_key){
+            $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
+        }
+
     }
 
 }

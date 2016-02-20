@@ -9,9 +9,9 @@
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
  */
-namespace handler\mp\action;
+namespace handler\mp\action\event;
 
-class UnSubscribe extends Event {
+class UnSubscribe extends \handler\mp\action\Event {
 
     function __construct($argument = false)
     {
