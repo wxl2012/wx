@@ -1,6 +1,6 @@
 <?php
 /**
- * 基础控制器
+ * 打印机控制器
  *
  * @package    app
  * @version    1.0
@@ -12,7 +12,7 @@
 
 namespace api;
 
-abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
+class Controller_PrinterController extends \Controller_BaseController {
 
     public function before(){
         parent::before();
