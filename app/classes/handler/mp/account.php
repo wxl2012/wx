@@ -43,7 +43,7 @@ class Account {
         ]);
 
         //是否创建用户登录信息
-        if($account->is_subscribe_create_user){
+        if(isset($account->is_subscribe_create_user) && $account->is_subscribe_create_user){
             $params = [
                 'username' => "wx_{$openid}",
                 'password' => "w{$account->id}#{$openid}",
@@ -58,16 +58,17 @@ class Account {
             ];
             $people = \Model_People::forge($params);
             $people->save();
-        }
 
-        //是否创建会员信息
-        if($account->is_subscribe_create_member){
-            $params = [
-                'no' => "{$account->seller_id}{$wechat->user_id}" . time(),
-                'user_id' => $wechat->user_id
-            ];
-            $member = \Model_Member::forge($params);
-            $member->save();
+            //是否创建会员信息
+            if(isset($account->is_subscribe_create_member) && $account->is_subscribe_create_member){
+                $params = [
+                    'no' => "{$account->seller_id}{$wechat->user_id}" . time(),
+                    'user_id' => $wechat->user_id
+                ];
+                $member = \Model_Member::forge($params);
+                $member->save();
+            }
+
         }
 
         //创建微信OpenID记录

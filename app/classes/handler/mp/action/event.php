@@ -26,17 +26,15 @@ class Event extends Base{
         $handle = false;
         switch($this->data->Event){
             case 'subscribe':
-                //$this->data->EventKey;
-                //$this->data->Ticket;
-                $handle = new \handler\mp\action\event\Subscribe('subscribe');
+                $qrKey = isset($this->data->EventKey) ? $this->data->EventKey : '';
+                $qrKey = str_replace('qrscene_', '', $qrKey);
+                $handle = new \handler\mp\action\event\Subscribe('subscribe', $qrKey);
                 break;
             case 'unsubscribe':
                 $handle = new \handler\mp\action\event\UnSubscribe();
                 break;
             case 'SCAN':
-                $this->data->EventKey;
-                $this->data->Ticket;
-                $handle = new \handler\mp\action\event\Subscribe('SCAN');
+                $handle = new \handler\mp\action\event\Subscribe('SCAN', $this->data->EventKey);
                 break;
             case 'LOCATION':
                 $this->data->Latitude;
@@ -55,6 +53,11 @@ class Event extends Base{
                 $handle = new \handler\mp\action\event\View();
                 break;
         }
+
+        $handle->setWechat($this->wechat);
+        $handle->setAccount($this->account);
+        $handle->setPostData($this->data);
+        $handle->setSeller($this->seller);
         $handle->handle();
     }
 

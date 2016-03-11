@@ -9,9 +9,9 @@
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
  */
-namespace handler\mp\action;
+namespace handler\mp\action\event;
 
-class Location extends Event {
+class Location extends \handler\mp\action\Event {
 
     function __construct($argument = false)
     {
