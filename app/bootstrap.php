@@ -10,7 +10,7 @@ require COREPATH.'bootstrap.php';
 // Register the autoloader
 \Autoloader::register();
 
-$_SERVER['FUEL_ENV'] = Fuel::PRODUCTION;
+//$_SERVER['FUEL_ENV'] = Fuel::PRODUCTION;
 /**
  * Your environment.  Can be set to any of the following:
  *
