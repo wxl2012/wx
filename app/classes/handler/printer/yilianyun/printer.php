@@ -24,8 +24,8 @@ namespace handler\printer\yilianyun;
 class Printer implements \handler\printer\PrinterProtocol{
 
     private $data;      //请求包数据
-    private $user_id;   //应用用户ID
-    private $api_key;   //应用Key
+    private $user_id = 3639;   //应用用户ID
+    private $api_key = '91c4864cbc5f07d38438df3b4e50442b92c948e6';   //应用Key
     private $msg;       //响应信息
     private $domain = 'http://open.10ss.net';    //主机
 
@@ -40,8 +40,6 @@ class Printer implements \handler\printer\PrinterProtocol{
      * @return mixed
      */
     public function finish(){
-
-        \Log::error($this->data);
 
         if( ! isset($this->data['time'])){
             $this->msg = ['status' => 'err', 'msg' => '缺少必要参数', 'errcode' => 90001];

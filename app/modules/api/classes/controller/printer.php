@@ -22,8 +22,13 @@ class Controller_Printer extends \Controller_BaseController {
      * 开始打印
      */
     public function action_index(){
+        $printer_id = \Input::get('printer_id', 0);
+        if( ! $printer_id){
+            die();
+        }
+        $printer = \Model_Printer::find($printer_id);
         $protocol = new \handler\printer\yilianyun\Printer([]);
-        $protocol->start_print('内容', '终端号', '终端密钥', time());
+        $protocol->start_print('内容', $printer->machine_code, $printer->msign, time());
     }
 
     /**
