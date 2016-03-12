@@ -76,12 +76,11 @@ class Printer implements \handler\printer\PrinterProtocol{
             'partner' => $this->user_id,
             'machine_code' => $machine_code,
             'time' => $time,
-            'mkey' => $mkey,
-            'apikey' => $this->api_key,
             'content' => $content
         ];
 
-        $params['sign'] = md5("{$this->api_key}machine_code{$params['machine_code']}partner{$params['partner']}time{$params['time']}{$params['mkey']}");
+        $params['sign'] = md5("{$this->api_key}machine_code{$machine_code}partner{$this->user_id}time{$time}{$mkey}");
+        $params['sign'] = strtoupper($params['sign']);
 
         $result = \handler\common\UrlTool::request($this->domain, 'POST', $params);
         $result = json_decode($result->body);
