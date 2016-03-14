@@ -28,7 +28,10 @@ class Controller_Printer extends \Controller_BaseController {
         }
         $printer = \Model_Printer::find($printer_id);
         $protocol = new \handler\printer\yilianyun\Printer([]);
-        $protocol->start_print('内容', $printer->machine_code, $printer->msign, time());
+        $result = $protocol->start_print('注册本次打印是通过华苑产业园发起的.', $printer->machine_code, $printer->msign, time());
+        if($result === true){
+            die('已提交打印');
+        }
     }
 
     /**

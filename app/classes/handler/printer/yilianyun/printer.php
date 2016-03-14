@@ -27,7 +27,7 @@ class Printer implements \handler\printer\PrinterProtocol{
     private $user_id = 3639;   //应用用户ID
     private $api_key = '91c4864cbc5f07d38438df3b4e50442b92c948e6';   //应用Key
     private $msg;       //响应信息
-    private $domain = 'http://open.10ss.net';    //主机
+    private $domain = 'http://open.10ss.net:8888';    //主机
 
     public function __construct($data)
     {
@@ -79,7 +79,9 @@ class Printer implements \handler\printer\PrinterProtocol{
             'content' => $content
         ];
 
-        $params['sign'] = md5("{$this->api_key}machine_code{$machine_code}partner{$this->user_id}time{$time}{$mkey}");
+        $sign = "{$this->api_key}machine_code{$machine_code}partner{$this->user_id}time{$time}{$mkey}";
+
+        $params['sign'] = md5($sign);
         $params['sign'] = strtoupper($params['sign']);
 
         $result = \handler\common\UrlTool::request($this->domain, 'POST', $params);
