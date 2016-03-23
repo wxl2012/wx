@@ -32,25 +32,32 @@ class Response {
         $this->account = $argument;
     }
 
-    public function send(){
+    public function send($xml){
         $biz = new \handler\mp\WXBizMsgCrypt($this->account->token,
                                     $this->account->encoding_aes_key,
                                     $this->account->app_id);
-        
-        $xml = '<xml></xml>';
-        $xml = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
         $result = '';
         $code = $biz->encryptMsg($xml, time(), \Str::random('alnum', 16), $result);
-        if( ! $code){
-            die('加密后:' . $result);
-        }else{
+        if($code){
             die('加密失败:' . $code);
         }
 
-        //$xml_tree = new \DOMDocument();
-        $xmlTree = simplexml_load_string($post, 'SimpleXMLElement', LIBXML_NOCDATA);
-        $xmlTree->Encrypt;
-        $xmlTree->MsgSignature;
-        $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
+        die($result);
+    }
+
+    public function text(){
+        $textTpl = "<xml>
+						<ToUserName><![CDATA[{$this->data->FromUserName}]]></ToUserName>
+						<FromUserName><![CDATA[{$this->data->ToUserName}]]></FromUserName>
+						<CreateTime>%s</CreateTime>
+						<MsgType><![CDATA[text]]></MsgType>
+						<Content><![CDATA[]]></Content>
+						<FuncFlag>0</FuncFlag>
+					</xml>";
+        $resultStr = sprintf($textTpl, time());
+        if($this->account->msg_method == 'encrypt'){
+            $this->send($resultStr);
+        }
+        die($resultStr);
     }
 }

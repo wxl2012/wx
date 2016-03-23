@@ -52,4 +52,13 @@ abstract class Controller_BaseController extends \Controller_BaseController {
     protected function delete($id){
 
     }
+
+    /**
+     * 发货
+     *
+     * @param $id
+     */
+    protected function delivery($id){
+
+    }
 }
