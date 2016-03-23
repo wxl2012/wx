@@ -19,7 +19,7 @@
 
 namespace order;
 
-class Controller_GroupBuyController extends Controller_BaseController {
+class Controller_GroupBuy extends Controller_BaseController {
 
     public function before(){
         parent::before();

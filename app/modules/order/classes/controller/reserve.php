@@ -19,7 +19,7 @@
 
 namespace order;
 
-class Controller_ReserveController extends Controller_BaseController {
+class Controller_Reserve extends Controller_BaseController {
 
     public function before(){
         parent::before();

@@ -24,8 +24,8 @@ class Model_Order extends \Orm\Model
 	 * @var array	has_one relationships
 	 */
 	protected static $_has_one = array(
-		'book' => array(
-			'model_to' => 'Model_OrderBook',
+		'reserve' => array(
+			'model_to' => 'Model_OrderReserve',
 			'key_from' => 'id',
 			'key_to'   => 'order_id',
 			'cascade_delete' => false,
@@ -39,7 +39,7 @@ class Model_Order extends \Orm\Model
 		'buyer' => array(
 			'model_to' => 'Model_People',
 			'key_from' => 'buyer_id',
-			'key_to'   => 'user_id',
+			'key_to'   => 'parent_id',
 		),
 		'seller' => array(
 			'model_to' => 'Model_Seller',

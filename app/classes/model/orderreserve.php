@@ -10,7 +10,7 @@
  * @link       http://wangxiaolei.cn
  */
 
-class Model_OrderBook extends \Orm\Model
+class Model_OrderReserve extends \Orm\Model
 {
 
 	/**

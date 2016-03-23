@@ -19,9 +19,21 @@
 
 namespace order;
 
-class Controller_MallController extends Controller_BaseController {
+class Controller_Mall extends Controller_BaseController {
 
     public function before(){
         parent::before();
+    }
+
+    public function action_cashback($id = 0){
+        $this->order = \Model_Order::find($id);
+        if( ! $this->order){
+            die('订单不存在');
+        }
+
+        if( ! $this->cashback()){
+            die('分红时遇到问题:' . $this->result_message);
+        }
+        die('分红成功');
     }
 }

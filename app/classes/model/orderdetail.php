@@ -24,6 +24,16 @@ class Model_OrderDetail extends \Orm\Model
 	 * @var array	defined observers
 	 */
 	protected static $_observers = array(
+		'Orm\\Observer_CreatedAt' => array(
+			'events' => array('before_insert'),
+			'property' => 'created_at',
+			'mysql_timestamp' => false
+		),
+		'Orm\\Observer_UpdatedAt' => array(
+			'events' => array('before_update'),
+			'property' => 'updated_at',
+			'mysql_timestamp' => false
+		),
 		'Orm\\Observer_Typing' => array(
 			'events' => array('after_load', 'before_save', 'after_save')
 		)

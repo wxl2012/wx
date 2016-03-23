@@ -12,7 +12,7 @@ return array(
         'connection'     => array(
             'hostname'   => 'localhost',
             'port'       => '3306',
-            'database'   => 'ticket',
+            'database'   => 'wxtest',
             'username'   => 'root',
             'password'   => '',
             'persistent' => false,

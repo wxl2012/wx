@@ -23,6 +23,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 	protected $SESSION_WXACCOUNT_KEY = 'WXAccount';
 	protected $SESSION_SELLER_KEY = 'seller';
 	protected $SESSION_WECHAT_KEY = 'wechat';
+	protected $result_message = false;
 
 	public function before(){
 		parent::before();
