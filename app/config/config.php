@@ -48,7 +48,7 @@ return array(
 	/**
 	 * Default location for the file cache
 	 */
-	'cache_dir'       => APPPATH.'cache/',
+	'cache_dir'       => APPPATH . 'cache/',
 
 	/**
 	 * Settings for the file finder cache (the Cache class has it's own config!)
@@ -77,9 +77,9 @@ return array(
 	/**
 	 * Localization & internationalization settings
 	 */
-	'language'           => 'en', // Default language
-	'language_fallback'  => 'en', // Fallback language when file isn't available for default language
-	'locale'             => 'en_US', // PHP set_locale() setting, null to not set
+	//'language'           => 'en', // Default language
+	//'language_fallback'  => 'en', // Fallback language when file isn't available for default language
+	//'locale'             => 'en_US', // PHP set_locale() setting, null to not set
 
 	/**
 	 * Internal string encoding charset
@@ -238,7 +238,7 @@ return array(
 	 * Paths MUST end with a directory separator (the DS constant)!
 	 */
 	'module_paths' => array(
-		APPPATH.'modules'.DS
+		APPPATH . 'modules' . DS
 	),
 
 	/**

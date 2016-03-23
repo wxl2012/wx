@@ -32,10 +32,13 @@ class Response {
         $this->account = $argument;
     }
 
-    public function send($xml){
+    public function send($xml = false){
         $biz = new \handler\mp\WXBizMsgCrypt($this->account->token,
                                     $this->account->encoding_aes_key,
                                     $this->account->app_id);
+        if(! $xml){
+            $xml = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
+        }
         $result = '';
         $code = $biz->encryptMsg($xml, time(), \Str::random('alnum', 16), $result);
         if($code){
