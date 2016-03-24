@@ -25,6 +25,42 @@ class Controller_Mall extends Controller_BaseController {
         parent::before();
     }
 
+    public function action_create(){
+        if(\Input::method() == 'POST'){
+            $msg = [
+                'msg' => '',
+                'errcode' => 0,
+                'status' => 'succ'
+            ];
+            //检测必要的订单信息
+
+            $data = \Input::post();
+            //生成订单明细
+            $details = [];
+            foreach($data['goods'] as $id){
+                $item = \Model_Trolley::find_one_by('goods_id', $id);
+                array_push($details, $item->to_array());
+            }
+            $this->load_details($details);
+            //生成优惠信息
+            $this->load_preferential($data['coupons']);
+            if( ! $this->save($data)){
+                $msg = [
+                    'msg' => $this->result_message,
+                    'errcode' => 20,
+                    'status' => 'err'
+                ];
+            }
+
+            if(\Input::is_ajax()){
+                die(json_encode($msg));
+            }
+        }
+
+        $this->template->title = '创建订单';
+        $this->template->content = \View::forge("{$this->theme}/create");
+    }
+
     public function action_cashback($id = 0){
         $this->order = \Model_Order::find($id);
         if( ! $this->order){
