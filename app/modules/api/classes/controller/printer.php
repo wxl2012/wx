@@ -12,7 +12,7 @@
 
 namespace api;
 
-class Controller_Printer extends \Controller_BaseController {
+class Controller_Printer extends Controller_BaseController {
 
     public function before(){
         parent::before();

@@ -25,5 +25,7 @@ class Controller_Trolley extends Controller_BaseController {
         parent::before();
     }
 
-    public function action_index(){}
+    public function action_index(){
+
+    }
 }

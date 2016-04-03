@@ -46,12 +46,12 @@ class Model_MemberRecommendRelation extends \Orm\Model{
         'master' => array(
             'model_to' => 'Model_People',
             'key_from' => 'master_id',
-            'key_to'   => 'user_id',
+            'key_to'   => 'parent_id',
         ),
         'member' => array(
             'model_to' => 'Model_People',
             'key_from' => 'member_id',
-            'key_to'   => 'user_id',
+            'key_to'   => 'parent_id',
         ),
     );
 
@@ -69,6 +69,20 @@ class Model_MemberRecommendRelation extends \Orm\Model{
     }
 
     /**
+     * 下级会员
+     *
+     * @param $id 主用户ID
+     * @return array 所有下级会员集合
+     */
+    public static function childMembers($id){
+        $members = \Model_MemberRecommendRelation::query()
+            ->where(['master_id' => $id])
+            ->order_by('depth', 'ASC')
+            ->get();
+        return $members;
+    }
+
+    /**
      * 添加推荐关系
      *
      * @param $master_id    推荐人用户ID
@@ -80,6 +94,10 @@ class Model_MemberRecommendRelation extends \Orm\Model{
      */
     public static function addRelation($master_id, $member_id, $depth = 2, $from = 'QRCODE'){
 
+        if($master_id == $member_id){
+            return false;
+        }
+        
         //查询被推荐人是否已存在关系库中
         $members = \Model_MemberRecommendRelation::parentMember($member_id);
         if($members){

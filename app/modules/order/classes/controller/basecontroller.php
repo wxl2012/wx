@@ -71,10 +71,37 @@ abstract class Controller_BaseController extends \Controller_BaseController {
 
         $this->original_fee = $this->order->total_fee - $this->order->preferential_fee;
 
+        //保存订单
         if( ! $this->order->save()){
             return false;
         }
 
+        //发送下单成功模板消息
+        $params = [
+            'first' => [
+                'value' => '订单支付成功',
+                'color' => '#D02090',
+            ],
+            'keyword1' => [
+                'value' => $this->order->order_no,
+                'color' => '#D02090',
+            ],
+            'keyword2' => [
+                'value' => $this->order->order_name,
+                'color' => '#D02090',
+            ],
+            'keyword3' => [
+                'value' => $this->order->total_fee,
+                'color' => '#D02090',
+            ],
+            'remark' => [
+                'value' => '',
+                'color' => '#D02090'
+            ]
+        ];
+        $this->sendMsgTemplate('tQ46mymM617VOKpNv6rbg5hBQpXIle8EC64n-ozbSSw', $params, '');
+
+        //清理购物车
         foreach($this->order->details as $item){
             $trollery = \Model_Trolley::find_one_by('goods_id', $item->id);
             if($trollery === null){
@@ -134,6 +161,42 @@ abstract class Controller_BaseController extends \Controller_BaseController {
      */
     protected function delivery($id){
 
+        $this->order = \Model_Order::find($id);
+        $this->order->order_status = 'DELIVERY';
+        $this->order->save();
+
+        //发送发货模板消息
+        $params = [
+            'first' => [
+                'value' => '订单已发货!',
+                'color' => '#D02090',
+            ],
+            'keyword1' => [
+                'value' => $this->order->order_no,
+                'color' => '#D02090',
+            ],
+            'keyword2' => [
+                'value' => $this->order->total_fee,
+                'color' => '#D02090',
+            ],
+            'keyword3' => [
+                'value' => $this->order->order_name,
+                'color' => '#D02090',
+            ],
+            'keyword4' => [
+                'value' => $this->order->remark1,
+                'color' => '#D02090',
+            ],
+            'keyword5' => [
+                'value' => '服务员',
+                'color' => '#D02090',
+            ],
+            'remark' => [
+                'value' => '点击查看订单已使用状态',
+                'color' => '#D02090'
+            ]
+        ];
+        $this->sendMsgTemplate('kulOjNg1PT5gxUMZM6VV9GwjWCBdkw_xShlgPjzFM34', $params, 'http://ticket.wangxiaolei.cn');
     }
 
     /**
@@ -187,5 +250,48 @@ abstract class Controller_BaseController extends \Controller_BaseController {
 
         $this->order->cashback_status = 1;
         return $this->order->save();
+    }
+
+    /**
+     * 发送模板消息
+     *
+     * @param $no           订单号
+     * @param $title        订单标题
+     * @param $total_fee    订单金额
+     * @param $url          订单链接
+     * @return bool
+     */
+    protected function sendMsgTemplate($tmpl_id, $params, $url){
+        $seller = \Session::get('seller', false);
+        if( ! $seller
+            || (isset($seller->is_send_template_msg) && ! $seller->is_send_template_msg)){
+            $this->result_message = '商户未设置发送微信模板消息!';
+            return false;
+        }
+
+        $account = \Session::get('WXAccount', false);
+        $to_openid = $this->order->buyer_openid;
+
+        $tmpl = new \handler\mp\TemplateMsg($account, $to_openid, $tmpl_id, $url);
+        $result = $tmpl->send($params);
+        if($result->errcode != 0){
+            $this->result_message = '消息发送失败!';
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 发送短信消息
+     */
+    protected function sendMsgSms(){
+
+    }
+
+    /**
+     * 发送App通知消息
+     */
+    protected function sendAppSms(){
+
     }
 }

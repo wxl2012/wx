@@ -62,7 +62,17 @@ class Model_People extends \Orm\Model
             'model_to' => 'Model_User',
             'key_from' => 'user_id',
             'key_to'   => 'id',
-        )
+        ),
+        'parent' => array(
+            'model_to' => 'Model_User',
+            'key_from' => 'parent_id',
+            'key_to'   => 'id',
+        ),
+        'wechat' => array(
+            'model_to' => 'Model_Wechat',
+            'key_from' => 'parent_id',
+            'key_to'   => 'user_id',
+        ),
     );
 
     /**
@@ -71,19 +81,24 @@ class Model_People extends \Orm\Model
     protected static $_has_many = array(
         'members' => array(
             'model_to' => 'Model_Member',
-            'key_from' => 'user_id',
+            'key_from' => 'parent_id',
             'key_to'   => 'user_id',
         ),
-        'wechats' => array(
-            'model_to' => 'Model_Wechat',
-            'key_from' => 'user_id',
-            'key_to'   => 'user_id',
+        'orders' => array(
+            'model_to' => 'Model_Order',
+            'key_from' => 'parent_id',
+            'key_to'   => 'buyer_id',
         ),
         'properties' => array(
             'model_to' => 'Model_PeoplePropertie',
-            'key_from' => 'user_id',
+            'key_from' => 'parent_id',
             'key_to'   => 'parent_id',
-        )
+        ),
+        'address' => array(
+            'model_to' => 'Model_PeopleAddress',
+            'key_from' => 'parent_id',
+            'key_to'   => 'parent_id',
+        ),
 
     );
 

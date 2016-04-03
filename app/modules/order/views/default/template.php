@@ -10,12 +10,27 @@
 
     <title><?php echo isset($title) ? $title : ''; ?></title>
 
-    <link href="http://lib.sinaapp.com/js/bootstrap/v3.0.0/css/bootstrap.min.css" rel="stylesheet" />
-    <link>
+    <?php
+        echo \Asset::css([
+            'http://lib.sinaapp.com/js/bootstrap/v3.0.0/css/bootstrap.min.css'
+        ]);
+
+    ?>
 </head>
 
 <body>
     <?php echo isset($content) ? $content : ''; ?>
+
+    <?php
+        echo \Asset::render('css-files');
+        echo \Asset::render('before-script');
+        echo \Asset::js([
+            'http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js',
+            'http://lib.sinaapp.com/js/bootstrap/v3.0.0/js/bootstrap.min.js',
+        ]);
+        echo \Asset::render('js-files');
+        echo \Asset::render('after-script');
+    ?>
 </body>
 
 </html>

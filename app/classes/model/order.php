@@ -156,7 +156,13 @@ class Model_Order extends \Orm\Model
 			'RECEIVED' => '已签收',
 			'CHECKED' => '核对完成',
 			'SYSTEM_STOP' => '系统中止',
-			'FINISH' => '已完成'
+			'FINISH' => '已完成',
+			'BUYER_CANCEL' => '买家取消',
+			'SELLER_WAIT_SURE' => '待商户确认',
+			'BUYER_WAIT_SURE','待买家确认',
+			'BUYER_RECEIVED' => '购买已收货',
+			'SECTION_FINISH' => '部分完成',
+			'SECTION_WAIT_SURE' => '部分待确认'
 		),
 		'payment' => array(
 			'NONE' => '未指定',

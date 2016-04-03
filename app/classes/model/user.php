@@ -21,8 +21,8 @@ class Model_User extends \Model\Auth_User
 	protected static $_has_one = array(
 		'people' => array(
 			'model_to' => 'Model_People',
-			'key_from' => 'user_id',
-			'key_to'   => 'user_id',
+			'key_from' => 'id',
+			'key_to'   => 'parent_id',
 		),
 		'wechat' => array(
 			'model_to' => 'Model_Wechat',

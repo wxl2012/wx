@@ -51,6 +51,8 @@ class Controller_Welcome extends Controller
 	 */
 	public function action_hello()
 	{
+		\Auth::force_login(1);
+		//\Auth::logout();
 		return Response::forge(Presenter::forge('welcome/hello'));
 	}
 
@@ -63,10 +65,5 @@ class Controller_Welcome extends Controller
 	public function action_404()
 	{
 		return Response::forge(Presenter::forge('welcome/404'), 404);
-	}
-
-	public function action_test(){
-		$result = \Model_MemberRecommendRelation::addRelation(3, 4, 2);
-		die($result ? 'add success' : 'add error');
 	}
 }

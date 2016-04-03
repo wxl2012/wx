@@ -12,7 +12,7 @@
 
 namespace marketing;
 
-abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
+abstract class Controller_BaseController extends \Controller_BaseController {
 
     //活动数据对象
     protected $marketing;
