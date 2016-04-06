@@ -2,19 +2,16 @@
 $seller = \Session::get('seller', false);
 ?>
 <style type="text/css">
-    #coupons .list-group-item{
-        padding-top: 2px;
-        padding-bottom: 2px;
-    }
     #coupons .col-xs-10 p{
         margin-bottom: 0px;
     }
 </style>
 <div class="container-fluid">
     <?php if(isset($seller->open_coupon) && $seller->open_coupon){ ?>
-    <p>
+    <div class="title">
+        <span class="line_orange"></span>
         可用优惠券
-    </p>
+    </div>
     <ul class="list-group" id="coupons">
         <li class="list-group-item">
             <div class="row">
@@ -46,10 +43,12 @@ $seller = \Session::get('seller', false);
     <?php } ?>
 
     <?php if(isset($seller->open_coupon_sn) && $seller->open_coupon_sn){ ?>
-    <p>
+    <div class="title">
+        <span class="line_orange"></span>
         优惠码
-    </p>
-    <ul class="list-group">
+    </div>
+    <ul class="list-group" id="couponSn">
+
         <li class="list-group-item">
             <div class="row">
                 <div class="col-xs-4" style="padding-right: 0px;">
@@ -59,7 +58,7 @@ $seller = \Session::get('seller', false);
                     <input type="text" class="form-control" name="pwd" value="" placeholder="验证码"/>
                 </div>
                 <div class="col-xs-4">
-                    <a class="btn btn-info" style="width: 100%;">验证</a>
+                    <a class="btn btn-info" style="width: 100%;" id="btnCheck">验证</a>
                 </div>
             </div>
         </li>
@@ -68,15 +67,16 @@ $seller = \Session::get('seller', false);
 
     <?php if(isset($seller->open_member_score) && $seller->open_member_score) { ?>
         <?php if(\Auth::check() && isset($member) && $member->score > 0){ ?>
-        <p>
+        <div class="title">
+            <span class="line_orange"></span>
             可用积分
-            <span style="color: #aaa;">100积分=1元</span>
-        </p>
+            <!--<span style="color: #aaa;">100积分=1元</span>-->
+        </div>
         <ul class="list-group">
             <li class="list-group-item">
                 <div class="row">
                     <div class="col-xs-12">
-                        <input type="text" class="form-control" name="coupon_id" value="" placeholder="可用积分:10积分"/>
+                        <input type="text" class="form-control" id="score" name="score" value="" placeholder="可用积分:<?php echo $member->score; ?>积分"/>
                     </div>
                 </div>
             </li>
@@ -86,14 +86,15 @@ $seller = \Session::get('seller', false);
 
     <?php if(isset($seller->open_gift_money) && $seller->open_gift_money) { ?>
         <?php if(\Auth::check() && isset($member) && $member->gift_money > 0){ ?>
-            <p>
+            <div class="title">
+                <span class="line_orange"></span>
                 可用红包金额
-            </p>
+            </div>
             <ul class="list-group">
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-xs-12">
-                            <input type="text" class="form-control" name="gift_fee" value="" placeholder="可用金额:10"/>
+                            <input type="text" class="form-control" id="gift_fee" name="gift_fee" value="" placeholder="可用金额:<?php echo $member->gift_money; ?>元"/>
                         </div>
                     </div>
                 </li>
@@ -115,3 +116,27 @@ $seller = \Session::get('seller', false);
         </div>
     </li>
 </script>
+
+<script type="text/x-jquery-tmpl" id="couponSnItem">
+    <li class="list-group-item">
+        <div class="row">
+            <div class="col-xs-2" style="padding-right: 0px;">
+                <input type="checkbox" name="coupon_id" value="${id}" max-num="${coupon.max_num}" data-type="${coupon.type}" data-value="${coupon.money}"/>
+            </div>
+            <div class="col-xs-6" style="padding-left: 2px; padding-right: 0px;">
+                优惠码:${sn}
+            </div>
+            <div class="col-xs-4 text-right" style="color: red;">
+            {{if coupon.type == 'AMOUNT' }}
+                ${coupon.money}元
+            {{else coupon.type == 'DISCOUNT'}}
+                ${coupon.money}折
+            {{/if }}
+            </div>
+        </div>
+    </li>
+</script>
+
+<?php
+    \Asset::js('order/default/part/coupons.js', [], 'js-files', false);
+?>

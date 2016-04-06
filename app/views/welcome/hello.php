@@ -53,5 +53,15 @@
 			</p>
 		</footer>
 	</div>
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$.get('http://www.wx.ray/api/trolley/test.json', function(data){
+			for(var key in data.data){
+				console.log(data.data[key].username);
+			}
+		}, 'json');
+	});
+</script>
 </body>
 </html>

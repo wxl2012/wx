@@ -52,7 +52,7 @@ class Model_PeopleCoupon extends \Orm\Model
         ),
         'coupon' => array(
             'model_to' => 'Model_Coupon',
-            'key_from' => 'conpon_id',
+            'key_from' => 'coupon_id',
             'key_to'   => 'id',
         ),
         'seller' => array(

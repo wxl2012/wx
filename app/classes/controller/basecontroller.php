@@ -33,6 +33,8 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 		$this->load_seller();
 
 		$this->load_wechat();
+
+		$this->getToken();
 	}
 
 	/**
@@ -148,5 +150,12 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 获取Token
+	 */
+	protected function getToken(){
+		\View::set_global(['token' => 'MGE3MTYyYjIzODYzNjY5NDRiYzE2NTUwM2U2ZGQ5ODI=']);
 	}
 }

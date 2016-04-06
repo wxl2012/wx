@@ -5,18 +5,15 @@ if( ! isset($seller->open_logistical) || ! $seller->open_logistical){
 }
 ?>
 <style type="text/css">
-    #addressItems .list-group-item{
-        padding-top: 2px;
-        padding-bottom: 2px;
-    }
     #addressItems .col-xs-10 p{
         margin-bottom: 0px;
     }
 </style>
 <div class="container-fluid">
-    <p>
+    <div class="title">
+        <span class="line_orange"></span>
         收货地址
-    </p>
+    </div>
     <ul class="list-group" id="addressItems">
         <li class="list-group-item text-center">
             <i class="fa fa-spinner fa-spin"></i> 收货地址加载中...

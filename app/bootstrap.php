@@ -2,9 +2,12 @@
 // Bootstrap the framework DO NOT edit this
 require COREPATH.'bootstrap.php';
 
+Autoloader::add_namespace('OAuth2', APPPATH . 'vendor' . DS . 'OAuth2');
+
 \Autoloader::add_classes(array(
 	// Add classes you want to override here
 	// Example: 'View' => APPPATH.'classes/view.php',
+    //'OAuth2Autoloader' => APPPATH . 'vendor' . DS . 'OAuth2' . DS . 'Autoloader.php'
 ));
 
 // Register the autoloader

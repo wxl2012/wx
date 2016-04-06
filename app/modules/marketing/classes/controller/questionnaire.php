@@ -14,11 +14,22 @@ namespace marketing;
 
 class Controller_Questionnaire extends Controller_BaseController {
 
+    public $theme = 'default';
+    public $template = 'questionnaire/default/template';
+
     public function before(){
         parent::before();
     }
 
     public function action_index(){
-        die('over');
+
+        if( ! \Input::get('id', false)){
+            die('');
+        }
+        $params['bank'] = \Model_QuestionBank::find(\Input::get('id'));
+
+        \View::set_global($params);
+
+        $this->template->content = \View::forge("questionnaire/{$this->theme}/index");
     }
 }

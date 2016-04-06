@@ -30,15 +30,10 @@ class Controller_Member extends Controller_BaseController {
      */
     public function action_address(){
         $address = \Model_PeopleAddress::query()
-            ->where(['parent_id' => \Auth::get_user()->id, 'is_delete' => 0])
+            ->where(['parent_id' => $this->user->id, 'is_delete' => 0])
             ->get();
 
-        $items = [];
-        foreach($address as $item){
-            array_push($items, $item->to_array());
-        }
-
-        die(json_encode(['status' => 'err', 'msg' => '', 'errcode' => 0, 'data' => $items]));
+        return $this->response(['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $address], 200);
     }
 
     /**
@@ -48,26 +43,26 @@ class Controller_Member extends Controller_BaseController {
         $coupons = \Model_PeopleCoupon::query()
             ->related('coupon')
             ->where([
-                'user_id' => \Auth::get_user()->id,
+                'user_id' => $this->user->id,
                 'status' => 'NONE'
             ])
             ->where('coupon.start', '<', time())
             ->where('coupon.end', '>', time())
-            ->where('quota', '>=', \Input::post('fee'))
-            ->where('not_allowed_date', 'NOT IN', [date('w'), date('Y-m-d')])
+            ->where('coupon.quota', '>=', \Input::post('fee'))
+            ->where('coupon.not_allowed_date', 'NOT IN', [date('w'), date('Y-m-d')])
             ->get();
 
         //限制门类并转数组
         $items = [];
         foreach($coupons as $coupon){
             foreach(\Input::post('category_ids') as $item){
-                if($coupon->allowed_categories == '' || in_array($item, explode(',', $coupon->allowed_categories))){
+                if($coupon->coupon->allowed_categories == '' || in_array($item, explode(',', $coupon->coupon->allowed_categories))){
                     array_push($items, $coupon->to_array());
                     break;
                 }
             }
         }
 
-        die(json_encode(['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $items]));
+        return $this->response(['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $items], 200);
     }
 }

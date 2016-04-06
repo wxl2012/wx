@@ -5,9 +5,10 @@ if( ! isset($seller->open_payment) || ! $seller->open_payment){
 }
 ?>
 <div class="container-fluid">
-    <p>
+    <div class="title">
+        <span class="line_orange"></span>
         支付方式
-    </p>
+    </div>
     <ul class="list-group" id="payment">
         <li class="list-group-item text-center">
             <i class="fa fa-spinner fa-spin"></i> 支付方式加载中...

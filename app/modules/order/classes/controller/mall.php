@@ -23,6 +23,7 @@ class Controller_Mall extends Controller_BaseController {
 
     public function before(){
         parent::before();
+        //\Session::set('seller', \Model_Seller::find(1));
     }
 
     public function action_create(){
@@ -57,6 +58,13 @@ class Controller_Mall extends Controller_BaseController {
             }
         }
 
+        $params = [
+            'title' => ''
+        ];
+
+        $params['trolley_ids'] = [1, 2, 3];
+
+        \View::set_global($params);
         $this->template->title = '创建订单';
         $this->template->content = \View::forge("{$this->theme}/create");
     }

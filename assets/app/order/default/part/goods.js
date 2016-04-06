@@ -2,6 +2,7 @@ $(function () {
 
     $.get('/api/trolley.json',
         {
+            access_token: _access_token,
             ids: _ids
         },
         function (data) {
@@ -33,8 +34,11 @@ $(function () {
             _order_name = _order_name.substring(0, _order_name.length - 1);
             _order_body = _order_body.substring(0, _order_body.length - 1);
 
-            $('#goodsFooter').find('em:first').text(total_num);
-            $('#goodsFooter').find('em:last').text(total_fee);
+            $('.bill-field:first').find('em:first').text(total_num);
+            $('.bill-field:first').find('em:last').text(total_fee);
+            _total_fee = total_fee;
+            $('#totalFee').text(total_fee);
+            statement();
 
             if($('#goodsItems').find('li').length > 2){
                 $('#goodsFooter').find('.pull-right').show();

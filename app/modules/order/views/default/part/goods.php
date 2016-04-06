@@ -14,9 +14,10 @@ if( ! isset($seller->open_goods_details) || ! $seller->open_goods_details){
     }
 </style>
 <div class="container-fluid">
-    <p>
+    <div class="title">
+        <span class="line_orange"></span>
         商品明细
-    </p>
+    </div>
     <ul class="list-group" id="goodsItems">
         <div id="goodsFirst">
         </div>
@@ -26,9 +27,8 @@ if( ! isset($seller->open_goods_details) || ! $seller->open_goods_details){
             </li>
         </div>
         <div id="goodsFooter">
-            <li class="list-group-item text-right clearfix" id="btnGoodsMore" style="border-top-width: 0px">
-                <span class="pull-left">共<em>0</em>件商品<em>0</em>元</span>
-                <span class="pull-right" style="display: none;">查看更多</span>
+            <li class="list-group-item text-right" id="btnGoodsMore" style="border-top-width: 0px">
+                查看更多
             </li>
         </div>
     </ul>
@@ -49,8 +49,9 @@ if( ! isset($seller->open_goods_details) || ! $seller->open_goods_details){
 </script>
 
 <?php
+$ids = json_encode($trolley_ids);
 $script = <<<js
-    var _ids = [1, 2, 3];
+    var _ids = {$ids};
 js;
 
     \Asset::js($script, [], 'before-script', true);

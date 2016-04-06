@@ -25,11 +25,8 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
     }
 
     public function auth(){
+
         $flag = false;
-        if(\Auth::check()){
-            $this->user = \Auth::get_user();
-            return $this->user;
-        }
 
         if( ! \Input::get('access_token', false)){
             return $flag;
@@ -44,6 +41,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
         }else if($token->expire_at < time()){
             return false;
         }
+
         $data = unserialize($token->data);
         $this->user = \Model_User::find($data->user_id);
         $this->store = \Model_Store::find($data->store_id);
