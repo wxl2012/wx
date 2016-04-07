@@ -95,13 +95,21 @@ $(function(){
         params,
         function (data) {
             if(data.status == 'err'){
-                $('#coupons').append('<li class="list-group-item text-center">您没有可用优惠券</li>', null, null);
+                $('#coupons').append('<li class="list-group-item text-center">' + data.msg + '</li>');
                 return;
             }
+
+            $('#coupons').empty();
+
             var items = data.data;
-            for (var i = 0; i < items.length; i ++){
-                items[i].unit = items[i].coupon.type == 'AMOUNT' ? '元' : '折';
-                $('#coupons').append(couponItem, items[i], null);
+            if(items instanceof Array){
+                $('#coupons').append('<li class="list-group-item text-center">您没有可用优惠券</li>');
+                return;
+            }
+
+            for(var key in items){
+                items[key].unit = items[key].coupon.type == 'AMOUNT' ? '元' : '折';
+                $('#coupons').append(couponItem, items[key], null);
             }
         }, 'json');
 

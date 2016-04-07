@@ -1,10 +1,12 @@
 $(function () {
 
+    var params = {
+        access_token: _access_token,
+        ids: _ids
+    };
+
     $.get('/api/trolley.json',
-        {
-            access_token: _access_token,
-            ids: _ids
-        },
+        params,
         function (data) {
             if(data.status == 'err'){
                 return;
@@ -17,6 +19,11 @@ $(function () {
             var total_fee = 0;
 
             var items = data.data;
+            if(items instanceof Array){
+                $('#goodsFooter').hide();
+                $('#goodsBody').append('<li class="list-group-item text-center">未找到商品数据</li>');
+                return;
+            }
             for (var key in items){
                 if(index < 1) {
                     $('#goodsFirst').append(goodsItem, items[key], null);

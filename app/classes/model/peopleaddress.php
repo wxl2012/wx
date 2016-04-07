@@ -48,6 +48,26 @@ class Model_PeopleAddress extends \Orm\Model
             'model_to' => 'Model_People',
             'key_from' => 'parent_id',
             'key_to'   => 'parent_id',
+        ),
+        'country' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'country_id',
+            'key_to'   => 'id',
+        ),
+        'province' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'province_id',
+            'key_to'   => 'id',
+        ),
+        'city' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'city_id',
+            'key_to'   => 'id',
+        ),
+        'county' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'county_id',
+            'key_to'   => 'id',
         )
     );
 

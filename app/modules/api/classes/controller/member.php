@@ -29,11 +29,38 @@ class Controller_Member extends Controller_BaseController {
      * 收货地址列表
      */
     public function action_address(){
-        $address = \Model_PeopleAddress::query()
+        $items = \Model_PeopleAddress::query()
             ->where(['parent_id' => $this->user->id, 'is_delete' => 0])
             ->get();
 
-        return $this->response(['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $address], 200);
+        foreach ($items as $item){
+            $item->country;
+            $item->province;
+            $item->city;
+            $item->county;
+        }
+        return $this->response(['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $items], 200);
+    }
+
+    public function action_address_save(){
+
+        $msg = ['status' => 'err', 'msg' => '', 'errcode' => 10];
+
+        $data = \Input::post();
+        $address = \Model_PeopleAddress::forge($data);
+        $address->parent_id = \Auth::get_user()->id;
+
+        if($address->save()){
+            
+            $address->country;
+            $address->province;
+            $address->city;
+            $address->county;
+
+            $msg = ['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $address];
+        }
+
+        return $this->response($msg, 200);
     }
 
     /**
