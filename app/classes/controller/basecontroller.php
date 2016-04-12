@@ -137,15 +137,17 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'module' => 'order',
 				'controller' => 'home',
 				'actions' => ['save_wxpay_qrcode']
+			],
+			[
+				'module' => 'wxapi',
+				'controller' => 'oauth2_callback',
+				'actions' => []
 			]
 		];
 		foreach($allowed as $item){
-			if($item['module'] == \Uri::segment(1)
-				&& in_array(\Uri::segment(2), $item['actions'])){
-				return true;
-			}else if($item['module'] == \Uri::segment(1)
-				&& $item['controller'] == \Uri::segment(2)
-				&& in_array(\Uri::segment(3), $item['actions'])){
+			if(( ! $item['module'] || $item['module'] == \Uri::segment(1, ''))
+				&& ( ! $item['controller'] || $item['controller'] == \Uri::segment(2, ''))
+				&& ( ! $item['actions'] || in_array(\Uri::segment(3, ''), $item['actions']))){
 				return true;
 			}
 		}

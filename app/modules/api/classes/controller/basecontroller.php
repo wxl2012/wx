@@ -19,6 +19,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
     protected $wechat = false;
     protected $wechat_openid = false;
     protected $wx_account = false;
+    protected $seller = false;
 
     public function before(){
         parent::before();
@@ -46,6 +47,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
         $this->user = \Model_User::find($data->user_id);
         if(\Input::param('store_id', false)){
             $this->store = \Model_Store::find(\Input::param('store_id'));
+            $this->seller = $this->wx_account->seller;
         }
         if(\Input::param('wechat_id', false)){
             $this->wechat = \Model_Wechat::find(\Input::param('wechat_id'));
@@ -55,6 +57,10 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
         }
         if(\Input::param('account_id', false)){
             $this->wx_account = \Model_WXAccount::find(\Input::param('account_id'));
+            $this->seller = $this->wx_account->seller;
+        }
+        if(\Input::param('seller_id', false)){
+            $this->seller = \Model_Seller::find(\Input::param('seller_id'));
         }
 
         //解析access_token,并查询access_token有效期
