@@ -248,7 +248,7 @@ class Tool {
         }
 
         //判断ticket是否过期
-        if( ! $account->wechat_ticket_valid && $account->wechat_ticket_valid < time()){
+        if( ! $account->wechat_ticket_valid || $account->wechat_ticket_valid < time()){
             if($account->temp_token_valid < time()){
                 $result = \handler\mp\Tool::generate_token($account->app_id, $account->app_secret);
                 $account->temp_token = $result['token'];
@@ -323,7 +323,7 @@ class Tool {
             'remark' => \Input::get('remark', ''),
             'name' => \Input::get('name', ''),
             'name_stype' => \Input::get('name_style', ''),
-            'real_money' => \Input::get('total_fee', $order->original_money),
+            'real_money' => \Input::get('total_fee', $order->original_fee),
             'openid' => $openid
         );
         $trade = \Model_OrderTrade::forge($data);
@@ -333,7 +333,7 @@ class Tool {
         }
 
         //是否指定收款金额
-        $total_fee = $order->original_money;
+        $total_fee = $order->original_fee;
         if(\Input::get('total_fee', false)){
             $total_fee = floatval(\Input::get('total_fee'));
         }

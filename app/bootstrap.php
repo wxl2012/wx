@@ -8,6 +8,7 @@ Autoloader::add_namespace('OAuth2', APPPATH . 'vendor' . DS . 'OAuth2');
 	// Add classes you want to override here
 	// Example: 'View' => APPPATH.'classes/view.php',
     //'OAuth2Autoloader' => APPPATH . 'vendor' . DS . 'OAuth2' . DS . 'Autoloader.php'
+    'QRcode' => APPPATH . 'vendor/QRcode/phpqrcode.php',
 ));
 
 // Register the autoloader

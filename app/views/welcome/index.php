@@ -36,6 +36,11 @@
 		</div>
 	</header>
 	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<img src="http://www.wx.ray/welcome/image"/>
+			</div>
+		</div>
 		<div class="jumbotron">
 			<h1>Welcome!</h1>
 			<p>You have successfully installed the FuelPHP Framework.</p>
@@ -62,6 +67,7 @@
 					<li><a href="http://fuelphp.com/contribute/issue-tracker">Issue Tracker</a></li>
 				</ul>
 			</div>
+
 		</div>
 		<hr/>
 		<footer>

@@ -28,13 +28,26 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 	public function before(){
 		parent::before();
 
-		$this->load_wx_account();
+		$client_type = false;
+
+		$ua = \Input::user_agent();
+
+		if(preg_match('/MicroMessenger/i', $ua)){
+			//加载微信公众号信息
+			$this->load_wx_account();
+			//加载微信粉丝OPENID信息
+			$this->load_wechat();
+
+			$client_type = 'wechat';
+		}
+
+
 
 		$this->load_seller();
 
-		$this->load_wechat();
-
 		$this->getToken();
+
+		\View::set_global(['client_type' => $client_type]);
 	}
 
 	/**
@@ -76,13 +89,6 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 	 * 加载微信信息
 	 */
 	protected function load_wechat(){
-
-		$ua = \Input::user_agent();
-
-		if( ! preg_match('/MicroMessenger/i', $ua)){
-			//不是微信浏览器,无需进行相关操作
-			return;
-		}
 
 		//是否需要获取openid
 		$flag = $this->getNotOpenidAllowed();
