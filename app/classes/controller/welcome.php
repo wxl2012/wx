@@ -66,29 +66,4 @@ class Controller_Welcome extends Controller
 	{
 		return Response::forge(Presenter::forge('welcome/404'), 404);
 	}
-
-	public function action_image(){
-
-		$image = imagecreatefromjpeg(DOCROOT . 'uploads/tmp/bg.jpg');
-
-		$grey = imagecolorallocate($image, 255, 255, 255);
-
-		$font = '/Library/Fonts/Baoli.ttc';
-
-		imagettftext($image, 20, 0, 50, 50, $grey, $font, '81岁');
-
-		imagettftext($image, 20, 0, 50, 100, $grey, $font, '王晨芯的命运是');
-
-		imagettftext($image, 20, 0, 50, 150, $grey, $font, '活到81岁');
-
-		imagettftext($image, 20, 0, 50, 200, $grey, $font, '寿命: 81岁');
-
-		imagettftext($image, 20, 0, 50, 250, $grey, $font, '家庭: 21岁结婚后得');
-
-		imagettftext($image, 20, 0, 50, 300, $grey, $font, '车子: 法拉利458 Speciale');
-
-		imagettftext($image, 20, 0, 50, 350, $grey, $font, '房子: 利奥波德别墅');
-
-		imagepng($image);
-	}
 }
