@@ -20,7 +20,7 @@ abstract class Controller_BaseController extends \Controller_BaseController {
     public function before(){
         parent::before();
 
-        if( ! $this->getNotLoginAllowed()){
+        if( ! \Auth::check() && ! $this->getNotLoginAllowed()){
             \Response::redirect('/ucenter/login');
         }
     }
