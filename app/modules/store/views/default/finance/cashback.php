@@ -60,9 +60,9 @@
             <a class="btn btn-primary" style="width: 100%;">提现</a>
             <p style="padding: 10px 0px;">
                 <?php if(true){ ?>
-                    请先绑定银行卡或者支付宝 <a href="javascript:;">绑定</a>
+                    请先绑定银行卡或者支付宝 <a href="/store/finance/bank">绑定</a>
                 <?php }else{ ?>
-                    使用中国银行(9081)收款 <a href="javascript:;">更换</a>
+                    使用中国银行(9081)收款 <a href="/store/finance/banks">更换</a>
                 <?php } ?>
             </p>
         </div>

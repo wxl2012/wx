@@ -48,4 +48,12 @@ class Controller_Finance extends Controller_BaseController {
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/finance/cashback_records");
     }
+
+    public function action_banks(){
+        $this->template->content = \View::forge("{$this->theme}/finance/banks");
+    }
+
+    public function action_bank(){
+        $this->template->content = \View::forge("{$this->theme}/finance/bank");
+    }
 }
