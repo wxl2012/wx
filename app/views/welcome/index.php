@@ -38,7 +38,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<img src="http://www.wx.ray/test/image"/>
+				<img src="/test/image"/>
 			</div>
 		</div>
 		<div class="jumbotron">
