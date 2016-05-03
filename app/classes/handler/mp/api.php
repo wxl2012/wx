@@ -24,7 +24,7 @@ namespace handler\mp;
 class Api{
 
     /**
-     * 向微信服务器上传多媒体资源
+     * 向微信服务器上传多媒体资源(永久资源)
      *
      * @param $access_token     访问令牌
      * @param $type             资源类型 image | voice | video | thumb
@@ -35,20 +35,48 @@ class Api{
 
         $data = false;
         if(class_exists('\CURLFile')){
-            $data = ['media' => new \CURLFile('/Users/fqwl/wwwroot/wx/uploads/tmp/fates/sc_fate.jpg', 'image/jpeg', 'filename')];
-            //$data = ['media' => curl_file_create('/Users/fqwl/wwwroot/wx/uploads/tmp/fates/sc_fate.jpg', 'image/jpeg', 'filename')];
+            $data = ['media' => new \CURLFile($media)];
         }else{
-            $data = ['media' => '@/Users/fqwl/wwwroot/wx/uploads/tmp/fates/sc_fate.jpg'];
+            $data = ['media' => "@{$media}"];
         }
 
-        $url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$access_token}&type={$type}";
-        $result = \handler\common\UrlTool::request($url, 'POST', $data, true);
+        $url = "https://api.weixin.qq.com/cgi-bin/add_material?access_token={$access_token}&type={$type}";
+        $result = \handler\common\UrlTool::request($url, 'POST', ['form-data' => $data], true);
         $obj = json_decode($result->body);
 
-        var_dump($obj);die();
         if( ! isset($obj->media_id)){
             return false;
         }
+        return $obj->media_id;
+    }
+
+    /**
+     * 向微信服务器上传多媒体资源(临时资源)
+     *
+     * @param $access_token     访问令牌
+     * @param $type             资源类型 image | voice | video | thumb
+     * @param $media            媒体信息
+     * @return bool
+     */
+    public static function upload_media_tmp($access_token, $type, $media){
+
+        $data = false;
+        if(class_exists('\CURLFile')){
+            $data = ['media' => new \CURLFile($media)];
+        }else{
+            $data = ['media' => "@{$media}"];
+        }
+
+        $url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$access_token}&type={$type}";
+        $result = \handler\common\UrlTool::request($url, 'POST', ['form-data' => $data], true);
+        \Log::error(serialize($result->body));
+        $obj = json_decode($result->body);
+
+        if( ! isset($obj->media_id)){
+            return false;
+        }
+
+        \Cache::set(md5($media), $obj->media_id, 60 * 60 * 24 * 3);
         return $obj->media_id;
     }
 }

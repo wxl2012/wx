@@ -9,7 +9,7 @@
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
  *
- * @extends  	\Orm\Model
+ * @extends     \Orm\Model
  */
 
 class Model_WXAccount extends \Orm\Model
@@ -23,7 +23,7 @@ class Model_WXAccount extends \Orm\Model
     protected static $_primary_key = array('id');
 
     /**
-     * @var array	defined observers
+     * @var array   defined observers
      */
     protected static $_observers = array(
         'Orm\\Observer_CreatedAt' => array(
@@ -47,7 +47,7 @@ class Model_WXAccount extends \Orm\Model
     );
 
     /**
-     * @var array	has_many relationships
+     * @var array   has_many relationships
      */
     protected static $_has_many = array(
         'metadata' => array(
@@ -58,7 +58,7 @@ class Model_WXAccount extends \Orm\Model
     );
 
     /**
-     * @var array	belongs_to relationships
+     * @var array   belongs_to relationships
      */
     protected static $_belongs_to = array(
         'seller' => array(
@@ -109,5 +109,19 @@ class Model_WXAccount extends \Orm\Model
         }
 
         return $account;
+    }
+
+    /**
+     * 检测token是否过期,过期则重新获取token
+     * @throws Exception
+     */
+    public function checkToken(){
+        if($this->temp_token_valid <= time()){
+            $token = \handler\mp\Tool::generate_token($this->app_id, $this->app_secret);
+
+            $this->temp_token = $token['token'];
+            $this->temp_token_valid = $token['valid'];
+            $this->save();
+        }
     }
 }

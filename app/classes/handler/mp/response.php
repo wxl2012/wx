@@ -25,17 +25,18 @@ class Response {
 
     private $data;
     private $account;
-    
-    function __construct($argument)
+
+    function __construct($account, $data)
     {
         # code...
-        $this->account = $argument;
+        $this->account = $account;
+        $this->data = $data;
     }
 
     public function send($xml = false){
         $biz = new \handler\mp\WXBizMsgCrypt($this->account->token,
-                                    $this->account->encoding_aes_key,
-                                    $this->account->app_id);
+            $this->account->encoding_aes_key,
+            $this->account->app_id);
         if(! $xml){
             $xml = "<xml><ToUserName><![CDATA[oia2Tj我是中文jewbmiOUlr6X-1crbLOvLw]]></ToUserName><FromUserName><![CDATA[gh_7f083739789a]]></FromUserName><CreateTime>1407743423</CreateTime><MsgType><![CDATA[video]]></MsgType><Video><MediaId><![CDATA[eYJ1MbwPRJtOvIEabaxHs7TX2D-HV71s79GUxqdUkjm6Gs2Ed1KF3ulAOA9H1xG0]]></MediaId><Title><![CDATA[testCallBackReplyVideo]]></Title><Description><![CDATA[testCallBackReplyVideo]]></Description></Video></xml>";
         }
@@ -48,17 +49,32 @@ class Response {
         die($result);
     }
 
-    public function text(){
+    public function text($content){
         $textTpl = "<xml>
-						<ToUserName><![CDATA[{$this->data->FromUserName}]]></ToUserName>
-						<FromUserName><![CDATA[{$this->data->ToUserName}]]></FromUserName>
-						<CreateTime>%s</CreateTime>
-						<MsgType><![CDATA[text]]></MsgType>
-						<Content><![CDATA[]]></Content>
-						<FuncFlag>0</FuncFlag>
-					</xml>";
+                        <ToUserName><![CDATA[{$this->data->FromUserName}]]></ToUserName>
+                        <FromUserName><![CDATA[{$this->data->ToUserName}]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                        <Content><![CDATA[$content]]></Content>
+                        <FuncFlag>0</FuncFlag>
+                    </xml>";
         $resultStr = sprintf($textTpl, time());
-        if($this->account->msg_method == 'encrypt'){
+        if($this->account->encoding_aes_key){
+            $this->send($resultStr);
+        }
+        die($resultStr);
+    }
+
+    public function image($media_id){
+        $textTpl = "<xml>
+                        <ToUserName><![CDATA[{$this->data->FromUserName}]]></ToUserName>
+                        <FromUserName><![CDATA[{$this->data->ToUserName}]]></FromUserName>
+                        <CreateTime>%s</CreateTime>
+                        <MsgType><![CDATA[image]]></MsgType>
+                        <Image><MediaId><![CDATA[$media_id]]></MediaId></Image>
+                    </xml>";
+        $resultStr = sprintf($textTpl, time());
+        if($this->account->encoding_aes_key){
             $this->send($resultStr);
         }
         die($resultStr);

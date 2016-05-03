@@ -22,8 +22,13 @@
 class Controller_Test extends Controller {
 
     public function action_index(){
-        $access_token = 'u8uU_Ak6UQ9yztMUUw-ykbafvsWSZTNSnKn6etM1C0H1ifsRX0-6k7FofLyz7dv5NSS0jsI4Tdm13YWcRBjD9ypeFOzq6A38eQ0Wj1iEeIezsVkG_t3KWwaRfM84LXP3GYEhAFAPHN';
-        \handler\mp\Api::upload_media($access_token, 'image', DOCROOT . 'uploads/tmp/fates/sc_fate.jpg');
+        $access_token = 'ampaqbbNDq_te_nPiYmX6oPY2PJXq3r9-JRajS-hWBy9-InZuH0UL_GK_ZNg3GA_kYUFQKLwhmcqeNaUA1FpgdQsGXLe8eobuZURKiPahutLT7EVfSh09upAQQR3IPYhEFDaAJAJKI';
+        \handler\mp\Api::upload_media_tmp($access_token, 'image', DOCROOT . 'uploads/tmp/fates/sc_fate.jpg');
+    }
+
+    public function action_ab(){
+        \Log::error(json_encode(\Input::post('media')));
+        var_dump(\Input::post());die();
     }
 
     public function action_image(){
