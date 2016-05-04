@@ -33,7 +33,7 @@ class Controller_User extends Controller_BaseController {
         $cache = false;
         $user = \Auth::get_user();
         $openid = \Session::get('OpenID');
-        $key = "pay{$user->id}-{$openid->openid}";
+        $key = md5("pay{$user->id}-{$openid->openid}");
 
         $params = [
             'pay' => false,
@@ -41,7 +41,7 @@ class Controller_User extends Controller_BaseController {
         ];
 
         try{
-            $cache = \Cache::get(md5($key));
+            $cache = \Cache::get($key);
             $params['pay'] = unserialize($cache);
             $params['key'] = $key;
         }catch(\CacheNotFoundException $e){
@@ -68,5 +68,9 @@ class Controller_User extends Controller_BaseController {
 
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/user/pay");
+    }
+
+    public function action_create(){
+        $this->template->content = \View::forge("{$this->theme}/user/confirm_pay");
     }
 }

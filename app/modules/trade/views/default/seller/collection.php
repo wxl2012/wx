@@ -47,7 +47,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12" style="padding-top: 15px;">
             <ul class="list-group">
 
                 <?php echo \Form::csrf();?>
@@ -62,13 +62,14 @@
                 </li>
             </ul>
         </div>
-
         <div class="col-xs-12 text-center">
-            <input type="number" class="form-control text-center" placeholder="请填写收款金额" />
+            <input type="number" class="form-control text-center" placeholder="请填写收款金额" value="<?php echo isset($order) ? $order['total_fee'] : '';?>" />
         </div>
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <textarea class="form-control" placeholder="收款理由"></textarea>
+            <textarea class="form-control" placeholder="收款理由"><?php echo isset($order) ? $order['remark'] : '';?></textarea>
         </div>
+
+
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
             <a class="btn btn-warning" style="width: 100%;">开始收款</a>
         </div>
@@ -91,5 +92,5 @@ js;
 
 \Asset::js($script, [], 'before-script', true);
 
-//\Asset::js([ 'jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'room/reserve.js'], [], 'js-files', false);
+\Asset::js(['modules/trade/default/seller/collection.js'], [], 'js-files', false);
 ?>

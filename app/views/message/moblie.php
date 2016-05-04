@@ -5,7 +5,7 @@ $seller = \Session::get('seller', false);
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title><?php echo isset($title) ? $title : ''; ?>-<?php echo $seller ? $seller->short_name : '';?></title>
+    <title><?php echo isset($title) ? $title : ''; ?>-<?php echo $seller ? isset($seller->short_name) ? $seller->short_name : $seller->name : '';?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">

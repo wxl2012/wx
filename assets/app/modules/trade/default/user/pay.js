@@ -46,7 +46,7 @@ $(function(){
                     alert('发起付款失败');
                     return;
                 }
-                $('#imgQrcode').attr('src', '/common/qrcode/generate?content=trade/seller/create?id=' + data.key);
+                $('#imgQrcode').attr('src', _base_url + '/common/qrcode/generate?content=trade/seller/create?id=' + data.key);
                 $('#txtFee,#txtRemark,#btnPay').hide();
                 $('#btnCancelPay').show();
             }, 'json');
