@@ -49,6 +49,8 @@ class Subscribe extends \handler\mp\action\Event {
             $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
         }
 
+        
+
     }
 
 }

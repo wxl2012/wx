@@ -28,5 +28,28 @@ class Controller_Seller extends Controller_BaseController {
     /**
      * 创建支付记录
      */
-    public function action_create(){}
+    public function action_create(){
+        $msg = false;
+        if(! \Input::get('id', false) && \Input::get('buyer_id', false)){
+            $msg = [
+                'title' => '发生异常',
+                'msg' => '缺少必要参数'
+            ];
+        }else if( ! \Auth::check()){
+            $msg = [
+                'title' => '发生异常',
+                'msg' => '请先登录商户平台后,再次扫码!'
+            ];
+        }else if(true){
+            $msg = [
+                'title' => '无此权限',
+                'msg' => '您无权进行该项操作'
+            ];
+        }
+
+        if($msg){
+            \Session::set_flash('msg', $msg);
+            $this->show_message();
+        }
+    }
 }
