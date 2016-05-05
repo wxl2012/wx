@@ -2,6 +2,12 @@
     .navbar-blue{
         background-color: #337ab7;
     }
+
+    .list-group-item .row .col-xs-4{
+        line-height: 30px;
+        text-align: right;
+    }
+
     .list-group-item:first-child{
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
@@ -25,7 +31,7 @@
                     </a>
                 </div>
                 <div class="col-xs-8 text-center" style="color: #fff; font-size: 13pt; font-weight: 600;">
-                    确认付款
+                    注册成为职员
                 </div>
                 <div class="col-xs-2">
                 </div>
@@ -39,7 +45,7 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col-xs-4">
-                    收款商户:
+                    所属商户:
                 </div>
                 <div class="col-xs-8">
                     <?php echo '一号店商城';?>
@@ -49,47 +55,40 @@
         <li class="list-group-item">
             <div class="row">
                 <div class="col-xs-4">
-                    付款金额:
+                    姓名:
                 </div>
                 <div class="col-xs-8">
-                    100
+                    <input type="text" class="form-control" value="" placeholder="真实姓名" />
                 </div>
             </div>
         </li>
         <li class="list-group-item">
             <div class="row">
                 <div class="col-xs-4">
-                    付款说明:
-                </div>
-                <div class="col-xs-8">
-                    话费充值
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    <ul class="list-group">
-        <li class="list-group-item">
-            <div class="row">
-                <div class="col-xs-4" style="line-height: 30px;">
-                    收款方式:
+                    性别:
                 </div>
                 <div class="col-xs-8">
                     <select class="form-control">
-                        <option value="">积分支付</option>
-                        <option value="wxpay">微支付</option>
+                        <option value="male">先生</option>
+                        <option value="female">女士</option>
                     </select>
                 </div>
             </div>
         </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-4">
+                    年龄:
+                </div>
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" value="" placeholder="年龄" />
+                </div>
+            </div>
+        </li>
     </ul>
-
     <div class="row">
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <a class="btn btn-success" style="width: 100%;" id="btnSubmit"> <i class="fa fa-check"></i> 确认付款</a>
-        </div>
-        <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <a class="btn btn-danger" style="width: 100%;" id="btnCancel"> <i class="fa fa-times"></i> 信息有误</a>
+            <a class="btn btn-primary" style="width: 100%;" id="btnSubmit"> 提交资料</a>
         </div>
     </div>
 </div>

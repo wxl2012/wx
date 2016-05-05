@@ -13,10 +13,8 @@
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
-    .help-block{
+    .navbar{
         margin-bottom: 0px;
-        font-size: 9pt;
-        color: #c20202;
     }
     .list-group-item .row .col-xs-3:first-child{
         line-height: 30px;
@@ -62,7 +60,14 @@
                 </li>
             </ul>
         </div>
-        <div class="col-xs-12 text-center">
+        <div class="col-xs-12">
+            <select class="form-control">
+                <option value="">请选择收款方式</option>
+                <option>微信支付</option>
+                <option>积分支付</option>
+            </select>
+        </div>
+        <div class="col-xs-12 text-center" style="margin-top: 10px;">
             <input type="number" class="form-control text-center" placeholder="请填写收款金额" value="<?php echo isset($order) ? $order['total_fee'] : '';?>" />
         </div>
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
@@ -71,20 +76,11 @@
 
 
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <a class="btn btn-warning" style="width: 100%;">开始收款</a>
+            <a class="btn btn-warning" style="width: 100%;" id="btnSubmit">开始收款</a>
         </div>
     </div>
 </div>
 
-
-<script type="text/x-jquery-tmpl" id="navItem">
-<li class="active">
-    <a data-toggle="tab" href="#tab${id}">
-        <i class="green icon-home bigger-110"></i>
-        ${name}
-    </a>
-</li>
-</script>
 
 <?php
 $script = <<<js
