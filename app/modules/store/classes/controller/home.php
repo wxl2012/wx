@@ -16,7 +16,6 @@ class Controller_Home extends Controller_BaseController {
 
     public function before(){
         parent::before();
-        \Auth::force_login(1);
     }
 
     public function action_index(){

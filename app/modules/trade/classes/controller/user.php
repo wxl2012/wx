@@ -16,6 +16,10 @@ class Controller_User extends Controller_BaseController {
 
     public function before(){
         parent::before();
+
+        if( ! \Auth::check()){
+            \Response::redirect('/ucenter/login?to_url=' . \Uri::current());
+        }
     }
 
     /**
@@ -28,12 +32,10 @@ class Controller_User extends Controller_BaseController {
      */
     public function action_pay(){
 
-
-
         $cache = false;
         $user = \Auth::get_user();
-        $openid = \Session::get('OpenID');
-        $key = md5("pay{$user->id}-{$openid->openid}");
+        $openid = \Session::get('OpenID', false);
+        $key = md5("pay{$user->id}-" . ($openid ? $openid->openid : ''));
 
         $params = [
             'pay' => false,

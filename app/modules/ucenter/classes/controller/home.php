@@ -44,6 +44,9 @@ class Controller_Home extends Controller_BaseController {
 
         if(\Input::method() == 'POST'){
             if(\Auth::login()){
+                if(\Input::get('to_url', false)){
+                    \Response::redirect(\Input::get('to_url'));
+                }
                 die('登录成功');
             }
             die('登录失败');

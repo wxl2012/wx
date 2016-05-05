@@ -35,16 +35,23 @@ class Controller_Seller extends Controller_BaseController {
                 'title' => '发生异常',
                 'msg' => '缺少必要参数'
             ];
-        /*}else if( ! \Auth::check()){
+        }else if( ! \Auth::check()){
             $msg = [
                 'title' => '发生异常',
                 'msg' => '请先登录商户平台后,再次扫码!'
             ];
-        }else if( ! \Session::get('employee', false)){
-            $msg = [
-                'title' => '无此权限',
-                'msg' => '您无权进行该项操作'
-            ];*/
+        }else{
+            $where = ['user_id' => \Auth::get_user()->id];
+            $employee = \Model_Employee::query()
+                ->where($where)
+                ->get_one();
+
+            if( ! $employee){
+                $msg = [
+                    'title' => '无此权限',
+                    'msg' => '您无权进行该项操作'
+                ];
+            }
         }
 
         if($msg){
@@ -69,6 +76,7 @@ class Controller_Seller extends Controller_BaseController {
         }else if(\Input::get('buyer_id', false)){
             $params['buyer'] = \Model_User::find(\Input::get('buyer_id'));
         }
+        
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/seller/confirm_collection");
     }
