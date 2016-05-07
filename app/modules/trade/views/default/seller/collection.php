@@ -43,47 +43,57 @@
 </nav>
 <?php } ?>
 
-<div class="container">
+<div class="container" style="margin-bottom: 20px;">
     <div class="row">
-        <div class="col-xs-12" style="padding-top: 15px;">
-            <ul class="list-group">
+        <form id="frmCollection">
+            <div class="col-xs-12" style="padding-top: 15px;">
+                <ul class="list-group">
 
-                <?php echo \Form::csrf();?>
+                    <?php echo \Form::csrf();?>
 
-                <li class="list-group-item">
-                    <div class="text-center">
-                        请使用微信扫一扫
-                    </div>
-                    <div>
-                        <img src="/common/qrcode/generate?content=http://cn.bing.com" alt="" style="width: 100%;"/>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="col-xs-12">
-            <select class="form-control">
-                <option value="">请选择收款方式</option>
-                <option>微信支付</option>
-                <option>积分支付</option>
-            </select>
-        </div>
-        <div class="col-xs-12 text-center" style="margin-top: 10px;">
-            <input type="number" class="form-control text-center" placeholder="请填写收款金额" value="<?php echo isset($order) ? $order['total_fee'] : '';?>" />
-        </div>
+                    <li class="list-group-item">
+                        <div class="text-center">
+                            请使用微信扫一扫
+                        </div>
+                        <div>
+                            <img id="imgQrcode" src="/common/qrcode/generate?content=<?php echo \Config::get('base_url') . 'trade/user/create'; ?>" alt="" style="width: 100%;"/>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12">
+                <select class="form-control" id="payment" name="payment">
+                    <option value="">请选择收款方式</option>
+                    <!--<option value="wxpay">微信支付</option>-->
+                    <option value="score">积分支付</option>
+                </select>
+            </div>
+            <div class="col-xs-12 text-center" style="margin-top: 10px;">
+                <input type="number" id="total_fee" name="total_fee" class="form-control text-center" placeholder="请填写收款金额" value="<?php echo isset($order) ? $order['total_fee'] : '';?>" />
+            </div>
+            <div class="col-xs-12 text-center" style="padding-top: 10px;">
+                <textarea class="form-control" id="remark" name="remark" placeholder="收款理由"><?php echo isset($order) ? $order['remark'] : '';?></textarea>
+            </div>
+        </form>
+
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <textarea class="form-control" placeholder="收款理由"><?php echo isset($order) ? $order['remark'] : '';?></textarea>
+            <div class="alert alert-danger" id="errorMsg" style="display:none;"></div>
         </div>
-
 
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
             <a class="btn btn-warning" style="width: 100%;" id="btnSubmit">开始收款</a>
+            <a class="btn btn-danger" style="width: 100%; display: none;" id="btnCancel">取消收款</a>
         </div>
     </div>
 </div>
 
 
 <?php
+
+$base_url = \Config::get('base_url');
+
 $script = <<<js
+    var _base_url = '{$base_url}';
 js;
 
 \Asset::js($script, [], 'before-script', true);

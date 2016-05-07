@@ -1,22 +1,30 @@
 $(function(){
 
     $('#btnPay').click(function(){
+        var msg = false;
         if($('#txtFee').val().length < 1){
             $('#txtFee').parent().addClass('has-error');
             $('#txtFee').next().text('请填写付款金额');
-        }else if(isNaN($('#txtFee').val())){
+            msg = true;
+        }else if(isNaN($('#txtFee').val()) || $('#txtFee').val().length < 1){
             $('#txtFee').parent().addClass('has-error');
             $('#txtFee').next().text('付款金额必须是数字');
+            msg = true;
         }
         if($('#txtRemark').val().length < 1){
             $('#txtRemark').parent().addClass('has-error');
             $('#txtRemark').next().text('请填写备注');
+            msg = true;
+        }
+
+        if(msg){
+            return;
         }
 
         $.post('',
             {
-                total_fee: $('#txtFee').val(),
-                remark: $('#txtRemark').val()
+                total_fee:  $('#txtFee').val(),
+                remark:     $('#txtRemark').val()
             },
             function (data) {
                 if(data.status == 'err'){

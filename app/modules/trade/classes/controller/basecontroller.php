@@ -19,5 +19,10 @@ abstract class Controller_BaseController extends \Controller_BaseController {
 
     public function before(){
         parent::before();
+        if( ! \Auth::check()){
+            $url = \Uri::current();
+            $params = \Uri::build_query_string(\Input::get());
+            \Response::redirect("/ucenter/login?to_url={$url}?{$params}");
+        }
     }
 }

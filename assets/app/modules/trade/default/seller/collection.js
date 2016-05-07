@@ -1,6 +1,39 @@
 $(function () {
 
     $('#btnSubmit').click(function () {
-        console.log('预创建订单');
+
+        $('#errorMsg').hide();
+
+        var msg = '';
+        if($('#payment').val() == ''){
+            msg = '请填写收款金额';
+            $('#payment').parent().addClass('has-error');
+        }else if(isNaN($('#total_fee').val()) || $('#total_fee').val().length < 1){
+            msg = '付款金额必须是数字';
+            $('#total_fee').parent().addClass('has-error');
+        }
+
+        if(msg){
+            $('#errorMsg').show().addClass('alert-danger').text(msg);
+            return;
+        }
+
+        $.post('',
+            $('#frmCollection').serialize(),
+            function (data) {
+                if(data.status == 'err'){
+                    $('#errorMsg').show().addClass('alert-danger').text(msg);
+                    return;
+                }
+
+                $('#imgQrcode').attr('src', '/common/qrcode/generate?content=' + _base_url + 'trade/user/create?id=' + data.key);
+                $('#payment,#total_fee,#remark,#btnSubmit').hide();
+                $('#btnCancel').show();
+                
+            }, 'json');
+    });
+    
+    $('#btnCancel').click(function () {
+        window.location.reload();
     });
 });

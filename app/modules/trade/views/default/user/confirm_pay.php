@@ -42,7 +42,7 @@
                     收款商户:
                 </div>
                 <div class="col-xs-8">
-                    <?php echo '一号店商城';?>
+                    <?php echo $seller->name; ?>
                 </div>
             </div>
         </li>
@@ -52,7 +52,17 @@
                     付款金额:
                 </div>
                 <div class="col-xs-8">
-                    100
+                    ￥<?php echo $item['total_fee']; ?>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-4">
+                    付款方式:
+                </div>
+                <div class="col-xs-8">
+                    <?php echo $item['payment']; ?>
                 </div>
             </div>
         </li>
@@ -62,23 +72,7 @@
                     付款说明:
                 </div>
                 <div class="col-xs-8">
-                    话费充值
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    <ul class="list-group">
-        <li class="list-group-item">
-            <div class="row">
-                <div class="col-xs-4" style="line-height: 30px;">
-                    收款方式:
-                </div>
-                <div class="col-xs-8">
-                    <select class="form-control">
-                        <option value="">积分支付</option>
-                        <option value="wxpay">微支付</option>
-                    </select>
+                    <?php echo $item['remark']; ?>
                 </div>
             </div>
         </li>

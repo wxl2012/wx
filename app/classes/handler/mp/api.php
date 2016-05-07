@@ -69,7 +69,7 @@ class Api{
 
         $url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token={$access_token}&type={$type}";
         $result = \handler\common\UrlTool::request($url, 'POST', ['form-data' => $data], true);
-        \Log::error(serialize($result->body));
+        
         $obj = json_decode($result->body);
 
         if( ! isset($obj->media_id)){

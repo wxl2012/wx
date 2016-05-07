@@ -16,10 +16,6 @@ class Controller_User extends Controller_BaseController {
 
     public function before(){
         parent::before();
-
-        if( ! \Auth::check()){
-            \Response::redirect('/ucenter/login?to_url=' . \Uri::current());
-        }
     }
 
     /**
@@ -73,6 +69,37 @@ class Controller_User extends Controller_BaseController {
     }
 
     public function action_create(){
+
+        $msg = false;
+        if(! \Input::get('id', false)){
+            $msg = [
+                'title' => '发生异常',
+                'msg' => '缺少必要参数'
+            ];
+        }else if( ! \Auth::check()){
+            $msg = [
+                'title' => '发生异常',
+                'msg' => '请先登录商户平台后,再次扫码!'
+            ];
+        }
+
+        if($msg){
+            \Session::set_flash('msg', $msg);
+            return $this->show_message();
+        }
+
+        $params = [
+            'title' => '确认付款'
+        ];
+
+        try{
+            $item = \Cache::get(\Input::get('id'));
+            $params['item'] = unserialize($item);
+            $params['seller'] = \Model_Seller::find($params['item']['seller_id']);
+        }catch(\CacheNotFoundException $e){
+        }
+
+        \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/user/confirm_pay");
     }
 }

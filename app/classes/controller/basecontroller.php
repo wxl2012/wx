@@ -39,11 +39,9 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			$this->load_wechat();
 
 			$client_type = 'wechat';
+		}else{
+			$this->load_seller();
 		}
-
-
-
-		$this->load_seller();
 
 		$this->getToken();
 
