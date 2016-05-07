@@ -64,7 +64,7 @@
             <div class="col-xs-12">
                 <select class="form-control" id="payment" name="payment">
                     <option value="">请选择收款方式</option>
-                    <!--<option value="wxpay">微信支付</option>-->
+                    <option value="wxpay">微信支付</option>
                     <option value="score">积分支付</option>
                 </select>
             </div>
@@ -91,9 +91,10 @@
 <?php
 
 $base_url = \Config::get('base_url');
-
+$account_id = \Session::get('WXAccount')->id;
 $script = <<<js
     var _base_url = '{$base_url}';
+    var account_id = {$account_id};
 js;
 
 \Asset::js($script, [], 'before-script', true);

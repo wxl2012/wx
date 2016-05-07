@@ -357,7 +357,7 @@ class Tool {
         $result = \handler\common\UrlTool::request_xml('https://api.mch.weixin.qq.com/pay/unifiedorder', 'POST', $data);
         $result = \handler\common\Tool::xmlToArray($result);
         if($result['return_code'] == 'FAIL'){
-            var_dump($result);
+            \Log::error('调用微支付[统一下单接口]时发生异常:' . json_encode($result));
             die();
         }
         return $result;

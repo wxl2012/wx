@@ -26,7 +26,12 @@ $(function () {
                     return;
                 }
 
-                $('#imgQrcode').attr('src', '/common/qrcode/generate?content=' + _base_url + 'trade/user/create?id=' + data.key);
+                if($('#payment').val() == 'wxpay'){
+                    wxpay();
+                }else if($('#payment').val() == 'score'){
+                    $('#imgQrcode').attr('src', '/common/qrcode/generate?content=' + _base_url + 'trade/user/create?id=' + data.key);
+                }
+
                 $('#payment,#total_fee,#remark,#btnSubmit').hide();
                 $('#btnCancel').show();
                 
@@ -37,3 +42,17 @@ $(function () {
         window.location.reload();
     });
 });
+
+
+function wxpay() {
+    $.get('/wxpay/wxpay_qrcode?goods_id=1',
+        function (data) {
+            if(data.status == 'err'){
+                return;
+            }
+
+            $('#imgQrcode').attr('src', '/common/qrcode/generate?content=' + data.data);
+
+        }, 'json');
+
+}

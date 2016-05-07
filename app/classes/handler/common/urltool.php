@@ -119,7 +119,7 @@ class UrlTool{
 
         $curl->set_options(array(
                 CURLOPT_TIMEOUT => 30,
-                CURLOPT_FOLLOWLOCATION => true,
+                //CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HEADER => FALSE,
                 CURLOPT_RETURNTRANSFER => TRUE,
             )
