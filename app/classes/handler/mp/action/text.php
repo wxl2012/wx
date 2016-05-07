@@ -23,12 +23,16 @@ class Text extends Base {
      * 处理请求
      */
     public function handle(){
+        $reply = false;
         if(strpos($this->data->Content, '命运') !== false){
-            $fate = new \handler\mp\action\text\ReplyFateImage();
-            $fate->setWechat($this->wechat);
-            $fate->setAccount($this->account);
-            $fate->setPostData($this->data);
-            $fate->handle();
+            $reply = new \handler\mp\action\text\ReplyFateImage();
+
+        }else if($this->data->Content == '微信价值'){
+            $reply = new \handler\mp\action\text\ReplyValuationImage();
         }
+        $reply->setWechat($this->wechat);
+        $reply->setAccount($this->account);
+        $reply->setPostData($this->data);
+        $reply->handle();
     }
 }

@@ -34,6 +34,9 @@ class Request {
 		$this->init_wechat();
 	}
 
+	/**
+	 * 去重复请求
+	 **/
 	public function is_repeat(){
 		$count = 0;
 		if(strtolower($this->data->MsgType) == 'event'){
@@ -44,24 +47,17 @@ class Request {
 				])
 				->count();
 		}else{
-			$count = \Model_WXRequest::query()
-				->where([
-					'msg_id' => $this->data->MsgId
-				])
-				->count();
+			try {
+				$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
+				$count = intval(\Cache::get(md5("wx{$key}")));
+				$count ++;
+			} catch (\CacheNotFoundException $e) {
+			}
 		}
 
 		if($count > 0){
-			$textTpl = "<xml>
-						<ToUserName><![CDATA[{$this->data->FromUserName}]]></ToUserName>
-						<FromUserName><![CDATA[{$this->data->ToUserName}]]></FromUserName>
-						<CreateTime>%s</CreateTime>
-						<MsgType><![CDATA[text]]></MsgType>
-						<Content><![CDATA[]]></Content>
-						<FuncFlag>0</FuncFlag>
-					</xml>";
-			$resultStr = sprintf($textTpl, time());
-			die($resultStr);
+			\handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
+			die('success');
 		}
 	}
 
@@ -72,10 +68,24 @@ class Request {
 	public function init_wechat(){
 		$openid = \Model_WechatOpenid::getItem($this->data->FromUserName);
 		if( ! $openid){
+			$this->account->checkToken();
 			$openid = \handler\mp\Account::createWechatAccount($this->data->FromUserName, $this->account);
 		}
 
 		$this->wechat = $openid->wechat;
+		if( ! $this->wechat->nickname || ! $this->wechat->headimgurl){
+			$wechatInfo = \handler\mp\Wechat::getWechatInfo($this->account->temp_token, $openid->openid);
+			$this->wechat->set([
+				'nickname' => $wechatInfo->nickname,
+				'sex' => $wechatInfo->sex,
+				'city' => $wechatInfo->city,
+				'province' => $wechatInfo->province,
+				'country' => $wechatInfo->country,
+				'headimgurl' => $wechatInfo->headimgurl,
+				'subscribe_time' => $wechatInfo->subscribe_time,
+			]);
+			$this->wechat->save();
+		}
 	}
 
 	/**
@@ -89,6 +99,11 @@ class Request {
 		}else if(strtolower($this->data->MsgType) == 'event' && isset($this->data->EventKey)){
 			$msg_content = $this->data->EventKey;
 		}
+
+		//缓存记录请求消息ID
+		$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
+		\Cache::set(md5("wx{$key}"), '0', 15);
+
 		$request = \Model_WXRequest::forge(
 			array(
 				'from_id' => $this->data->FromUserName,

@@ -22,8 +22,34 @@
 class Controller_Test extends Controller {
 
     public function action_index(){
-        $access_token = 'ampaqbbNDq_te_nPiYmX6oPY2PJXq3r9-JRajS-hWBy9-InZuH0UL_GK_ZNg3GA_kYUFQKLwhmcqeNaUA1FpgdQsGXLe8eobuZURKiPahutLT7EVfSh09upAQQR3IPYhEFDaAJAJKI';
-        \handler\mp\Api::upload_media_tmp($access_token, 'image', DOCROOT . 'uploads/tmp/fates/sc_fate.jpg');
+        /*$access_token = 'ampaqbbNDq_te_nPiYmX6oPY2PJXq3r9-JRajS-hWBy9-InZuH0UL_GK_ZNg3GA_kYUFQKLwhmcqeNaUA1FpgdQsGXLe8eobuZURKiPahutLT7EVfSh09upAQQR3IPYhEFDaAJAJKI';
+        \handler\mp\Api::upload_media_tmp($access_token, 'image', DOCROOT . 'uploads/tmp/fates/sc_fate.jpg');*/
+
+        //\Image::load($image)->resize(180, 180)->save($output);
+        /*$image = imagecreatefromjpeg(DOCROOT . 'assets/img/valuation.jpg');
+
+        //生成圆图
+        $portrait = DOCROOT . 'uploads/tmp/head.png';
+        $output = DOCROOT . 'uploads/tmp/valuation/head' . time() . '.png';
+        $this->cover_image($portrait, $output);
+
+        $portraitFile = imagecreatefromstring(file_get_contents($output));
+        //头像尺寸
+        $portraitWidth = imagesx($portraitFile);
+        $portraitHeight = imagesy($portraitFile);
+
+        //原图尺寸
+        $imageWidth = 180;
+        $imageHeight = 180;
+        $x = 225;
+        $y = 263;
+        imagecopyresampled($image, $portraitFile, $x, $y, 0, 0, $imageWidth, $imageHeight, $portraitWidth, $portraitHeight);
+
+
+        imagepng($image, DOCROOT . 'uploads/tmp/valuation/' . time() . '.jpg');*/
+
+        $image = new \handler\mp\action\text\ReplyValuationImage();
+        $image->test();
     }
 
     public function action_ab(){

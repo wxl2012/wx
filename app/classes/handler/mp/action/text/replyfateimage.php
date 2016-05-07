@@ -3,6 +3,8 @@
 /**
  * 微信公众平台推送的文本消息处理类
  *
+ * 生成图片
+ * 
  * @package    Fuel
  * @version    1.7
  * @author     Ray zyr.wxl@gmail.com
@@ -149,8 +151,8 @@ class ReplyFateImage extends \handler\mp\action\Text {
         }
 
         //$font = '/Library/Fonts/Hannotate.ttc';
-        //$font = '/Library/Fonts/Hanzipen.ttc';
-        $font = realpath('D:\\wwwroot\\mnzone\\wwwroot\\assets\\fonts\\Libian.ttf');
+        $font = '/Library/Fonts/Hanzipen.ttc';
+        //$font = realpath('D:\\wwwroot\\mnzone\\wwwroot\\assets\\fonts\\Libian.ttf');
 
         if( ! $x){
             $fontBox = imagettfbbox($size, 0, $font, $text);
@@ -193,7 +195,7 @@ class ReplyFateImage extends \handler\mp\action\Text {
             explode(',', '世,爵,C8'),
             explode(',', '宾,利,欧,陆'),
             explode(',', '迈,巴,赫,s600'),
-            explode(',', '帕,加,尼,Huayra'),
+            explode(',', '帕,加,尼,H,u,a,y,r,a'),
             explode(',', '布,加,迪,威,航')
         ];
         return $houses[rand(0, count($houses) - 1)];

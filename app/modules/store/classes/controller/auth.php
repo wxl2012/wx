@@ -19,6 +19,7 @@ class Controller_Auth extends Controller_BaseController {
     }
 
     public function action_index(){
+        
         $this->template->content = \View::forge("{$this->theme}/auth/index");
     }
 }

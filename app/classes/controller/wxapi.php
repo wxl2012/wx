@@ -93,7 +93,7 @@ class Controller_WXApi extends Controller_BaseController
 
 		$this->account = \Session::get('WXAccount', \Model_WXAccount::find(1));
 		$url = handler\mp\Tool::createOauthUrlForOpenid($this->account->app_id, $this->account->app_secret, $params['code']);
-		$result = \handler\common\UrlTool::request($url, 'GET', null, true);
+		$result = \handler\common\UrlTool::request($url, 'GET');
 		$result = json_decode($result->body);
 		if( ! isset($result->openid) || ! $result->openid){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => '未获取到OpenId!', 'title' => '错误']);
@@ -211,6 +211,8 @@ class Controller_WXApi extends Controller_BaseController
 		}
 
 		$request = new \handler\mp\Request($data);
+		$request->is_repeat();
+		$request->write_record();
 		$request->handle();
 	}
 }

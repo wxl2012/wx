@@ -54,7 +54,7 @@ class Account {
             $wechat->user_id = $user_id;
 
             $params = [
-                'user_id' => $user_id
+                'parent_id' => $user_id
             ];
             $people = \Model_People::forge($params);
             $people->save();

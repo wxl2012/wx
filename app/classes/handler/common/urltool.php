@@ -76,8 +76,7 @@ class UrlTool{
         }
 
         $curl->set_options(array(
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_FOLLOWLOCATION => true
+                CURLOPT_TIMEOUT => 30
             )
         );
 
