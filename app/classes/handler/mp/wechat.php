@@ -56,22 +56,18 @@ class Wechat {
     public static function getWechatHeadImage($url){
         $filename = md5($url);
         $span = DS;
-        $file = DOCROOT . "uploads{$span}tmp{$span}photos{$span}{$filename}.jpg";
+        $filePath = DOCROOT . "uploads{$span}tmp{$span}photos{$span}{$filename}.jpg";
 
-        try{
-            if(\Cache::get(md5($file))){
-                return;
-            }
-        }catch (\CacheNotFoundException $e){
-            if( ! file_exists($file)){
-                \Cache::set(md5($file), '');
-                $img = file_get_contents(substr($url, 0, strlen($url) - 1) . '132');
-                file_put_contents(str_replace('.png', '.jpg', $file), $img);
-                \Cache::delete(md5($file));
-            }
+        $result = \handler\common\UrlTool::request('http://wx.qlogo.cn/mmopen/ibOYIic5ANNwVyvIXBNGJYvXmsAQtyTS8nSefGc5v0paMmw6jtuHDjY9ia2mSkhW6ZhiaFFicz3cicra68geeTZrJJBAqiaVnhxibchc/132');
 
+        $file = fopen($filePath, 'w');
+        if($file === false){
+            return;
+        }else if(fwrite($file, $result) === false){
+            return;
         }
+        fclose($file);
 
-        return $file;
+        return $filePath;
     }
 }

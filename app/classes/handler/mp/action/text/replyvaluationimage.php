@@ -20,7 +20,7 @@ class ReplyValuationImage extends \handler\mp\action\Text {
      * 处理请求
      */
     public function handle(){
-        $fileName = md5("{$this->data->FromUserName}{$this->data->Content}" .time());
+        $fileName = md5("{$this->data->FromUserName}{$this->data->Content}");
         $span = DS;
         $fileName = DOCROOT . "uploads{$span}tmp{$span}valuation{$span}{$fileName}.jpg";
 
@@ -74,7 +74,9 @@ class ReplyValuationImage extends \handler\mp\action\Text {
             return false;
         }
 
-        $file = \handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
+        $filename = md5($this->wechat->headimgurl);
+        $span = DS;
+        $file = DOCROOT . "uploads{$span}tmp{$span}photos{$span}{$filename}.jpg";
         \Image::load($file)
             ->rounded(\Image::sizes()->width / 2)
             ->save($output);
