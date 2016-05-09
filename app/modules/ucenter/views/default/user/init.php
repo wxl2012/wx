@@ -102,7 +102,7 @@
                     出生日期
                 </div>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control" id="birthday" name="birthday" value="" placeholder="YYYY年mm月dd日">
+                    <input type="text" class="form-control" id="birthday" name="birthday" value="" placeholder="YYYY-MM-DD">
                 </div>
             </div>
         </div>
@@ -130,7 +130,7 @@
 
     <div style="display: none;">
         <div class="alert alert-danger text-center" id="errorMsg">
-            errorMsg
+
         </div>
     </div>
 

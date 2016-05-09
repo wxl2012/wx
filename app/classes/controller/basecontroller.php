@@ -120,6 +120,28 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			\Auth::force_login(\Session::get('wechat')->user_id);
 		}
 	}
+	
+	/**
+	 * 检测用户是否登录
+	 *
+	 * @param bool $url
+	 * @return bool
+	 */
+	protected function checkLogin($url = false){
+
+		if(\Auth::check()){
+			return true;
+		}
+
+		$url = \Uri::current();
+		$params = \Uri::build_query_string(\Input::get());
+		if($url){
+			\Response::redirect($url);
+		}else{
+			\Response::redirect("/ucenter/login?to_url={$url}?{$params}");
+		}
+
+	}
 
 	/**
 	 * 显示提示信息

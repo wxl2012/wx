@@ -25,13 +25,28 @@ $(function () {
         }
 
         $.post('',
+            $('#frmReg').serialize(),
             function (data) {
                 if(data.status == 'err'){
-                    console.log(data.msg);
+                    $('#errorMsg').addClass('text-center');
+                    $('#errorMsg').parent().show();
+                    $('#errorMsg').text('');
+                    $('#errorMsg').append(data.msg);
+
+                    if(data.data != undefined){
+                        $('#errorMsg').removeClass('text-center');
+                        $('#errorMsg').append('<ul>');
+                        for(var i = 0; i < data.data.length; i ++){
+                            $('#errorMsg').append('<li>' + data.data[i] + '</li>');
+                        }
+                        $('#errorMsg').append('</ul>');
+                    }
                     return;
                 }
-                
-            });
+
+                alert('注册成功');
+                wx.closeWindow();
+            }, 'json');
 
     });
 
