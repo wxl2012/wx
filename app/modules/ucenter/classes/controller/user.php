@@ -36,7 +36,7 @@ class Controller_User extends Controller_BaseController {
 
         if(\Input::method() == 'POST'){
             $data = \Input::post();
-
+            $people = \Model_People::query()->where('parent_id', \Auth::get_user()->id)->get_one();
         }
 
         $params = [

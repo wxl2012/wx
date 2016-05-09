@@ -22,6 +22,9 @@ class Controller_Finance extends Controller_BaseController {
         die();
     }
 
+    /**
+     * 申请提现
+     */
     public function action_cashback(){
         $params = [
             'title' => '申请提现'
@@ -31,6 +34,9 @@ class Controller_Finance extends Controller_BaseController {
         $this->template->content = \View::forge("{$this->theme}/finance/cashback");
     }
 
+    /**
+     * 提现记录
+     */
     public function action_cashback_records(){
 
         $params = [
@@ -49,11 +55,24 @@ class Controller_Finance extends Controller_BaseController {
         $this->template->content = \View::forge("{$this->theme}/finance/cashback_records");
     }
 
+    /**
+     * 收款方式列表
+     */
     public function action_banks(){
         $this->template->content = \View::forge("{$this->theme}/finance/banks");
     }
 
-    public function action_bank(){
+    /**
+     * 收款方式详情
+     */
+    public function actiaon_bank(){
         $this->template->content = \View::forge("{$this->theme}/finance/bank");
+    }
+
+    /**
+     * 商户充值
+     */
+    public function action_recharge(){
+        $this->template->content = \View::forge("{$this->theme}/finance/recharge");
     }
 }

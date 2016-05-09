@@ -24,6 +24,15 @@ $(function () {
             return;
         }
 
+        $.post('',
+            function (data) {
+                if(data.status == 'err'){
+                    console.log(data.msg);
+                    return;
+                }
+                
+            });
+
     });
 
 });
