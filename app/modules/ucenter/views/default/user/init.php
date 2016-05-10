@@ -53,7 +53,7 @@
                     用户名
                 </div>
                 <div class="col-xs-9" style="padding-right: 2px;">
-                    <input type="text" class="form-control" id="username" name="username" value="" placeholder="用户名" />
+                    <input type="text" class="form-control" id="username" name="username" value="" placeholder="用于登录的用户名" />
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                     密&nbsp;&nbsp;&nbsp;&nbsp;码
                 </div>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control" id="password" name="password" value="" placeholder="密码" />
+                    <input type="text" class="form-control" id="password" name="password" value="" placeholder="用于登录的密码" />
                 </div>
             </div>
         </div>

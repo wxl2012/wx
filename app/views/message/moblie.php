@@ -1,11 +1,12 @@
 <?php
-$seller = \Session::get('seller', false);
+    $seller = \Session::get('seller', false);
+    $msg = \Session::get_flash('msg');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title><?php echo isset($title) ? $title : ''; ?>-<?php echo $seller ? isset($seller->short_name) ? $seller->short_name : $seller->name : '';?></title>
+    <title><?php echo isset($title) ? $title : isset($msg['title']) ? $msg['title'] : ''; ?>-<?php echo $seller ? $seller->name : '';?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
@@ -20,9 +21,6 @@ $seller = \Session::get('seller', false);
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
-            <?php
-            $msg = \Session::get_flash('msg');
-            ?>
             <h3 class="text-center">
                 <?php echo isset($msg['title']) ? $msg['title'] : '发生异常!'; ?>
             </h3>
@@ -43,12 +41,12 @@ $seller = \Session::get('seller', false);
 <script type="text/javascript" src="/assets/third-party/jquery/1.12.0/jquery.min.js"></script>
 <script type="text/javascript" src="/assets/third-party/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-<?php \Request::forge('/common/mp/jssdk')->execute();?>
+<?php echo \Request::forge('/common/mp/jssdk')->execute();?>
 
 <script type="text/javascript">
     $(function(){
         $('#btnClose').click(function(){
-            if(wx != undefined){
+            if(typeof(wx)!= 'undefined'){
                 wx.closeWindow();
             }else{
                 window.close();
