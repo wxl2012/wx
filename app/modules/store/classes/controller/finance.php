@@ -29,6 +29,44 @@ class Controller_Finance extends Controller_BaseController {
         $params = [
             'title' => '申请提现'
         ];
+
+        if(\Input::method() == 'POST'){
+            $msg = ['status' => 'err', 'msg' => '', 'errcode' => 10];
+
+            //判断是否有处理中的申请
+            $count = \Model_CashbackApply::query()
+                ->where([
+                    'parent_id' => \Auth::get_user()->id,
+                    'money' => \Input::post('money')
+                ])
+                ->where('status', 'IN', ['WAIT', 'ALLOW'])
+                ->count();
+            if($count > 0){
+                return;
+            }
+
+            //查询收款帐户
+            $bank = \Model_PeopleBank::find(\Input::post('bank_id'));
+
+            //添加提现审核记录
+            $apply = \Model_CashbackApply::forge();
+            $apply->set([
+                'money' => \Input::post('money'),
+                'parent_id' => \Auth::get_user()->id,
+                'status' => 'WAIT',
+                'name' => $bank->name,
+                'account' => $bank->account,
+                'bank_id' => $bank->bank->id
+            ]);
+
+            if(! $apply->save()){
+                $msg = ['status' => 'succ', 'msg' => '', 'errcode' => 0];
+            }
+
+            if(\Input::is_ajax()){
+                die(json_encode($msg));
+            }
+        }
         
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/finance/cashback");

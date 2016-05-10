@@ -112,7 +112,7 @@
                     手机号
                 </div>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="">
+                    <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="手机号码">
                 </div>
             </div>
         </div>
