@@ -42,11 +42,16 @@ class Controller_Finance extends Controller_BaseController {
                 ->where('status', 'IN', ['WAIT', 'ALLOW'])
                 ->count();
             if($count > 0){
-                return;
+                $msg['msg'] = '您还有未处理的申请!';
+                if(\Input::is_ajax()){
+                    die(json_encode($msg));
+                }
+                \Session::set_flash('msg', $msg);
+                return $this->show_message();
             }
 
             //查询收款帐户
-            $bank = \Model_PeopleBank::find(\Input::post('bank_id'));
+            $bank = \Model_PeopleBank::find(\Input::post('account_id'));
 
             //添加提现审核记录
             $apply = \Model_CashbackApply::forge();
@@ -103,7 +108,7 @@ class Controller_Finance extends Controller_BaseController {
     /**
      * 收款方式详情
      */
-    public function actiaon_bank(){
+    public function action_bank(){
         $this->template->content = \View::forge("{$this->theme}/finance/bank");
     }
 

@@ -20,15 +20,54 @@ $(function () {
 
         $.post('',
             {
-                'money': $('#money').val()
+                'money': $('#money').val(),
+                'account_id': _account_id
             },
             function (data) {
                 if(data.status == 'err'){
+                    alert(data.msg);
                     return;
                 }
 
-                
+                alert('申请已提交,请耐心等待!');
+
+                if(typeof(wx)!= 'undefined'){
+                    wx.closeWindow();
+                }else{
+                    window.close();
+                }
+
             }, 'json');
     });
 
+    //读取默认收款方式
+    $.get('',
+        function (data) {
+            if(data.status == 'err'){
+                return;
+            }
+            alert(data.msg);
+        }, 'json');
+
+    setBank();
+
 });
+
+function setBank() {
+    //是否新增
+    var account = localStorage.getItem('new_account');
+    if(account != undefined){
+        account = JSON.parse(account);
+        var text = '';
+        if(isEmail(account.account)){
+            var index = account.account.indexOf('@');
+            var last = account.account.substring(index);
+            var name = index > 2 ? account.account.substring(0, 2) : '###';
+            text = '使用' + account.bank.name + '(' + name + '****' + last + ')收款 <a href="/ucenter/finance/banks">更换</a>';
+        }else if(isPhone(account.account)){
+            text = '使用' + account.bank.name + '(' + account.account.substring(7) + ')收款 <a href="/ucenter/finance/banks">更换</a>';
+        }
+        $('#bank').html(text);
+        localStorage.removeItem('new_account');
+    }
+}

@@ -34,6 +34,8 @@ class Controller_Home extends Controller_BaseController {
      * 今日财报
      */
     public function action_dashboard_day(){
-
+        $params = [];
+        \View::set_global($params);
+        $this->template->content = \View::forge("{$this->theme}/dashboard_day");
     }
 }

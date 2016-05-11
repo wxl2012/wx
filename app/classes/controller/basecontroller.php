@@ -133,11 +133,15 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			return true;
 		}
 
-		$url = \Uri::current();
-		$params = \Uri::build_query_string(\Input::get());
+		if($this->getNotOpenidAllowed()){
+			return true;
+		}
+
 		if($url){
 			\Response::redirect($url);
 		}else{
+			$url = \Uri::current();
+			$params = \Uri::build_query_string(\Input::get());
 			\Response::redirect("/ucenter/login?to_url={$url}?{$params}");
 		}
 
@@ -168,8 +172,14 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'module' => 'wxapi',
 				'controller' => 'oauth2_callback',
 				'actions' => []
+			],
+			[
+				'module' => 'ucenter',
+				'controller' => 'login',
+				'actions' => []
 			]
 		];
+
 		foreach($allowed as $item){
 			if(( ! $item['module'] || $item['module'] == \Uri::segment(1, ''))
 				&& ( ! $item['controller'] || $item['controller'] == \Uri::segment(2, ''))
