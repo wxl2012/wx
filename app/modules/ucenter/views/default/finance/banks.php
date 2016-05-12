@@ -44,7 +44,31 @@
 
 <div style="height: 55px"></div>
 <div class="container" style="padding: 0px 5px;">
-    <div class="alert alert-danger">
+    <?php if(isset($items) && $items){ ?>
+        <?php foreach ($items as $item) { ?>
+            <div class="alert alert-danger">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <img src="http://img.wdjimg.com/mms/icon/v1/9/9a/05a6f22315df13d74f7a41b0c7b6d9a9_256_256.png" alt="" style="width: 100%;"/>
+                    </div>
+                    <div class="col-xs-10">
+                        <dl>
+                            <dt><?php echo $item->bank->name;?></dt>
+                            <dd><?php echo $item->account_name;?></dd>
+                            <dd style="font-size: 2em;">
+                                <?php echo $item->account; ?>
+                                <!--<span>**** **** ****</span> 5136-->
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    <?php }else{ ?>
+        <div class="text-center">您还没有收款方式!</div>
+    <?php } ?>
+
+    <!--<div class="alert alert-danger">
         <div class="row">
             <div class="col-xs-2">
                 <img src="http://img.wdjimg.com/mms/icon/v1/9/9a/05a6f22315df13d74f7a41b0c7b6d9a9_256_256.png" alt="" style="width: 100%;"/>
@@ -87,7 +111,7 @@
                 </dl>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <?php

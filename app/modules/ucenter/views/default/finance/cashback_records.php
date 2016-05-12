@@ -45,6 +45,36 @@
 
 <div class="container" style="margin-top: 55px; padding: 0px;">
     <ul class="list-group" id="items">
+        <?php if(isset($items) && $items){ ?>
+            <?php foreach ($items as $item) { ?>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-2" style="padding-right: 0px;">
+                            <p>周一</p>
+                            <p><?php echo date('m-d', $item->created_at);?></p>
+                        </div>
+                        <div class="col-xs-2">
+                            <?php if(1){ ?>
+                                <img src="/assets/img/alipay.jpg" alt="" style="width: 100%;"/>
+                            <?php } else if(2){ ?>
+                                <img src="/assets/img/wxpay.png" alt="" style="width: 100%;"/>
+                            <?php }else{ ?>
+                                <div class="img-circle text-center" style="background-color: #f0ad4e; line-height: 30px; width: 30px; height: 30px;">
+                                    <i class="fa fa-credit-card" style="color: #fff; font-size: 1.2em;"></i>
+                                </div>
+                            <?php } ?>
+
+                        </div>
+                        <div class="col-xs-8">
+                            <p>- <?php echo $item->money; ?></p>
+                            <p>提现至<?php echo $item->bank->name; ?>(<?php echo $item->account; ?>)</p>
+                        </div>
+                    </div>
+                </li>
+            <?php } ?>
+        <?php }else{ ?>
+
+        <?php } ?>
         <?php for($i = 0; $i < 10; $i ++) { ?>
             <li class="list-group-item">
                 <div class="row">

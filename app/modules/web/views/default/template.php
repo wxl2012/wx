@@ -26,8 +26,10 @@
 echo \Asset::render('css-files');
 echo \Asset::render('before-script');
 echo \Asset::js([
-    'http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js',
-    'http://lib.sinaapp.com/js/bootstrap/v3.0.0/js/bootstrap.min.js',
+    'jquery/1.12.0/jquery.min.js',
+    'bootstrap/3.3.5/js/bootstrap.min.js'
+    //'http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js',
+    //'http://lib.sinaapp.com/js/bootstrap/v3.0.0/js/bootstrap.min.js',
 ]);
 echo \Asset::render('js-files');
 echo \Asset::render('after-script');

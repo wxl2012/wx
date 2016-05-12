@@ -1,4 +1,8 @@
 $(function(){
+
+
+
+    _coordinate_width = 220;
     var flow=[];
     for(var i=0;i<7;i++){
         flow.push(Math.floor(Math.random()*(10+((i%16)*5)))+10);
@@ -6,7 +10,7 @@ $(function(){
 
     var data = [
         {
-            name : 'PV',
+            name : '元',
             value:flow,
             color:'#ec4646',
             line_width:2
@@ -45,7 +49,7 @@ $(function(){
             padding:'0 28',
             color:'#b4b4b4'
         },
-        width : 400,
+        width : 330,
         height : 230,
         shadow:true,
         shadow_color : '#202020',
@@ -78,7 +82,7 @@ $(function(){
             point_size:8
         },
         coordinate:{
-            width:640,
+            width: _coordinate_width,
             height:260,
             striped_factor : 0.18,
             grid_color:'#4e4e4e',

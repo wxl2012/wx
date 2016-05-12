@@ -13,6 +13,9 @@
         border: 0px;
         outline: none;
     }
+    #canvasDiv div{
+        width: 100% !important;
+    }
 </style>
 <nav class="navbar navbar-blue navbar-fixed-top">
     <div class="container">
@@ -79,7 +82,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div id="canvasDiv"></div>
+            <div id="canvasDiv" style="width:100%;"></div>
         </div>
     </div>
 </div>
@@ -87,6 +90,8 @@
 $script = <<<js
     var _balance = 0;
     var _account_id = 0;
+    var _width = 0;
+    var _coordinate_width = 640;
 js;
 
 \Asset::js($script, [], 'before-script', true);

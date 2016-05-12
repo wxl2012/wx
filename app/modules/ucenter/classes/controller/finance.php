@@ -86,13 +86,9 @@ class Controller_Finance extends Controller_BaseController {
             'title' => '提现记录'
         ];
 
-        $store = \Session::get('store');
-        $items = \Model_Order::query()
-            ->where(['store_id' => $store->id, 'cashback_status' => 0])
-            ->where('order_status', 'IN', ['FINISH', 'SELLER_SHIPPED', 'SECTION_FINISH'])
+        $params['items'] = \Model_CashbackApply::query()
+            ->where('parent_id', \Auth::get_user()->id)
             ->get();
-
-        $params['items'] = $items;
 
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/finance/cashback_records");
@@ -102,6 +98,16 @@ class Controller_Finance extends Controller_BaseController {
      * 收款方式列表
      */
     public function action_banks(){
+
+        $params = [
+            'title' => '我的收款方式'
+        ];
+
+        $params['items'] = \Model_PeopleBank::query()
+                ->where('parent_id', \Auth::get_user()->id)
+                ->get();
+
+        \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/finance/banks");
     }
 
