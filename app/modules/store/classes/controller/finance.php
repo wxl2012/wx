@@ -116,6 +116,38 @@ class Controller_Finance extends Controller_BaseController {
      * 商户充值
      */
     public function action_recharge(){
+        if(\Input::method() == 'POST'){
+            $msg = [
+                'status' => 'err',
+                'msg' => '充值失败',
+                'errcode' => 10
+            ];
+
+            $data = \Input::post();
+            $data = [
+                'order_no' => \Model_Order::get_order_on(),
+                'order_name' => "商户充值{$data['money']}元",
+                'order_body' => "商户充值{$data['money']}元",
+                'total_fee' => $data['money'],
+                'original_fee' => $data['money'],
+                'buyer_id' => \Auth::get_user()->id,
+                'from_id' => 1,
+                'remark1' => \Session::get('employee')->id,
+                'order_status' => 'WAIT_PAYMENT',
+                'payment_id' => 0
+            ];
+            $order = \Model_Order::forge($data);
+            if($order->save()){
+                $msg['status'] = 'succ';
+                $msg['msg'] = '充值成功';
+                $msg['data'] = $order->to_array();
+            }
+
+            if(\Input::is_ajax()){
+                die(json_encode($msg));
+            }
+            \Session::set_flash('msg', $msg);
+        }
         $this->template->content = \View::forge("{$this->theme}/finance/recharge");
     }
 }

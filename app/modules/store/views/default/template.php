@@ -17,9 +17,51 @@
     ]);
 
     ?>
+
+    <style type="text/css">
+        body{
+            background-color: #efefef;
+        }
+        .navbar-blue{
+            background-color: #337ab7;
+            color: #fff;
+        }
+        .navbar-blue a{
+            color: #fff;
+        }
+        #navTitle{
+            font-size: 12pt;
+        }
+        input[type=text]{
+            border: 0px;
+            outline: none;
+        }
+    </style>
+
 </head>
 
 <body>
+
+<?php if($client_type != 'wechat'){ ?>
+    <nav class="navbar navbar-blue navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-3" id="navLeft" style="line-height: 50px;">
+                    <a href="javascript:history.back(-1);"><i class="fa fa-angle-left" style="font-size: 1.5em;"></i></a>
+                </div>
+                <div class="col-xs-6 text-center" id="navTitle" style="line-height: 50px;">
+
+                </div>
+                <div class="col-xs-3 text-right" id="navRight" style="line-height: 50px;">
+
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div style="height: 50px;"></div>
+<?php } ?>
+
+
 <?php echo isset($content) ? $content : ''; ?>
 
 <?php

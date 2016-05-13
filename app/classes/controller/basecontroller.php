@@ -115,6 +115,12 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			}
 			\Session::set('wechat', $wxopenid->wechat);
 			\Session::set('OpenID', $wxopenid);
+			$employee = \Model_Employee::query()
+				->where('user_id', $wxopenid->wechat->user_id)
+				->get_one();
+			if($employee){
+				\Session::set('employee', $employee);
+			}
 			\Auth::force_login($wxopenid->wechat->user_id);
 		}else if( ! \Auth::check() && \Session::get('wechat')->user_id){
 			\Auth::force_login(\Session::get('wechat')->user_id);

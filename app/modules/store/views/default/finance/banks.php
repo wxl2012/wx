@@ -1,7 +1,4 @@
 <style type="text/css">
-    .navbar-blue{
-        background-color: #337ab7;
-    }
     body{
         background-color: #efefef;
     }
@@ -22,28 +19,7 @@
     }
 </style>
 
-<?php if($client_type != 'wechat'){ ?>
-    <nav class="navbar navbar-fixed-top navbar-blue">
-        <div class="container-fluid">
-            <div class="row" style="line-height: 50px; margin-left: 0px; margin-right: 0px;">
-                <div class="col-xs-2">
-                    <a href="javascript:history.back();">
-                        <i class="fa fa-angle-left" style="font-size: 2em; color: #fff;"></i>
-                    </a>
-                </div>
-                <div class="col-xs-8 text-center" style="color: #fff; font-size: 13pt; font-weight: 600;">
-                    我的支付方式
-                </div>
-                <div class="col-xs-2 text-right">
-                    <a href="/ucenter/finance/bank" style="font-size: 1.5em; color: #fff;"><i class="fa fa-plus"></i></a>
-                </div>
-            </div>
-        </div>
-    </nav>
-<?php } ?>
-
-<div style="height: 55px"></div>
-<div class="container" style="padding: 0px 5px;">
+<div class="container" style="margin-top: 5px; padding: 0px 5px;">
     <div class="alert alert-danger">
         <div class="row">
             <div class="col-xs-2">
@@ -96,5 +72,5 @@ js;
 
 \Asset::js($script, [], 'before-script', true);
 
-\Asset::js(['modules/trade/default/user/pay.js'], [], 'js-files', false);
+\Asset::js(['modules/store/default/finance/banks.js'], [], 'js-files', false);
 ?>

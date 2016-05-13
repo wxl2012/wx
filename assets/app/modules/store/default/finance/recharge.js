@@ -4,39 +4,34 @@ $(function () {
         var msg = '';
         if( ! /^-?\d+$|^(-?\d+)(\.\d+)?$/.test($('#money').val())){
             msg = '提现金额必须是数字';
-        }else if(parseFloat($('#money').val()) > _balance){
-            msg = '提现金额不能大于可用金额';
-        }else if(parseFloat($('#money').val()) < 100){
-            msg = '提现金额不能低于100元';
-        }else if(_account_id <= 0){
-            msg = '请选择提现方式';
         }
 
         if(msg != ''){
-            $('#errorMsg').parent().show();
-            $('#errorMsg').text(msg);
+            $('#errorMsg').text(msg).parent().show();
             return;
         }
+
+        $('#errorMsg').parent().hide();
+
+        $(this).addClass('disabled').html('<i class="fa fa-spinner fa-spin"></i> 处理中...');
 
         $.post('',
             {
                 'money': $('#money').val(),
-                'account_id': _account_id
+                'payment': $('#payment').val()
             },
             function (data) {
                 if(data.status == 'err'){
-                    alert(data.msg);
+                    $('#errorMsg').text(data.msg).parent().show();
                     return;
                 }
-
-                alert('申请已提交,请耐心等待!');
-
-                if(typeof(wx)!= 'undefined'){
-                    wx.closeWindow();
+                if($('#payment').val() == 'wxpay'){
+                    alert('调用微信支付');
                 }else{
-                    window.close();
+                    alert('调用支付宝支付');
                 }
 
+                $('#btnSubmit').removeClass('disabled').html('充值');
             }, 'json');
     });
 
@@ -56,7 +51,7 @@ $(function () {
 });
 
 function setNavbar() {
-    $('#navTitle').text('申请提现');
+    $('#navTitle').text('充值');
     $('#navRight').html('<a href="/store/finance/cashback_records">明细</a>');
 }
 
