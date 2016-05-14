@@ -18,6 +18,9 @@ class Controller_Finance extends Controller_BaseController {
         parent::before();
     }
 
+    /**
+     * 我的支付收入明细
+     */
     public function action_index(){
         die('index');
     }

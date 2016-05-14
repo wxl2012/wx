@@ -18,9 +18,19 @@ class Controller_Finance extends Controller_BaseController {
         parent::before();
     }
 
+    /**
+     * 我的收支记录
+     */
     public function action_index(){
         die();
     }
+
+    /**
+     * 我的结算记录
+     *
+     * @param bool $status 结算状态
+     */
+    public function action_settlement($status = false){}
 
     /**
      * 申请提现
