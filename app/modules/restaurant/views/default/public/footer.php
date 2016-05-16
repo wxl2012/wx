@@ -12,20 +12,20 @@
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
         <div class="row">
-            <div class="col-xs-3 text-center menu-item" action="menu">
+            <div class="col-xs-3 text-center menu-item" action="/restaurant/dish">
                 <i class="fa fa-shopping-basket"></i>
                 <p>菜单</p>
             </div>
-            <div class="col-xs-3 text-center menu-item" action="cart">
+            <div class="col-xs-3 text-center menu-item" action="/restaurant/trolley">
                 <i class="fa fa-shopping-cart"></i>
                 <p>购物车</p>
                 <span id="cartGoodsNum" class="badge" style="position: absolute; right: 0px; top: -10px; background-color: #d9534f; display: none;">0</span>
             </div>
-            <div class="col-xs-3 text-center menu-item" action="order">
+            <div class="col-xs-3 text-center menu-item" action="/restaurant/order">
                 <i class="fa fa-file-text-o"></i>
                 <p>订单</p>
             </div>
-            <div class="col-xs-3 text-center menu-item" action="coupon">
+            <div class="col-xs-3 text-center menu-item" action="/restaurant/coupon">
                 <i class="fa fa-money"></i>
                 <p>优惠券</p>
             </div>

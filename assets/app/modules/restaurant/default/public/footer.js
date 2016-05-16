@@ -1,6 +1,6 @@
 $(function () {
 
     $('.menu-item').click(function () {
-        console.log($(this).attr('action'));
+        window.location.href = $(this).attr('action');
     });
 });
