@@ -41,7 +41,7 @@
     <div class="row">
         <div class="col-xs-12 dashboard text-center">
             <p>当前可用金额(元)</p>
-            <p>0.00</p>
+            <p><?php echo $item->money; ?></p>
         </div>
         <div class="col-xs-12 text-center" style="padding: 10px 0px; font-size: 9pt; color: #aaa;">
             单次提现不低于100,不超过50000,一天最多提现3次
@@ -75,12 +75,17 @@
 </div>
 
 <?php
+$seller = \Session::get('seller');
+$access_token = \Session::get('access_token');
 $script = <<<js
-    var _balance = 0;
+    var _balance = {$item->money};
     var _account_id = 0;
+    var _access_token = '{$access_token}';
+    var _seller_id = {$seller->id};
 js;
 
 \Asset::js($script, [], 'before-script', true);
 
-\Asset::js(['valid.js', 'modules/store/default/finance/cashback.js'], [], 'js-files', false);
+\Asset::js(['modernizr/modernizr.custom.js', 'notificationfx/js/classie.js', 'notificationfx/js/notificationFx.js', 'valid.js', 'modules/ucenter/default/finance/cashback.js'], [], 'js-files', false);
+\Asset::css(['notificationfx/css/normalize.css', 'notificationfx/css/ns-default.css', 'notificationfx/css/ns-style-growl.css'], [], 'css-files', false);
 ?>

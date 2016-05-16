@@ -29,6 +29,26 @@ class Controller_Token extends \Fuel\Core\Controller_Rest {
 
         $data = ['status' => 'err', 'msg' => '缺少必要参数', 'errcode' => 90001];
 
+        $token = $this->redis();
+        if($token === false){
+            $this->response($data, 403);
+        }
+
+        $data = ['status' => 'succ', 'msg' => 'ok', 'errcode' => 0, 'expires_in' => 7200, 'access_token' => $token];
+        $this->response($data, 200);
+    }
+
+    function redis(){
+
+        $params = \Input::get();
+        $key = md5(serialize($params) . time());
+
+        \Cache::set($key, serialize((object)$params));
+
+        return base64_encode($key);
+    }
+
+    function db(){
         $user_id = \Input::get('user_id', false);
         $wechat_id = \Input::get('wechat_id', false);
         $open_id = \Input::get('open_id', false);
@@ -36,7 +56,7 @@ class Controller_Token extends \Fuel\Core\Controller_Rest {
         $wx_account_id = \Input::get('wx_account_id', false);
 
         if(! $user_id || ! $wechat_id || ! $open_id || ! $store_id || ! $wx_account_id){
-            return $this->response($data, 403);
+            return false;
         }
 
         $user = false;
@@ -62,7 +82,7 @@ class Controller_Token extends \Fuel\Core\Controller_Rest {
         }
 
         if(! $user || ! $wechat || ! $openid || ! $store || ! $account){
-            return $this->response($data, 403);
+            return false;
         }
 
         $params = [
@@ -80,7 +100,6 @@ class Controller_Token extends \Fuel\Core\Controller_Rest {
         ]);
         $token->save();
 
-        $data = ['status' => 'succ', 'msg' => 'ok', 'errcode' => 0, 'expires_in' => 7200, 'access_token' => base64_encode($token->token)];
-        $this->response($data, 200);
+        return base64_encode($token->token);
     }
 }

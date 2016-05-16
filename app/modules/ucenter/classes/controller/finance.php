@@ -33,48 +33,9 @@ class Controller_Finance extends Controller_BaseController {
             'title' => '申请提现'
         ];
 
-        if(\Input::method() == 'POST'){
-            $msg = ['status' => 'err', 'msg' => '', 'errcode' => 10];
-
-            //判断是否有处理中的申请
-            $count = \Model_CashbackApply::query()
-                ->where([
-                    'parent_id' => \Auth::get_user()->id,
-                    'money' => \Input::post('money')
-                ])
-                ->where('status', 'IN', ['WAIT', 'ALLOW'])
-                ->count();
-            if($count > 0){
-                $msg['msg'] = '您还有未处理的申请!';
-                if(\Input::is_ajax()){
-                    die(json_encode($msg));
-                }
-                \Session::set_flash('msg', $msg);
-                return $this->show_message();
-            }
-
-            //查询收款帐户
-            $bank = \Model_PeopleBank::find(\Input::post('account_id'));
-
-            //添加提现审核记录
-            $apply = \Model_CashbackApply::forge();
-            $apply->set([
-                'money' => \Input::post('money'),
-                'parent_id' => \Auth::get_user()->id,
-                'status' => 'WAIT',
-                'name' => $bank->name,
-                'account' => $bank->account,
-                'bank_id' => $bank->bank->id
-            ]);
-
-            if(! $apply->save()){
-                $msg = ['status' => 'succ', 'msg' => '', 'errcode' => 0];
-            }
-
-            if(\Input::is_ajax()){
-                die(json_encode($msg));
-            }
-        }
+        $params['item'] = \Model_Member::query()
+            ->where(['user_id' => \Auth::get_user()->id, 'seller_id' => \Session::get('seller')->id])
+            ->get_one();
 
         \View::set_global($params);
         $this->template->content = \View::forge("{$this->theme}/finance/cashback");
