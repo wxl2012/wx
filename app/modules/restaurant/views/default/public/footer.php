@@ -19,7 +19,7 @@
             <div class="col-xs-3 text-center menu-item" action="cart">
                 <i class="fa fa-shopping-cart"></i>
                 <p>购物车</p>
-                <span class="badge" style="position: absolute; right: 0px; top: -10px; background-color: #d9534f;">10</span>
+                <span id="cartGoodsNum" class="badge" style="position: absolute; right: 0px; top: -10px; background-color: #d9534f; display: none;">0</span>
             </div>
             <div class="col-xs-3 text-center menu-item" action="order">
                 <i class="fa fa-file-text-o"></i>

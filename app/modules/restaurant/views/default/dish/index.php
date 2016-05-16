@@ -14,7 +14,7 @@
 <div class="container-fluid">
     <div class="list-group">
         <?php for($i = 0; $i < 10; $i ++){ ?>
-            <div class="list-group-item">
+            <div class="list-group-item" data-id="<?php echo $i; ?>">
                 <div class="row">
                     <div class="col-xs-5 pr3">
                         <img style="width: 100%;" src="http://file109.mafengwo.net/s6/M00/41/7E/wKgB4lOVp9yAFiC3AAGmw5EsOWU73.jpeg?imageMogr2%2Fthumbnail%2F%211360x940r%2Fgravity%2FCenter%2Fcrop%2F%211360x940%2Fquality%2F90" alt="" />
@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="list-group-item text-right">
+            <div class="list-group-item text-right" data-id="<?php echo $i; ?>">
                 <div class="row">
                     <div class="col-xs-3">
                     </div>
@@ -37,7 +37,7 @@
                     <div class="col-xs-6">
                         <div class="input-group">
                             <span class="input-group-addon" role="minus">-</span>
-                            <input type="text" class="form-control text-center" value="0">
+                            <input type="text" class="form-control text-center" value="0" role="number">
                             <span class="input-group-addon" role="plus">+</span>
                         </div>
                     </div>
@@ -46,3 +46,12 @@
         <?php } ?>
     </div>
 </div>
+
+<?php
+$script = <<<js
+    var _dish_list = [];
+js;
+
+\Asset::js($script, [], 'before-script', true);
+\Asset::js(['modules/restaurant/default/dish/index.js'], [], 'js-files', false);
+?>
