@@ -1,6 +1,5 @@
 $(function () {
 
-
     $('.input-group-addon').click(function () {
         var input = $(this).parents('.input-group').find('input');
         if($(this).attr('role') == 'plus'){
