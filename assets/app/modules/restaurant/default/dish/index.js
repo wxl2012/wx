@@ -1,6 +1,16 @@
 $(function () {
 
-    $('.input-group-addon').click(function () {
+    $('#btnMore').click(function () {
+
+        if(_pageIndex > _totalPage){
+            $('#btnMore').text('已经没有下一页了');
+            return;
+        }
+
+        loadData();
+    });
+
+    $('#dishItems').delegate('.input-group-addon', 'click', function () {
         var input = $(this).parents('.input-group').find('input');
         if($(this).attr('role') == 'plus'){
             input.val(parseInt(input.val()) + 1);
@@ -23,6 +33,8 @@ $(function () {
     initBasket();
 
     synBasket();
+
+    loadData();
 });
 
 function setNavbar() {
@@ -46,6 +58,26 @@ function initBasket() {
             }
         }
     });
+}
+
+function loadData() {
+    var params = '&start=' + _pageIndex;
+    $.get('/api/dish/list.json?access_token=' + _access_token + params,
+        function (data) {
+            $('#btnMore').text('点击加载更多');
+            if(data.status == 'err'){
+                return;
+            }
+
+            _totalPage = data.total_page;
+            _pageIndex = data.current_page + 1;
+
+            var items = data.data;
+            for (var key in items){
+                $('#dishItems').append(dishItem, items[key], null);
+            }
+
+        });
 }
 
 function synBasket() {

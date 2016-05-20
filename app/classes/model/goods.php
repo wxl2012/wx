@@ -40,6 +40,14 @@ class Model_Goods extends \Orm\Model
 		),
 	);
 
+	protected static $_has_one = array(
+		'dish' => array(
+			'model_to' => 'Model_Dish',
+			'key_from' => 'id',
+			'key_to'   => 'goods_id'
+		)
+	);
+
 	/**
 	 * @var array	belongs_to relationships
 	 */

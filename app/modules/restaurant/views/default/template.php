@@ -32,6 +32,10 @@
         #navTitle{
             font-size: 12pt;
         }
+        #btnMore{
+            color: #aaa;
+            text-decoration: none;
+        }
     </style>
 
 </head>
