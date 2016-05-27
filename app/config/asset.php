@@ -65,9 +65,11 @@ return array(
 	 */
 	'folders' => array(
 		'css' => array(
+			'assets/admin/',
 			'assets/third-party/'
 		),
 		'js'  => array(
+			'assets/admin/',
 			'assets/app/',
 			'assets/third-party/'
 		),

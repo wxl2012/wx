@@ -21,6 +21,48 @@
  */
 class Controller_Test extends Controller {
 
+    public function action_reply_vote(){
+        $data = [
+            'ToUserName' => 'gh_541a80a156f0',
+            'FromUserName' => 'oNKHljlqPtz_lIVC0s-Vik7Vyobg',
+            'CreateTime' => time(),
+            'MsgType' => 'text',
+            'Content' => '1',
+            'MsgId' => time()
+        ];
+        $reply = new \handler\mp\action\text\ReplyVote();
+        $reply->setAccount(\Model_WXAccount::find(1));
+        $reply->setSeller(\Model_Seller::find(1));
+        $reply->setWechat(\Model_Wechat::find(1));
+        $reply->setPostData(json_decode(json_encode($data)));
+        $reply->handle();
+    }
+
+    public function action_remove_vote(){
+        $data = [
+            'ToUserName' => 'gh_541a80a156f0',
+            'FromUserName' => 'oNKHljlqPtz_lIVC0s-Vik7Vyobg',
+            'CreateTime' => time(),
+            'MsgType' => 'text',
+            'Content' => '1',
+            'MsgId' => time()
+        ];
+        $reply = new \handler\mp\action\event\UnSubscribe();
+        $reply->setAccount(\Model_WXAccount::find(1));
+        $reply->setSeller(\Model_Seller::find(1));
+        $reply->setWechat(\Model_Wechat::find(1));
+        $reply->setPostData(json_decode(json_encode($data)));
+        $reply->handle();
+    }
+
+    public function action_get_material(){
+        \Session::set('WXAccount', \Model_WXAccount::find(1));
+        $token = 'Si_TyC7nFksspSSpJMjgEbePSP7EWK0Yi1xmoxociVwRw1-cxcHBNN3I7Zzu2W3cvieZCGgqHfDzVkTTJypaz1C9u5rWfMG6Tyx8OBtt_UBkqbCotcf_SjqW7QHgfrVIYSQjAIAPJH';
+        //$url = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={$token}";
+        \handler\mp\Api::syn_material($token);
+
+    }
+
     public function action_index(){
 
         $result = \handler\common\UrlTool::request('http://wx.qlogo.cn/mmopen/ibOYIic5ANNwVyvIXBNGJYvXmsAQtyTS8nSefGc5v0paMmw6jtuHDjY9ia2mSkhW6ZhiaFFicz3cicra68geeTZrJJBAqiaVnhxibchc/132');

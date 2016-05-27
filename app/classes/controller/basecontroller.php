@@ -183,6 +183,11 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'module' => 'ucenter',
 				'controller' => 'login',
 				'actions' => []
+			],
+			[
+				'module' => 'admin',
+				'controller' => 'login',
+				'actions' => []
 			]
 		];
 
