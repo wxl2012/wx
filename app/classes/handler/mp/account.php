@@ -53,12 +53,6 @@ class Account {
             $user_id = \Model_User::createUser($params);
             $wechat->user_id = $user_id;
 
-            $params = [
-                'parent_id' => $user_id
-            ];
-            $people = \Model_People::forge($params);
-            $people->save();
-
             //是否创建会员信息
             if(isset($account->is_subscribe_create_member) && $account->is_subscribe_create_member){
                 $params = [
@@ -72,13 +66,12 @@ class Account {
         }
 
         //创建微信OpenID记录
-        $params = [
+        $wechatOpenid = \Model_WechatOpenid::forge([
             'openid' => $openid,
             'account_id' => $account->id
-        ];
-        $wechatOpenid = \Model_WechatOpenid::forge($params);
+        ]);
+        
         $wechat->ids = [$wechatOpenid];
-
         $wechat->save();
 
         return $wechatOpenid;

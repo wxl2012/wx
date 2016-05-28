@@ -12,7 +12,7 @@
  * @extends  	\Orm\Auth_User
  */
 
-class Model_User extends \Model\Auth_User
+class Model_User extends \Auth\Model\Auth_User
 {
 
 	/**
@@ -44,7 +44,13 @@ class Model_User extends \Model\Auth_User
 				$data['email'],
 				$data['group_id'],
 				$data['profile_fields']
-			);	
+			);
+
+			$people = \Model_People::forge([
+				'parent_id' => $user_id
+			]);
+			$people->save();
+
 		}catch(SimpleUserUpdateException $e){
 			\Log::error('create user error message:' . $e->getMessage() . '; error data:' . json_encode($data));
 		}
