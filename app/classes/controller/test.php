@@ -21,6 +21,11 @@
  */
 class Controller_Test extends Controller {
 
+    public function action_a(){
+        var_dump(php_uname('s'));
+        var_dump(PHP_OS);
+    }
+
     public function action_reply_vote(){
         $data = [
             'ToUserName' => 'gh_541a80a156f0',

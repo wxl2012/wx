@@ -118,7 +118,7 @@ function publish(){
 
 	window.parent.setPublishStatus('数据正在提交...');
 	window.parent.setDisplay('show');
-	$.post('/admin/wxfunction/menu_save/' + wx_account_id, 
+	$.post('/admin/mp/function/menu_save/' + wx_account_id, 
 		{
 			'menu' : menu
 		}, 

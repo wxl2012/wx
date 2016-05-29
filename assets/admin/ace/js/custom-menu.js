@@ -2,7 +2,7 @@ var actions = undefined;
 
 $(function(){
 
-	$.get('/admin/wxfunction/menus_actions',
+	$.get('/admin/mp/function/menus_actions',
 		function(data, status){
 			if(data.status == 'succ'){
 				actions = data.data;
@@ -70,7 +70,7 @@ $(function(){
 				}
 			}
 		}
-		
+
 		if($('#category').val() == 'function'){
 			setAttriber('content', $('#action').val());
 		}
@@ -83,7 +83,7 @@ $(function(){
 			$('#value').attr('action', 'click');
 			setAttriber('action', 'click');
 		}else if($('#action').val() == 'category'){
-			$.get('/category?id=' + article_id, 
+			$.get('/category?id=' + article_id,
 				function(data, status){
 					var select = "<select id='article_category_id'>";
 					if(data.status == 'succ'){
@@ -93,7 +93,7 @@ $(function(){
 					$(select).insertAfter($('#action'));
 				}, 'json');
 		}else if($('#action').val() == 'vote'){
-			$.get('/manager/vote?', 
+			$.get('/manager/vote?',
 				function(data, status){
 					var select = "<select id='votes_id'>";
 					if(data.status == 'succ'){

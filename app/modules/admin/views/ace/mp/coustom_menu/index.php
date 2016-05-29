@@ -2,13 +2,10 @@
 <link href="/assets/third-party/icheck/skins/square/blue.css" rel="stylesheet">
 <style type="text/css">
     .menu-panel{
-        background-image: url(http://wx.evxin.com/media/images/cusmenu/3CustomLt.png);
+        background-image: url(/assets/img/iphone4.png);
         width: 344px;
         height: 623px;
         padding: 138px 0px 0px 46px;
-    }
-    .tac{
-        text-align: center;
     }
 </style>
 <div class="row">
@@ -43,6 +40,7 @@
                     菜单动作：
                     <select id="category">
                         <option value="normal">常规操作</option>
+                        <option value="news">回复图文</option>
                         <!--<option value="function">功能模块</option>
                         <option value="event">事件</option>
                         <option value="other">其它</option>-->
@@ -60,6 +58,15 @@
                 <div class="bs-callout bs-callout-success">
                     <span id="labelTip">关键字：</span>
                     <input type="text" id="value" action="click" style="width: 80%;" />
+
+                    <table>
+                        <?php for($i = 0; $i < 50; $i ++){ ?>
+                            <tr>
+                                <td><input type="radio" value=""></td>
+                                <td>中华人民共和国中华人民共和国中华人民共和国中华人民共和国</td>
+                            </tr>
+                        <?php } ?>
+                    </table>
                 </div>
             </div>
         </div>
@@ -92,17 +99,14 @@
 </div>-->
 
 
-<script type="text/javascript" src="/assets/third-party/icheck/icheck.min.js"></script>
-<script type="text/javascript">
-    var article_id = <?php echo isset(\Session::get("seller")->article_category) ? \Session::get("seller")->article_category : 0; ?>;
-    $(function(){
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-</script>
 
-<script src="/assets/js/tools.js"></script>
-<script type="text/javascript" src="/assets/ace/js/custom-menu.js"></script>
+<?php
+
+$script = <<<js
+
+js;
+
+\Asset::js($script, [], 'after-script', true);
+\Asset::js(['tools.js', 'icheck/icheck.min.js', 'mp/menu/action.js', 'mp/menu/parent.js'], [], 'js-files', false);
+
+?>

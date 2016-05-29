@@ -30,7 +30,7 @@ class ReplyVote extends \handler\mp\action\Text {
             ->get_one();
 
         if( ! $candidate){
-            $this->reply_text('抱歉，该编码不存在！');
+            $this->reply_text('抱歉，该编号的选手不存在！');
         }
 
         $market = $candidate->vote->parent;
@@ -40,7 +40,7 @@ class ReplyVote extends \handler\mp\action\Text {
 
         if($statistic && $market->limit){
             if($market->limit->involved_total_num && $market->limit->involved_total_num <= $statistic->total_num){
-                $this->reply_text("您最多能投{$market->limit->involved_total_num}次票!");
+                $this->reply_text("您最多只能投{$market->limit->involved_total_num}次票，回复“查询+编号”如“查询209”,查询其他选手成绩。");
             }
         }
 

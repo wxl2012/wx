@@ -32,6 +32,8 @@ class Text extends Base {
             $reply = new \handler\mp\action\text\ReplyVote();
         }else if(strpos($this->data->Content, '查询') !== false){
             $reply = new \handler\mp\action\text\ReplyVoteNum();
+        }else{
+            die('success');
         }
         $reply->setWechat($this->wechat);
         $reply->setAccount($this->account);

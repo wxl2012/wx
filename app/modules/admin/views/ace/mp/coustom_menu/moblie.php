@@ -61,12 +61,12 @@
                         <?php if(isset($value->sub_button) && $value->sub_button){ ?>
                             <?php $i = count($value->sub_button); ?>
                             <?php foreach ($value->sub_button as $key => $value) { ?>
-                                <li class="list-group-item"><input type="text" value="<?php echo $value->name; ?>" placeholder="子菜单1" category="<?php echo isset($value->category) && $value->category ? $value->category : '';?>" action="<?php echo $value->type; ?>" content="<?php echo $value->type == 'click' ? $value->key : $value->url; ?>"></li>
+                                <li class="list-group-item"><input type="text" value="<?php echo $value->name; ?>" placeholder="子菜单1" data='<?php echo json_encode($value); ?>'></li>
                             <?php }?>
                         <?php } ?>
 
                         <?php for (; $i < 5; $i ++) { ?>
-                            <li class="list-group-item<?php echo $i + 1 == 5 ? ' list-group-item-last' : ''; ?>"><input type="text" value="" placeholder="子菜单<?php echo $i + 1; ?>"></li>
+                            <li class="list-group-item<?php echo $i + 1 == 5 ? ' list-group-item-last' : ''; ?>"><input type="text" value="" data="" placeholder="子菜单<?php echo $i + 1; ?>"></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -93,24 +93,61 @@
                     $content = $value->type == 'view' ? $value->url : $value->key;
                 }
                 ?>
-                <div id="menuItem<?php echo $index ++; ?>" class="col-xs-<?php echo 12 / count($items->button); ?> tac<?php echo $index < (12 / (12 / count($items->button))) ? ' br' : ''; ?>" action="menu-item" style="padding: 0px;">
-                    <input type="text" placeholder="一级菜单" style=" line-height: 48px;" category="<?php echo isset($value->category) && $value->category ? $value->category : '';?>" action="<?php echo isset($value->type) ? $value->type : '' ; ?>" content="<?php echo $content; ?>" value="<?php echo $value->name; ?>"/>
+                <div id="menuItem<?php echo $index ++; ?>" class="col-xs-<?php echo 12 / count($items->button); ?> text-center <?php echo $index < (12 / (12 / count($items->button))) ? ' br' : ''; ?>" action="menu-item" style="padding: 0px;">
+                    <input type="text" placeholder="一级菜单" style=" line-height: 48px;" data='<?php echo json_encode($value); ?>' value="<?php echo $value->name; ?>"/>
                 </div>
             <?php } ?>
         <?php }else{ ?>
-            <div id="menuItem0" class="col-xs-12 tac" action="menu-item" style="padding: 0px;">
+            <div id="menuItem0" class="col-xs-12 tac" data="" action="menu-item" style="padding: 0px;">
                 <input type="text" placeholder="一级菜单" style=" line-height: 48px;"/>
             </div>
         <?php } ?>
     </div>
 </div>
 
-<script type="text/javascript" src="/assets/third-party/jquery/1.11.1/jquery.min.js"></script>
-<script type="text/javascript" src="/assets/third-party/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/assets/js/tools.js"></script>
+<script type="text/x-jquery-tmpl" id="menuItemHtml">
+    <div class="col-xs-12 tac" id="menuItem${index}" data="" action="menu-item" style="padding: 0px;">
+        <input type="text" value="" placeholder="一级菜单" />
+    </div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="menuHtml">
+    <div class="col-xs-12" id="submenuItem${index}" style="padding:0px; margin-top: 90px">
+        <ul class="list-group">
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单1"></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单2"></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单3"></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单4"></li>
+            <li class="list-group-item list-group-item-last"><input type="text" value="" placeholder="子菜单5"></li>
+        </ul>
+    </div>
+</script>
+
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script>
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/third-party/jquery/1.10.2/jquery.min.js'>"+"<"+"/script>");
+</script>
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/assets/admin/ace/js/jquery1x.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
 <script type="text/javascript">
     var wx_account_id = <?php echo \Session::get('WXAccount')->id; ?>;
 </script>
-<script type="text/javascript" src="/assets/ace/js/custom-menu-panel.js"></script>
+
+<?php
+echo \Asset::js([
+    'http://lib.sinaapp.com/js/bootstrap/v3.0.0/js/bootstrap.min.js',
+    'jquery-tmpl/jquery.tmpl.min.js',
+    'jquery-tmpl/jquery.tmplPlus.min.js',
+    'tools.js',
+    'mp/menu/moblie.js'
+]);
+?>
 </body>
 </html>
