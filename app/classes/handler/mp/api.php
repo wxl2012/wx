@@ -81,6 +81,57 @@ class Api{
     }
 
     /**
+     * 调用微信公众帐户“创建二维码ticket”接口
+     *
+     * @param $account 公众号信息
+     * @param $scene_id 二维码携带的参数
+     * @param $scope [temp | limit]，二维码类型 临时或永久
+     * @return json格式的字符串
+     * Example:
+     *     以下为永久二维码调用方式：
+     * 			\impls\wechat\Common::generate_qrcode_ticket('abc123', 'limit')
+     * 			\impls\wechat\Common::generate_qrcode_ticket(1, 'limit') //取值范围1 - 100000
+     *	  以下为临时二维码调用方式：
+     *			\impls\wechat\Common::generate_qrcode_ticket(1) //取值范围 32位正整数
+     * return:
+     *     {
+     *		    "ticket": "gQH47joAAAAAAAAAASxodHRwOi8vd2VpeGluLnFxLmNvbS9xL2taZ2Z3TVRtNzJXV1Brb3ZhYmJJAAIEZ23sUwMEmm3sUw==",
+     *		    "expire_seconds": 60, // 二维码有效期，单位：秒,
+     *		    "url": "http://weixin.qq.com/q/kZgfwMTm72WWPkovabbI" //二维码解析后的地址
+     *		}
+     */
+    public static function generate_qrcode_ticket($account, $scene_id, $scope = 'temp'){
+
+        $params = array(
+            'expire_seconds' => 2592000,
+            'action_name' => 'QR_SCENE',
+            'action_info' => array(
+                'scene' => array(
+                    'scene_id' => $scene_id
+                )
+            )
+        );
+
+        if($scope == 'limit'){
+            $scene = array();
+            $scene[is_numeric($scene_id) ? 'scene_id' : 'scene_str'] = $scene_id;
+
+            $params = array(
+                'action_name' => is_numeric($scene_id) ? 'QR_LIMIT_SCENE' : 'QR_LIMIT_STR_SCENE',
+                'action_info' => array(
+                    'scene' => $scene
+                )
+            );
+        }
+
+        $account->checkToken();
+
+        $url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" . \Session::get('WXAccount')->temp_token;
+        $result = \handler\common\UrlTool::request($url, 'POST', json_encode($params));
+        return $result->body;
+    }
+
+    /**
      * 同步本地与微信服务器素材
      *
      * @param $access_token 微信公众号access_token

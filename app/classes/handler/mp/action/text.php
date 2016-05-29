@@ -26,9 +26,12 @@ class Text extends Base {
         $reply = false;
         if(strpos($this->data->Content, '命运') !== false){
             $reply = new \handler\mp\action\text\ReplyFateImage();
-
         }else if($this->data->Content == '微信价值'){
             $reply = new \handler\mp\action\text\ReplyValuationImage();
+        }else if(intval($this->data->Content) > 0){
+            $reply = new \handler\mp\action\text\ReplyVote();
+        }else if(strpos($this->data->Content, '查询') !== false){
+            $reply = new \handler\mp\action\text\ReplyVoteNum();
         }
         $reply->setWechat($this->wechat);
         $reply->setAccount($this->account);

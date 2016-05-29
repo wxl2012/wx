@@ -150,9 +150,13 @@ class ReplyFateImage extends \handler\mp\action\Text {
             $fontColor = $color;
         }
 
-        //$font = '/Library/Fonts/Hannotate.ttc';
-        $font = '/Library/Fonts/Hanzipen.ttc';
-        //$font = realpath('D:\\wwwroot\\mnzone\\wwwroot\\assets\\fonts\\Libian.ttf');
+        $font = '/Library/Fonts/Hannotate.ttc';
+        if(php_uname('s') == 'Windows NT'){
+            $font = realpath('D:\\wwwroot\\mnzone\\wwwroot\\assets\\fonts\\Libian.ttf');
+        }else if(php_uname('s') == 'Darwin'){
+            $font = '/Library/Fonts/Hanzipen.ttc';
+        }
+
 
         if( ! $x){
             $fontBox = imagettfbbox($size, 0, $font, $text);

@@ -48,7 +48,8 @@ class ReplyValuationImage extends \handler\mp\action\Text {
     }
 
     private function generateImage($fileName){
-        $image = imagecreatefromjpeg(DOCROOT . 'assets/img/valuation.jpg');
+        $span = DS;
+        $image = imagecreatefromjpeg(DOCROOT . "assets{$span}img{$span}valuation.jpg");
 
         $fontColor = imagecolorallocate($image, 255, 255, 255);
         $this->addTextToImage($image, $this->wechat->nickname, $fontColor, 40, 520);
@@ -77,6 +78,9 @@ class ReplyValuationImage extends \handler\mp\action\Text {
         $filename = md5($this->wechat->headimgurl);
         $span = DS;
         $file = DOCROOT . "uploads{$span}tmp{$span}photos{$span}{$filename}.jpg";
+        if( ! file_exists($file)){
+            \handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
+        }
         \Image::load($file)
             ->rounded(\Image::sizes()->width / 2)
             ->save($output);
@@ -89,8 +93,11 @@ class ReplyValuationImage extends \handler\mp\action\Text {
      * @param $image
      */
     function addPortraitToImage($image){
+        $root = DOCROOT;
+        $ds = DS;
+        
         //生成圆图
-        $output = DOCROOT . 'uploads/tmp/valuation/head' . time() . '.png';
+        $output =  "{$root}uploads{$ds}tmp{$ds}valuation{$ds}head" . time() . '.png';
         if( ! $this->convert_circle($output)){
             return;
         }
@@ -114,7 +121,9 @@ class ReplyValuationImage extends \handler\mp\action\Text {
      * @param $image
      */
     function addQrcodeToImage($image){
-        $portrait = DOCROOT . 'uploads/qrcode/shb.png';
+        $root = DOCROOT;
+        $ds = DS;
+        $portrait = "{$root}uploads{$ds}qrcode{$ds}shb.png";
         $portraitFile = imagecreatefromstring(file_get_contents($portrait));
         //头像尺寸
         $portraitWidth = imagesx($portraitFile);
@@ -147,9 +156,13 @@ class ReplyValuationImage extends \handler\mp\action\Text {
             $fontColor = $color;
         }
 
-        //$font = '/Library/Fonts/Hannotate.ttc';
-        $font = '/Library/Fonts/Hanzipen.ttc';
-        //$font = realpath('D:\\wwwroot\\mnzone\\wwwroot\\assets\\fonts\\Libian.ttf');
+        $ds = DS;
+        $font = "{$ds}Library{$ds}Fonts{$ds}Hannotate.ttc";
+        if(php_uname('s') == 'Windows NT'){
+            $font = realpath("D:{$ds}wwwroot{$ds}mnzone{$ds}wwwroot{$ds}assets{$ds}fonts{$ds}Libian.ttf");
+        }else if(php_uname('s') == 'Darwin'){
+            $font = "{$ds}Library{$ds}Fonts{$ds}Hanzipen.ttc";
+        }
 
         if( ! $x){
             $fontBox = imagettfbbox($size, 0, $font, $text);

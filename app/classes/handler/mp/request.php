@@ -75,6 +75,9 @@ class Request {
 		$this->wechat = $openid->wechat;
 		if( ! $this->wechat->nickname || ! $this->wechat->headimgurl){
 			$wechatInfo = \handler\mp\Wechat::getWechatInfo($this->account->temp_token, $openid->openid);
+			if( ! $wechatInfo){
+				return false;
+			}
 			$this->wechat->set([
 				'nickname' => $wechatInfo->nickname,
 				'sex' => $wechatInfo->sex,

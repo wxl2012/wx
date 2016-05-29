@@ -66,7 +66,7 @@
 	</li>
 	<?php } ?>
 
-	<li<?php echo isset($menu) && in_array($menu, array('vote', 'wxmaterial', 'wechat-menu', 'auto-reply')) ? ' class="open active"' : '' ?>>
+	<li<?php echo isset($menu) && in_array($menu, array('vote')) ? ' class="open active"' : '' ?>>
 		<a href="javascript:;" class="dropdown-toggle">
 			<i class="menu-icon fa fa-wechat"></i>
 			<span class="menu-text">
@@ -87,7 +87,7 @@
 
 				<b class="arrow"></b>
 			</li>
-			<li<?php echo isset($menu) && 'wechat-menu' == $menu ? ' class="active"' : '' ?>>
+			<li<?php echo isset($menu) && 'wechat-menu' == $menu ? ' class="active"' : '' ?> style="display:none;">
 				<a href="/admin/mp/marketing/menu">
 					<i class="menu-icon fa fa-caret-right"></i>
 					命运测算
