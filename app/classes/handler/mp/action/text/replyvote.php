@@ -30,7 +30,7 @@ class ReplyVote extends \handler\mp\action\Text {
             ->get_one();
 
         if( ! $candidate){
-            $this->reply_text('抱歉，该编号的选手不存在！');
+            $this->reply_text('抱歉，该编号的选手不存在，回复“查询+编号”如“查询209”,查询其他选手成绩。');
         }
 
         $market = $candidate->vote->parent;
