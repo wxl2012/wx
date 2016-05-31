@@ -59,13 +59,27 @@
                     <span id="labelTip">关键字：</span>
                     <input type="text" id="value" action="click" style="width: 80%;" />
 
-                    <table>
-                        <?php for($i = 0; $i < 50; $i ++){ ?>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                选中
+                            </th>
+                            <th>
+                                标题
+                            </th>
+                            <th>
+                                同步时间
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="materials">
+                        </tbody>
+                        <tfoot>
                             <tr>
-                                <td><input type="radio" value=""></td>
-                                <td>中华人民共和国中华人民共和国中华人民共和国中华人民共和国</td>
+                                <td colspan="3" id="pagination"></td>
                             </tr>
-                        <?php } ?>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -98,15 +112,25 @@
   </div>
 </div>-->
 
+<script type="text/x-jquery-tmpl" id="tr">
+<tr>
+    <td><input type="radio" name="media_id" value="${thumb_media_id}"></td>
+    <td>${title}</td>
+    <td>${updated_at}</td>
+</tr>
+</script>
 
 
 <?php
 
+$token = \Session::get('access_token', '');
+$account = \Session::get('WXAccount', false);
 $script = <<<js
-
+    var _access_token = '{$token}';
+    var _account_id = {$account->id};
 js;
 
 \Asset::js($script, [], 'after-script', true);
-\Asset::js(['tools.js', 'icheck/icheck.min.js', 'mp/menu/action.js', 'mp/menu/parent.js'], [], 'js-files', false);
+\Asset::js(['tools.js', 'jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'icheck/icheck.min.js', 'mp/menu/action.js', 'mp/menu/parent.js'], [], 'js-files', false);
 
 ?>

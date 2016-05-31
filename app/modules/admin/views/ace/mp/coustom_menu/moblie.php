@@ -66,7 +66,7 @@
                         <?php } ?>
 
                         <?php for (; $i < 5; $i ++) { ?>
-                            <li class="list-group-item<?php echo $i + 1 == 5 ? ' list-group-item-last' : ''; ?>"><input type="text" value="" data="" placeholder="子菜单<?php echo $i + 1; ?>"></li>
+                            <li class="list-group-item<?php echo $i + 1 == 5 ? ' list-group-item-last' : ''; ?>"><input type="text" value=""  data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}' placeholder="子菜单<?php echo $i + 1; ?>"></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -74,11 +74,11 @@
         <?php }else{ ?>
             <div id="submenuItem0" class="col-xs-12" style="padding:0px; margin-top: 90px">
                 <ul class="list-group">
-                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单1"></li>
-                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单2"></li>
-                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单3"></li>
-                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单4"></li>
-                    <li class="list-group-item list-group-item-last"><input type="text" value="" placeholder="子菜单5"></li>
+                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单1" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单2" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单3" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+                    <li class="list-group-item"><input type="text" value="" placeholder="子菜单4" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+                    <li class="list-group-item list-group-item-last"><input type="text" value="" placeholder="子菜单5" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
                 </ul>
             </div>
         <?php } ?>
@@ -98,7 +98,7 @@
                 </div>
             <?php } ?>
         <?php }else{ ?>
-            <div id="menuItem0" class="col-xs-12 tac" data="" action="menu-item" style="padding: 0px;">
+            <div id="menuItem0" class="col-xs-12 tac"  data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}' action="menu-item" style="padding: 0px;">
                 <input type="text" placeholder="一级菜单" style=" line-height: 48px;"/>
             </div>
         <?php } ?>
@@ -106,7 +106,7 @@
 </div>
 
 <script type="text/x-jquery-tmpl" id="menuItemHtml">
-    <div class="col-xs-12 tac" id="menuItem${index}" data="" action="menu-item" style="padding: 0px;">
+    <div class="col-xs-12 tac" id="menuItem${index}" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}' action="menu-item" style="padding: 0px;">
         <input type="text" value="" placeholder="一级菜单" />
     </div>
 </script>

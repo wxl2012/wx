@@ -74,7 +74,7 @@ class Controller_WXAccount extends Controller_BaseController {
         if(\Input::method() == 'POST'){
 
             $data = \Input::post();
-             $val = \Validation::forge('MyRules');
+            $val = \Validation::forge('MyRules');
             $val->add_callable('MyRules');
             $val->add_field( 'open_id', 'OPENID', 'required' . ($id ? '' : '|unique[wx_accounts.open_id]'));
             $val->add_field( 'app_id', '应用ID', 'required');

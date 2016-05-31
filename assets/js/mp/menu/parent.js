@@ -1,7 +1,5 @@
-var _category_value = 0;
-var _action_value = 0;
-var _value = '';
-
+var menuItem = null;
+var synFlag = false;
 var menu = MPMenuAction
 
 $(function(){
@@ -12,16 +10,20 @@ $(function(){
         increaseArea: '20%' // optional
     });
 
+    $('#category,#action,#value').click(function(){
+        synFlag = false;
+    });
+
     $('#btnAddMenuItem').click(function () {
-        syn('addMenu', null);
+        syn('addMenu');
     });
 
     $('#btnRemoveMenuItem').click(function () {
-        syn('removeMenu', null);
+        syn('removeMenu');
     });
 
     $('#btnPublish').click(function () {
-        syn('publish', null);
+        syn('publish');
     });
 
     /**
@@ -30,15 +32,21 @@ $(function(){
     $('#category').change(function() {
         cats = menu.subcategories($(this).val());
         addOptionToSelect($('#action'), cats);
-        $('#action').trigger('change');
-        syn();
+        $('#action').val(menuItem.type).trigger('change');
+
+        if(! synFlag){
+            syn('', null);
+        }
     });
 
     /**
      * 设置动作
      */
-    $('#action').change(function() {
-        setContent($('#category').val(), $(this).val(), _value);
+    $('#action,#value').change(function() {
+        if(! synFlag){
+            syn('', null);
+        }
+
     });
 
     /**
@@ -67,86 +75,49 @@ function addOptionToSelect(element, items) {
  * @param data
  */
 function setMenuInfo(data) {
-    _category_value = data.category;
-    _action_value = data.action;
-    _value = data.content;
+    synFlag = true;
+    menuItem = data;
 
+    //设置当前操作菜单信息
     $('#current_menu_name').text(data.name);
     $('#current_menu_level').text(data.level);
-    $('#current_menu_content').text(data.content);
-    $('#current_menu_action').text(menu.showPath(_category_value, _action_value));
-
-    if(_category_value == undefined){
-        _category_value = _action_value = 0;
-        _value = '';
-    }
-
+    $('#current_menu_action').text(data.type);
+    //设置菜单动作
     $('#select-category').show();
-    setSelectValue($('#category'), _category_value);
-    $('#category').trigger('change');
-    setSelectValue($('#action'), _action_value);
-    $('#action').trigger('change');
+    $('#category').val(data.category).trigger('change');
+    $('#content-input,#labelTip,#value,table').hide();
 
-    if(_category_value == 1){
-        _value = data.url != undefined ? data.url : data.key;
-    }else if(_category_value == 3){
-        _value = data.media_id;
-    }
-    setContent(_category_value, _action_value, _value);
-}
-
-/**
- * 设置select中的默认值
- *
- * @param element
- * @param value
- */
-function setSelectValue(element, value) {
-    if(value.length < 1){
-        return;
-    }
-    $(element).val(value);
-}
-
-/**
- * 设置内容项的操作
- *
- * @param category  动作分类
- * @param action    动作
- * @param value     对应值
- */
-function setContent(category, action, value) {
-    if(category == 2){
-        $('#content-input').hide();
-        return;
-    }
-
-    $('#content-input').show();
-    $('#labelTip,#value,table').hide();
-
-    if(category == 1){
-        $('#labelTip,#value').show();
-        switch (parseInt(action)){
-            case 1:
-                $('#labelTip').text('关键字：');
-                $('#value').attr('type', 'text');
-                break;
-            case 2:
-                $('#labelTip').text('网址：');
-                $('#value').attr('type', 'url');
-                break;
-        }
-
-        $('#value').val(value);
-    }else if(category == 3){
-        $('table').show();
+    //设置菜单附带内容
+    switch (data.type){
+        case 'click':
+            $('#current_menu_content').text(data.key);
+            $('#value').val(data.key);
+            $('#content-input,#labelTip,#value').show();
+            break;
+        case 'view':
+            $('#current_menu_content').text(data.url);
+            $('#value').val(data.url);
+            $('#content-input,#labelTip,#value').show();
+            break;
+        case 'media_id':
+            $('#current_menu_content').text(data.media_id);
+            $('#value').val(data.media_id);
+            $('#content-input,table').show();
+            loadMaterials();
+            break;
+        case 'view_limited':
+            $('#current_menu_content').text(data.media_id);
+            $('#value').val(data.media_id);
+            $('#content-input,table').show();
+            loadMaterials();
+            break;
     }
 }
 
 /**
  * 同步子菜单
  */
-function syn(action, data) {
+function syn(action) {
     var cWin = document.getElementById('menu-panel').contentWindow;
     switch (action){
         case 'addMenu':
@@ -159,13 +130,36 @@ function syn(action, data) {
             cWin.publish();
             break;
         default:
-            var data = {
-                category: $('#category').val(),
-                action: $('#action').val(),
-                value: ''
-            };
-            cWin.setMenuItem(data);
+            menuItem.category = $('#category').val();
+            menuItem.type = $('#action').val();
+            if(menuItem.type == 'view'){
+                menuItem.url = $('#value').val();
+            }else if(menuItem.type == 'click'){
+                menuItem.key = $('#value').val();
+            }else if(menuItem.type == 'media_id' || menuItem.type == 'view_limited'){
+                menuItem.media_id = $('#value').val();
+            }
+
+            cWin.setMenuItem(menuItem);
             break;
     }
-    //cWin.addMenuItem('')
+}
+
+function loadMaterials() {
+    $.get('/api/mp/material.json?access_token=' + _access_token + '&id=' + _account_id,
+        function (data) {
+            if(data.status == 'err'){
+                return;
+            }
+            var items = data.data;
+            for(var key in items){
+                $('#materials').append(tr, items[key], null);
+            }
+            $('#pagination').html(data.pagination);
+            $('#materials input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        }, 'json');
 }

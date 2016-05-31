@@ -74,6 +74,11 @@ class Controller_Home extends Controller_BaseController
 
                 \Session::set('WXAccount', $account);
 
+                //获取API访问令牌
+                $result = \handler\common\UrlTool::request(\Config::get('base_url') . 'api/token.json?user_id=' . \Auth::get_user()->id);
+                $token = json_decode($result->body);
+                \Session::set('access_token', $token->access_token);
+
                 $redirect = "/admin";
                 if(isset($data['to_url'])){
                     $redirect = $data['to_url'];

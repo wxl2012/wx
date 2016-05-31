@@ -38,12 +38,7 @@ $(function () {
  * @param element
  */
 function syn(element) {
-    if(element.attr('data').length < 1){
-        return;
-    }
     var data = JSON.parse(element.attr('data'));
-    data['level'] = element.parent().is('li') ? '二级菜单' : '一级菜单';
-    data['name'] = element.val();
     window.parent.setMenuInfo(data);
 }
 
@@ -53,17 +48,7 @@ function syn(element) {
  * @param data
  */
 function setMenuItem(data) {
-
-    var json;
-    var data = _current_menuitem.attr('data');
-    if(data.length > 0){
-        json = JSON.parse(data);
-    }
-
-    json['category'] = '';
-    json['action'] = '';
-    json['content'] = '';
-    _current_menuitem.attr('data', JSON.stringify(param));
+    _current_menuitem.attr('data', JSON.stringify(data));
 }
 
 /**
