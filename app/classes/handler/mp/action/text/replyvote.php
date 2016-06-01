@@ -29,6 +29,10 @@ class ReplyVote extends \handler\mp\action\Text {
             ->or_where('keyword', $this->data->Content)
             ->get_one();
 
+        if($candidate->start_at > time() || $candidate->end_at < time()){
+            $this->reply_text('抱歉，该编号的选手不在开放时间段，该选手总票数为:' . $candidate->total_num);
+        }
+
         if( ! $candidate){
             $this->reply_text('抱歉，该编号的选手不存在，回复“查询+编号”如“查询209”,查询其他选手成绩。');
         }
