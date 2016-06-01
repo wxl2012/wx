@@ -40,18 +40,15 @@ class Model_Marketing extends \Orm\Model
         ),
     );
 
-    protected static $_has_one = array(
-        'vote' => array(
-            'model_to' => 'Model_MarketingVote',
-            'key_from' => 'id',
-            'key_to'   => 'marketing_id'
-        )
-    );
-
     /**
      * @var array	belongs_to relationships
      */
     protected static $_belongs_to = array(
+        /*'vote' => array(
+            'model_to' => 'Model_MarketingVote',
+            'key_from' => 'id',
+            'key_to'   => 'marketing_id'
+        ),*/
         'seller' => array(
             'model_to' => 'Model_Seller',
             'key_from' => 'seller_id',
@@ -75,7 +72,8 @@ class Model_Marketing extends \Orm\Model
         'limit' => array(
             'model_to' => 'Model_MarketingLimit',
             'key_from' => 'id',
-            'key_to'   => 'marketing_id'
+            'key_to'   => 'marketing_id',
+            'cascade_save' => true,
         ),
     );
 

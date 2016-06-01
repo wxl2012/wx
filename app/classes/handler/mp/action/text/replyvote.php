@@ -26,16 +26,15 @@ class ReplyVote extends \handler\mp\action\Text {
             ->or_where('keyword', $this->data->Content)
             ->get_one();
 
-        $market = $candidate->vote->parent;
-
-        if($market->start_at > time() || $market->end_at < time()){
-            $this->reply_text('抱歉，该编号的选手不在开放时间段，该选手总票数为:' . $candidate->total_gain);
-        }
-
         if( ! $candidate){
             $this->reply_text('抱歉，该编号的选手不存在，回复“查询+编号”如“查询209”,查询其他选手成绩。');
         }
 
+        $market = $candidate->marketing;
+
+        if($market->start_at > time() || $market->end_at < time()){
+            $this->reply_text('抱歉，该编号的选手不在开放时间段，该选手总票数为:' . $candidate->total_gain);
+        }
 
         $statistic = \Model_MarketingRecordStatistic::query()
             ->where(['openid' => $this->data->FromUserName, 'marketing_id' => $market->id])

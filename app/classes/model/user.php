@@ -38,21 +38,22 @@ class Model_User extends \Auth\Model\Auth_User
 			$data['profile_fields'] = [];
 		}
 		try{
-			$user_id = \Auth::create_user(
-				$data['username'],
-				$data['password'],
-				$data['email'],
-				$data['group_id'],
-				$data['profile_fields']
-			);
-
-			$people = \Model_People::forge([
-				'parent_id' => $user_id
-			]);
-			$people->save();
+			$user = \Model_User::query()->where('username', $data['username'])->get_one();
+			if(! $user){
+				$user_id = \Auth::create_user(
+					$data['username'],
+					$data['password'],
+					$data['email'],
+					$data['group_id'],
+					$data['profile_fields']
+				);
+			}else{
+				$user_id = $user->id;
+			}
 
 		}catch(SimpleUserUpdateException $e){
 			\Log::error('create user error message:' . $e->getMessage() . '; error data:' . json_encode($data));
+
 		}
 
 		return $user_id;

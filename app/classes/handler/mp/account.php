@@ -57,6 +57,7 @@ class Account {
             $wechat->user_id = $user_id;
             
             $params = [
+                'parent_id' => $user_id,
                 'user_id' => $user_id
             ];
             $people = \Model_People::query()->where($params)->get_one();

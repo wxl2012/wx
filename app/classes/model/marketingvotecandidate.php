@@ -40,10 +40,10 @@ class Model_MarketingVoteCandidate extends \Orm\Model
      * @var array	belongs_to relationships
      */
     protected static $_belongs_to = array(
-        'vote' => array(
-            'model_to' => 'Model_MarketingVote',
+        'marketing' => array(
+            'model_to' => 'Model_Marketing',
             'key_from' => 'marketing_id',
-            'key_to'   => 'marketing_id'
+            'key_to'   => 'id'
         )
     );
 }
