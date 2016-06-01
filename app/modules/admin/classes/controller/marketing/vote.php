@@ -39,6 +39,7 @@ class Controller_Marketing_Vote extends Controller_BaseController
             if( ! $market){
                 $market = \Model_Marketing::forge();
             }
+            $market->limit = \Model_MarketingLimit::forge(['involved_total_num' => 1]);
             $market->set($data);
             if($market->save()){
                 $msg = ['status' => 'succ', 'msg' => '', 'errcode' => 0, 'data' => $market->to_array()];

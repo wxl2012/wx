@@ -72,7 +72,19 @@ $seller = \Session::get('seller', false);
                     </select>
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 关注回复 </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="subscribe_reply" name="subscribe_reply" placeholder="关注公众号时回复的内容"  value="<?php echo isset($item) && $item && isset($item->subscribe_reply) ? $item->subscribe_reply : ''; ?>">
+                </div>
+            </div>
             <!--
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 自动回复 </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_found_content" name="keyword_not_found_content" placeholder="回复任意字符时的触发的内容"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> wechat_ticket </label>
 				<div class="col-sm-9">
@@ -95,12 +107,6 @@ $seller = \Session::get('seller', false);
 				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> keyword_not_fond </label>
 				<div class="col-sm-9">
 					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_fond" name="keyword_not_fond" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 自动回复 </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_found_content" name="keyword_not_found_content" placeholder="回复任意字符时的触发的内容"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
 				</div>
 			</div>
 			<div class="form-group">
