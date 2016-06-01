@@ -56,6 +56,7 @@ class ReplyVote extends \handler\mp\action\Text {
         $record->save();
 
         $candidate->total_gain += 1;
+        $candidate->save();
 
         $this->reply_text("投票成功，{$candidate->no}号选手{$candidate->title}票数加1，总票数为{$candidate->total_gain}票!\n\n回复“查询+编号”如“查询209”,查询其他选手成绩。");
         //$this->reply_text("投票成功\n编号:{$candidate->no}\n选手:{$candidate->title}\n总票数:{$candidate->total_gain}");

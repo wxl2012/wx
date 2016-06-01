@@ -35,6 +35,8 @@ class Controller_Marketing_Vote extends Controller_BaseController
             $data['start_at'] = $data['start_at'] ? strtotime($data['start_at']) : 0;
             $data['end_at'] = $data['end_at'] ? strtotime($data['end_at']) : 0;
             $data['account_id'] = \Session::get('WXAccount')->id;
+            $data['seller_id'] = \Session::get('WXAccount')->seller_id;
+            $data['type'] = 'VOTE';
             $market = \Model_Marketing::find($id);
             if( ! $market){
                 $market = \Model_Marketing::forge();
