@@ -39,8 +39,8 @@ var MPMenuAction = {
                 break;
             case 3:
                 cats = [
-                    {id: 'view_limited', title: '图文素材', type: 'view_limited'},
-                    {id: 'media_id', title: '图片素材', type: 'media_id'}
+                    {id: 'view_limited', title: '图文链接', type: 'view_limited'},
+                    {id: 'media_id', title: '图文素材', type: 'media_id'}
                 ];
                 break;
             default:

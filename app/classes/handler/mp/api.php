@@ -132,6 +132,17 @@ class Api{
     }
 
     /**
+     * 生成自定义菜单
+     *
+     * @param $token 访问Token
+     * @param $menu 菜单json串
+     */
+    public static function generate_coustom_menu($token, $menu){
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={$token}";
+        return \handler\common\UrlTool::request($url, 'POST', $menu);
+    } 
+
+    /**
      * 同步本地与微信服务器素材
      *
      * @param $access_token 微信公众号access_token

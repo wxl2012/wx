@@ -48,6 +48,7 @@ function syn(element) {
  * @param data
  */
 function setMenuItem(data) {
+    data.name = _current_menuitem.val();
     _current_menuitem.attr('data', JSON.stringify(data));
 }
 
@@ -71,21 +72,21 @@ function addMenu() {
  * 移除一组菜单
  */
 function removeMenu() {
-    if(current_menu == undefined){
+    if(_current_menuitem == undefined){
         alert('请先选择需要删除的菜单项!');
         return;
     }
-    if(current_menu.parent().is('li')){
-        current_menu.val('').attr('data', '');
+    if(_current_menuitem.parent().is('li')){
+        _current_menuitem.val('').attr('data', '');
     }
-    if(current_menu.parent().is('div')){
-        var count = current_menu.parent().parent().find('div').length;
+    if(_current_menuitem.parent().is('div')){
+        var count = _current_menuitem.parent().parent().find('div').length;
         if(count < 2){
             alert('至少保留1项菜单项,如果不想使用自定义菜单请点“关闭自定义菜单”。');
             return;
         }
 
-        var id = current_menu.parent().attr('id');
+        var id = _current_menuitem.parent().attr('id');
         id = id.substring(id.length - 1);
 
         var current;
@@ -112,7 +113,75 @@ function removeMenu() {
  * 发布菜单
  */
 function publish() {
-    console.log('发布菜单');
+    var count = 0;
+    var flag = true;
+    var msg = '';
+
+    var subs = [
+    ];
+
+    $('#menu-item').find('input[type=text]').each(function () {
+
+        if( ! flag){
+            return;
+        }
+
+        var data = JSON.parse($(this).attr('data'));
+        data.name = $(this).val();
+        data.sub_button = [];
+        subs[subs.length] = data;
+
+    });
+
+
+    $('input[type=text]').each(function (index, element) {
+
+        if( ! flag){
+            return;
+        }
+
+        var data = JSON.parse($(this).attr('data'));
+        if(data.name.length < 1){
+            return;
+        }
+        if($(this).attr('role') != '一级'){
+            if(data.type == 'view' && data.url.length < 1){
+                alert($(this).attr('placeholder') + '缺少网址参数');
+                flag = false;
+            }else if(data.type == 'click' && data.key.length < 1){
+                alert($(this).attr('placeholder') + '缺少关键字参数');
+                flag = false;
+            }else if((data.type == 'media_id' || data.type == 'view_limited') && data.media_id.length < 1){
+                alert($(this).attr('placeholder') + '缺少素材参数');
+                flag = false;
+            }else{
+                data.key = 'abc';
+            }
+            subs[parseInt(index / 5)].sub_button[subs[parseInt(index / 5)].sub_button.length] = data;
+        }
+
+    });
+
+    if(! flag){
+        alert('菜单数据不合法');
+        return;
+    }
+
+    var menu = {
+        button: subs
+    }
+
+    $.post('/admin/mp/function/menu_save/' + wx_account_id,
+        {
+            menu: JSON.stringify(menu)
+        },
+        function (data) {
+            if(data.status == 'err'){
+                console.log(data.msg);
+                return;
+            }
+            alert('菜单发布成功!');
+        }, 'json');
 }
 
 //判断菜单项布局

@@ -51,27 +51,51 @@ class Account {
                 'group_id' => $account->create_user_default_group
             ];
             $user_id = \Model_User::createUser($params);
+            if( ! $user_id){
+                return false;
+            }
             $wechat->user_id = $user_id;
+
+
+
+            $params = [
+                'user_id' => $user_id
+            ];
+            $people = \Model_People::query()->where($params)->get_one();
+            if(! $people){
+                $people = \Model_People::forge($params);
+                $people->save();
+            }
 
             //是否创建会员信息
             if(isset($account->is_subscribe_create_member) && $account->is_subscribe_create_member){
                 $params = [
-                    'no' => "{$account->seller_id}{$wechat->user_id}" . time(),
-                    'user_id' => $wechat->user_id
+                    'user_id' => $user_id,
+                    'seller_id' => $account->seller_id
                 ];
-                $member = \Model_Member::forge($params);
-                $member->save();
+                $member = \Model_Member::query()->where($params)->get_one();
+                if( ! $member){
+                    $params['no'] = "{$account->seller_id}{$wechat->user_id}" . time();
+                    $member = \Model_Member::forge($params);
+                    $member->save();
+                }
             }
 
         }
 
+        $wechatOpenid = \Model_WechatOpenid::query()->where('openid', $openid)->get_one();
+        if($wechatOpenid){
+            return $wechatOpenid;
+        }
+
         //创建微信OpenID记录
-        $wechatOpenid = \Model_WechatOpenid::forge([
+        $params = [
             'openid' => $openid,
             'account_id' => $account->id
-        ]);
-        
+        ];
+        $wechatOpenid = \Model_WechatOpenid::forge($params);
         $wechat->ids = [$wechatOpenid];
+
         $wechat->save();
 
         return $wechatOpenid;

@@ -93,7 +93,7 @@ class Controller_WXApi extends Controller_BaseController
 
 		$this->account = \Session::get('WXAccount', \Model_WXAccount::find(1));
 		$url = handler\mp\Tool::createOauthUrlForOpenid($this->account->app_id, $this->account->app_secret, $params['code']);
-		$result = \handler\common\UrlTool::request($url, 'GET');
+		$result = \handler\common\UrlTool::request($url, 'GET', null, true);
 		$result = json_decode($result->body);
 		if( ! isset($result->openid) || ! $result->openid){
 			\Session::set_flash('msg', ['status' => 'err', 'msg' => '未获取到OpenId!', 'title' => '错误']);
@@ -109,8 +109,9 @@ class Controller_WXApi extends Controller_BaseController
 		$wechatOpenID = \Model_WechatOpenid::query()
 			->where(['openid' => $result->openid])
 			->get_one();
+
 		//openid存在,不需要创建
-		if($wechatOpenID){
+		if($wechatOpenID && $wechatOpenID->wechat->nickname && $wechatOpenID->wechat->headimgurl){
 			\Response::redirect($to_url);
 			return;
 		}
@@ -124,8 +125,13 @@ class Controller_WXApi extends Controller_BaseController
 			return $this->show_message();
 		}
 
+
 		//查询微信用户信息是否存在
 		$wechat = \Model_Wechat::query()
+			->where([
+				'nickname' => $result->openid
+			])
+			->or_where_open()
 			->where([
 				'nickname' => $result->nickname,
 				'sex' => $result->sex,
@@ -133,20 +139,26 @@ class Controller_WXApi extends Controller_BaseController
 				'province' => $result->province,
 				'country' => $result->country,
 				'headimgurl' => $result->headimgurl
-			])->get_one();
+			])
+			->or_where_close()
+			->get_one();
 
-		//存在则直接赋值微信信息记录
-		if($wechat){
-			$wechatOpenID->wechat_id = $wechatOpenID->id;
-			return;
+		if($wechat && ! $wechatOpenID) {
+			$wechatOpenID = \Model_WechatOpenid::forge([
+				'openid' => $result->openid,
+				'account_id' => $this->account->id,
+				'wechat_id' => $wechat->id,
+			]);
+			$wechatOpenID->save();
+		}else if(! $wechat && ! $wechatOpenID){
+			//创建openid数据及微信信息
+			$wechatOpenID = handler\mp\Account::createWechatAccount($result->openid, $this->account);
+			if(! $wechatOpenID){
+				\Session::set_flash('msg', ['status' => 'err', 'msg' => '微信信息保存失败! 缺少必要信息,系统终止!', 'title' => '错误']);
+				return $this->show_message();
+			}
 		}
 
-		//创建openid数据及微信信息
-		$wechatOpenID = handler\mp\Account::createWechatAccount($result->openid, $this->account);
-		if(! $wechatOpenID){
-			\Session::set_flash('msg', ['status' => 'err', 'msg' => '微信信息保存失败! 缺少必要信息,系统终止!', 'title' => '错误']);
-			return $this->show_message();
-		}
 		$wechat = $wechatOpenID->wechat;
 		# 保存拉取到的用户信息
 		$wechat->nickname = $result->nickname;
@@ -159,7 +171,6 @@ class Controller_WXApi extends Controller_BaseController
 		$wechat->subscribe_time = isset($result->subscribe_time) ? $result->subscribe_time : 0;
 		$wechat->subscribe = isset($result->subscribe) ? $result->subscribe : 0;
 		$wechat->save();
-
 		\Response::redirect($to_url);
 	}
 

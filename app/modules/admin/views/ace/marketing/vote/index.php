@@ -8,7 +8,7 @@
         <div class="clearfix" style="text-align: right; padding-right: 12px;">
             <div class="btn-group" role="group" aria-label="First group">
                 <!--<button type="button" class="btn btn-default"><i class="fa fa-search"></i></button>-->
-                <a href="/admin/vote/save" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>
+                <a href="javascript:;" id="btnAdd" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a>
                 <!--<button type="button" class="btn btn-default"><i class="fa fa-file-excel-o"></i></button>-->
                 <a href="javascript:;" id="btnSyn" class="btn btn-sm btn-default"><i class="fa fa-refresh"></i></a>
             </div>
@@ -44,18 +44,29 @@
                             </label>
                         </td>
                         <td>
-                            <a href="/admin/marketing/vote/candidates/<?php echo $value->id; ?>">
-                            <?php echo $value->title;?>
+                            <input type="text" name="title" value="<?= $value->title;?>" placeholder="活动标题">
+                        </td>
+                        <td>
+                            <input type="text" name="begin_at" value="<?= date('Y-m-d H:i:s', $value->start_at);?>" placeholder="开始时间">
+                            至
+                            <input type="text" name="end_at" value="<?= date('Y-m-d H:i:s', $value->end_at);?>" placeholder="结束时间">
+                        </td>
+                        <td>
+                            <select name="status">
+                                <option value="normal">正常</option>
+                                <option value="stop">停止</option>
+                            </select>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-success" role="btnSave" >
+                                保存
                             </a>
-                        </td>
-                        <td>
-                            <?php echo date('Y-m-d H:i:s', $value->start_at);?>至
-                            <?php echo date('Y-m-d H:i:s', $value->end_at);?>
-                        </td>
-                        <td><?php echo $value->status == 'NORMAL' ? '正常' : '停止';?></td>
-
-                        <td>
-
+                            <a class="btn btn-sm btn-danger" role="btnDel">
+                                删除
+                            </a>
+                            <a class="btn btn-sm btn-primary" href="/admin/marketing/vote/candidates/<?php echo $value->id; ?>">
+                                管理被投项目
+                            </a>
                         </td>
                     </tr>
                 <?php } ?>
@@ -83,6 +94,39 @@ $script = <<<js
 js;
 
 \Asset::js($script, [], 'before-script', true);
-\Asset::js(['modules/admin/mp/material/index.js'], [], 'js-files', false);
+\Asset::js(['jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'modules/admin/marketing/vote/index.js'], [], 'js-files', false);
 
 ?>
+
+<script type="text/x-jquery-tmpl" id="tr">
+<tr data-id="0">
+    <td class="center">
+        <label class="pos-rel">
+            <input type="checkbox" class="ace">
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <td>
+        <input type="text" name="title" value="" placeholder="活动标题">
+    </td>
+    <td>
+        <input type="text" name="begin_at" value="" placeholder="开始时间">
+        至
+        <input type="text" name="end_at" value="" placeholder="结束时间">
+    </td>
+    <td>
+        <select name="status">
+            <option value="normal">正常</option>
+            <option value="stop">停止</option>
+        </select>
+    </td>
+    <td>
+        <a class="btn btn-sm btn-success" role="btnSave">
+            保存
+        </a>
+        <a class="btn btn-sm btn-danger" role="btnDel">
+            删除
+        </a>
+    </td>
+</tr>
+</script>

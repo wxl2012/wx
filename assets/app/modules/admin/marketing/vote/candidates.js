@@ -33,4 +33,17 @@ $(function() {
                 $(tr).attr('data-id', data.data.id);
             }, 'json');
     });
+
+    $('tbody').delegate('a[role=btnDel]', 'click', function () {
+        var tr = $(this).parents('tr');
+        var a = $(this);
+        a.text('处理中...').addClass('disable');
+        $.post('/admin/marketing/vote/candidate_delete/' + tr.attr('data-id'),
+            function (data) {
+                if(data.status == 'err'){
+                    return;
+                }
+                $(tr).remove();
+            }, 'json');
+    });
 });

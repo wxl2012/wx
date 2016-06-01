@@ -94,31 +94,31 @@
                 }
                 ?>
                 <div id="menuItem<?php echo $index ++; ?>" class="col-xs-<?php echo 12 / count($items->button); ?> text-center <?php echo $index < (12 / (12 / count($items->button))) ? ' br' : ''; ?>" action="menu-item" style="padding: 0px;">
-                    <input type="text" placeholder="一级菜单" style=" line-height: 48px;" data='<?php echo json_encode($value); ?>' value="<?php echo $value->name; ?>"/>
+                    <input type="text" placeholder="一级菜单" style=" line-height: 48px;" data='<?php echo json_encode($value); ?>' role="一级" value="<?php echo $value->name; ?>"/>
                 </div>
             <?php } ?>
         <?php }else{ ?>
-            <div id="menuItem0" class="col-xs-12 tac"  data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}' action="menu-item" style="padding: 0px;">
-                <input type="text" placeholder="一级菜单" style=" line-height: 48px;"/>
+            <div id="menuItem0" class="col-xs-12 tac" action="menu-item" style="padding: 0px;">
+                <input type="text" placeholder="一级菜单" style=" line-height: 48px;" role="一级" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'/>
             </div>
         <?php } ?>
     </div>
 </div>
 
 <script type="text/x-jquery-tmpl" id="menuItemHtml">
-    <div class="col-xs-12 tac" id="menuItem${index}" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}' action="menu-item" style="padding: 0px;">
-        <input type="text" value="" placeholder="一级菜单" />
+    <div class="col-xs-12 tac" id="menuItem${index}" action="menu-item" style="padding: 0px;">
+        <input type="text" value="" placeholder="一级菜单" role="一级" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'/>
     </div>
 </script>
 
 <script type="text/x-jquery-tmpl" id="menuHtml">
     <div class="col-xs-12" id="submenuItem${index}" style="padding:0px; margin-top: 90px">
         <ul class="list-group">
-            <li class="list-group-item"><input type="text" value="" placeholder="子菜单1"></li>
-            <li class="list-group-item"><input type="text" value="" placeholder="子菜单2"></li>
-            <li class="list-group-item"><input type="text" value="" placeholder="子菜单3"></li>
-            <li class="list-group-item"><input type="text" value="" placeholder="子菜单4"></li>
-            <li class="list-group-item list-group-item-last"><input type="text" value="" placeholder="子菜单5"></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单1" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单2" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单3" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+            <li class="list-group-item"><input type="text" value="" placeholder="子菜单4" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
+            <li class="list-group-item list-group-item-last"><input type="text" value="" placeholder="子菜单5" data='{"category": 0, "type":0,"name":"","url":"","key":"","media_id":"","sub_button":[]}'></li>
         </ul>
     </div>
 </script>

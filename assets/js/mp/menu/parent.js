@@ -1,5 +1,6 @@
 var menuItem = null;
 var synFlag = false;
+var media_id = 0;
 var menu = MPMenuAction
 
 $(function(){
@@ -43,10 +44,18 @@ $(function(){
      * 设置动作
      */
     $('#action,#value').change(function() {
-        if(! synFlag){
+        if(! synFlag) {
+
+            if($(this).attr('id') == 'action'){
+                if($(this).val() == 'media_id' || $(this).val() == 'view_limited'){
+                    $('#current_menu_content').text('');
+                    $('#content-input,table').show();
+                    loadMaterials();
+                }
+            }
+
             syn('', null);
         }
-
     });
 
     /**
@@ -137,7 +146,7 @@ function syn(action) {
             }else if(menuItem.type == 'click'){
                 menuItem.key = $('#value').val();
             }else if(menuItem.type == 'media_id' || menuItem.type == 'view_limited'){
-                menuItem.media_id = $('#value').val();
+                menuItem.media_id = media_id;
             }
 
             cWin.setMenuItem(menuItem);
@@ -160,6 +169,11 @@ function loadMaterials() {
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional
+            });
+
+            $('#materials input[name=media_id]').on('ifChecked', function(event){
+                media_id = $(this).val();
+                syn('');
             });
         }, 'json');
 }

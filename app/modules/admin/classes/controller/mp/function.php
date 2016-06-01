@@ -29,9 +29,9 @@ class Controller_MP_Function extends Controller_BaseController
         $account = \Model_WXAccount::find($id);
         $account->set($data);
         if($account->save()){
-            //$result = \tools\WechatTools::custom_menu('create', $data['menu']);
-            $result = '';
-            die(json_encode(array('status' => 'succ', 'msg' => '菜单保存成功', 'errcode' => 0, 'result' => $result)));
+            $account->checkToken();
+            $result = \handler\mp\Api::generate_coustom_menu($account->temp_token, $data['menu']);
+            die(json_encode(array('status' => 'succ', 'msg' => '菜单保存成功', 'errcode' => 0, 'result' => $result->body)));
         }else{
             die(json_encode(array('status' => 'err', 'msg' => '菜单保存失败', 'errcode' => 10)));
         }

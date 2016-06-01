@@ -49,7 +49,10 @@
                         <td><input type="text" value="<?php echo $value->keyword;?>" role="keyword"></td>
                         <td><input type="text" value="<?php echo $value->title;?>" role="title"></td>
                         <td><input type="text" value="<?php echo $value->total_gain;?>" role="total_gain"></td>
-                        <td><a role="btnSave" class="btn btn-sm btn-primary">保存</a></td>
+                        <td>
+                            <a role="btnSave" class="btn btn-sm btn-primary">保存</a>
+                            <a role="btnDel" class="btn btn-sm btn-danger">删除</a>
+                        </td>
                     </tr>
                 <?php } ?>
             <?php }else{ ?>
@@ -97,6 +100,9 @@ js;
     <td><input type="text" value="" role="keyword"></td>
     <td><input type="text" value="" role="title"></td>
     <td><input type="text" value="0" role="total_gain"></td>
-    <td><a role="btnSave" class="btn btn-sm btn-primary">保存</a></td>
+    <td>
+        <a role="btnSave" class="btn btn-sm btn-primary">保存</a>
+        <a role="btnDel" class="btn btn-sm btn-danger">删除</a>
+    </td>
 </tr>
 </script>
