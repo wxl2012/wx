@@ -55,9 +55,7 @@ class Account {
                 return false;
             }
             $wechat->user_id = $user_id;
-
-
-
+            
             $params = [
                 'user_id' => $user_id
             ];
