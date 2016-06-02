@@ -58,6 +58,7 @@ class Controller_WXAccount extends Controller_BaseController {
         $this->template->content = \View::forge("ace/mp/account/index");
     }
 
+
     public function action_save($id = 0){
         $params = array(
             'title' => '公众号设置——微信公众号管理',
@@ -111,7 +112,7 @@ class Controller_WXAccount extends Controller_BaseController {
                         );
                 }
                 if($account->save()){
-                    $seller = \Model_Seller::find(\Session::get('seller')->Id);
+                    $seller = \Model_Seller::find(\Session::get('seller')->id);
                     \Session::set('seller', $seller);
                     \Session::set('WXAccount', $account);
                     $msg = array('status' => 'succ', 'msg' => '操作成功', 'errcode' => 0);

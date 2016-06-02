@@ -21,9 +21,11 @@ $(function () {
                     $(tr).find('input').css('color', '#d9534f');
                     return;
                 }
+                if($(tr).attr('data-id') == 0){
+                    $(a).parent().append('<a class="btn btn-sm btn-primary" href="/admin/marketing/vote/candidates/' + data.data.id + '">管理被投项目</a>');
+                }
                 $(tr).find('input').css('color', '#5cb85c');
                 $(tr).attr('data-id', data.data.id);
-                $(a).parent().append('<a class="btn btn-sm btn-primary" href="/admin/marketing/vote/candidates/' + data.data.id + '">管理被投项目</a>');
             }, 'json');
     });
 

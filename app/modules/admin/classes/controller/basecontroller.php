@@ -10,6 +10,7 @@ namespace admin;
 abstract class Controller_BaseController extends \Controller_BaseController
 {
     public $template = 'ace/template';
+    public $theme = 'ace';
     protected $result_message = false;
 
     public function before(){

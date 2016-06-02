@@ -157,6 +157,8 @@ function publish() {
             }else{
                 data.key = 'abc';
             }
+            
+            data.name = $(this).val();
             subs[parseInt(index / 5)].sub_button[subs[parseInt(index / 5)].sub_button.length] = data;
         }
 

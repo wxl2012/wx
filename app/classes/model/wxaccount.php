@@ -122,7 +122,9 @@ class Model_WXAccount extends \Orm\Model
             $this->temp_token = $token['token'];
             $this->temp_token_valid = $token['valid'];
             $this->save();
-            \Session::set('WXAccount', $this);
+            if(\Session::get('WXAccount')){
+                \Session::set('WXAccount', $this);
+            }
         }
     }
 }

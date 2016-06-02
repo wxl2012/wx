@@ -65,6 +65,7 @@ class Controller_Marketing_Vote extends Controller_BaseController
 
         if(\Input::method() == 'POST'){
             $data = \Input::post();
+            $data['account_id'] = \Session::get('WXAccount')->id;
             $cid = $data['id'];
             unset($data['id']);
             $candidate = false;
