@@ -22,8 +22,11 @@ class ReplyVote extends \handler\mp\action\Text {
     public function handle(){
 
         $candidate = \Model_MarketingVoteCandidate::query()
+            ->where('account_id', $this->account->id)
+            ->and_where_open()
             ->where('no', $this->data->Content)
             ->or_where('keyword', $this->data->Content)
+            ->and_where_close()
             ->get_one();
 
         if( ! $candidate){

@@ -22,8 +22,11 @@ class ReplyVoteNum extends \handler\mp\action\Text {
     public function handle(){
         $keyword = str_replace('查询', '', $this->data->Content);
         $candidate = \Model_MarketingVoteCandidate::query()
+            ->where('account_id', $this->account->id)
+            ->and_where_open()
             ->where('no', $keyword)
             ->or_where('keyword', $keyword)
+            ->and_where_close()
             ->get_one();
 
         if( ! $candidate){
