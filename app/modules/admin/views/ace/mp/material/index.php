@@ -33,7 +33,6 @@
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>最后同步时间</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
 
@@ -52,83 +51,6 @@
                         <td><?php echo date('Y-m-d H:i:s', $value->create_time);?></td>
                         <td><?php echo date('Y-m-d H:i:s', $value->update_time);?></td>
                         <td><?php echo date('Y-m-d H:i:s', $value->updated_at);?></td>
-
-                        <td>
-                            <select>
-                                <option>请选择</option>
-                                <?php $labels = ['', '一', '二', '三', '四', '五'];?>
-                                <?php foreach (['a', 'b', 'c'] as $keyword){ ?>
-                                    <optgroup label="一级<?php echo strtoupper($keyword); ?>组">
-                                        <?php for ($i = 1; $i < 6; $i ++){ ?>
-                                            <option value="<?php echo "{$keyword}{$i}"?>"<?php echo "{$keyword}{$i}" == $value->menu_keyword ? ' selected' : ''; ?>><?php echo strtoupper($keyword);?>组第<?php echo $labels[$i];?>项子菜单</option>
-                                        <?php } ?>
-                                    </optgroup>
-                                <?php } ?>
-                            </select>
-                            <!--<div class="hidden-sm hidden-xs btn-group">
-                                <a href="/admin/vote/save/<?php echo $value->thumb_media_id; ?>" class="btn btn-xs btn-info" title="编辑">
-                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                </a>
-
-                                <a class="btn btn-xs btn-danger" title="删除" data-toggle="modal" data-target="#confirmModal">
-                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                </a>
-
-                                <a class="btn btn-xs btn-success" title="票数统计" href="/admin/vote/report/<?php echo $value->thumb_media_id; ?>">
-                                    <i class="ace-icon fa fa-bar-chart-o bigger-120"></i>
-                                </a>
-
-                                <a class="btn btn-xs btn-success" title="查看参与记录" href="/admin/vote/records/<?php echo $value->thumb_media_id; ?>">
-                                    <i class="ace-icon fa fa-paw bigger-120"></i>
-                                </a>
-
-                                <a class="btn btn-xs btn-info" title="查看未审核的报名项" href="/admin/vote/wait/<?php echo $value->thumb_media_id; ?>">
-                                    <i class="ace-icon fa fa-filter bigger-120"></i>
-                                </a>
-                            </div>
-
-                            <div class="hidden-md hidden-lg">
-                                <div class="inline pos-rel">
-                                    <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                        <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                        <li>
-                                            <a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="View">
-											<span class="blue">
-												<i class="ace-icon fa fa-qrcode bigger-120"></i>
-											</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Edit">
-											<span class="green">
-												<i class="ace-icon fa fa-bar-chart bigger-120"></i>
-											</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-											<span class="red">
-												<i class="ace-icon fa fa-pencil bigger-120"></i>
-											</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Delete">
-											<span class="red">
-												<i class="ace-icon fa fa-trash-o bigger-120"></i>
-											</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>-->
-                        </td>
                     </tr>
                 <?php } ?>
                 </tbody>
