@@ -40,18 +40,30 @@ class Request {
 	public function is_repeat(){
 		$count = 0;
 		if(strtolower($this->data->MsgType) == 'event'){
-			$count = \Model_WXRequest::query()
+			/*$count = \Model_WXRequest::query()
 				->where([
 					'from_id' => $this->data->FromUserName,
 					'msg_created_at' => $this->data->CreateTime,
 				])
-				->count();
-		}else{
+				->count();*/
+			$key = "{$this->data->FromUserName}{$this->data->CreateTime}";
 			try {
-				$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
-				$count = intval(\Cache::get(md5("wx{$key}")));
-				$count ++;
+				$count = \Cache::get(md5("{$key}"));
 			} catch (\CacheNotFoundException $e) {
+				\Cache::set(md5("{$key}"), '1', 15);
+			}
+		}else if(strtolower($this->data->MsgType) == 'text'){
+			/*$count = \Model_WXRequest::query()
+				->where([
+					'msg_id' => $this->data->MsgId,
+				]);*/
+			$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
+
+			try {
+				$count = intval(\Cache::get(md5("wx{$key}")));
+			} catch (\CacheNotFoundException $e) {
+				//缓存记录请求消息ID
+				\Cache::set(md5("{$key}"), '1', 15);
 			}
 		}
 
@@ -66,29 +78,41 @@ class Request {
 	 *
 	 */
 	public function init_wechat(){
+
 		$openid = \Model_WechatOpenid::getItem($this->data->FromUserName);
 		if( ! $openid){
-			$this->account->checkToken();
-			$openid = \handler\mp\Account::createWechatAccount($this->data->FromUserName, $this->account);
+			try {
+				$key = $this->data->FromUserName;
+				$openid = \Cache::get(md5("wx_{$key}"));
+			} catch (\CacheNotFoundException $e) {
+				$this->account->checkToken();
+				$openid = \handler\mp\Account::createWechatAccount($this->data->FromUserName, $this->account);
+			}
 		}
 
-		$this->wechat = $openid->wechat;
-		if( ! $this->wechat->nickname || ! $this->wechat->headimgurl){
+		if(isset($openid->wechat)){
+			$this->wechat = $openid->wechat;
+		}
+
+		if( $this->wechat && (! $this->wechat->nickname || ! $this->wechat->headimgurl)){
 			$wechatInfo = \handler\mp\Wechat::getWechatInfo($this->account->temp_token, $openid->openid);
 			if( ! $wechatInfo){
 				return false;
 			}
-			$this->wechat->set([
-				'nickname' => $wechatInfo->nickname,
-				'sex' => $wechatInfo->sex,
-				'city' => $wechatInfo->city,
-				'province' => $wechatInfo->province,
-				'country' => $wechatInfo->country,
-				'headimgurl' => $wechatInfo->headimgurl,
-				'subscribe_time' => $wechatInfo->subscribe_time,
-			]);
-			$this->wechat->save();
+			if(isset($wechatInfo->nickname)){
+				$this->wechat->set([
+					'nickname' => $wechatInfo->nickname,
+					'sex' => $wechatInfo->sex,
+					'city' => $wechatInfo->city,
+					'province' => $wechatInfo->province,
+					'country' => $wechatInfo->country,
+					'headimgurl' => $wechatInfo->headimgurl,
+					'subscribe_time' => $wechatInfo->subscribe_time,
+				]);
+				$this->wechat->save();
+			}
 		}
+
 	}
 
 	/**
@@ -102,10 +126,6 @@ class Request {
 		}else if(strtolower($this->data->MsgType) == 'event' && isset($this->data->EventKey)){
 			$msg_content = $this->data->EventKey;
 		}
-
-		//缓存记录请求消息ID
-		$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
-		\Cache::set(md5("wx{$key}"), '0', 15);
 
 		$request = \Model_WXRequest::forge(
 			array(
