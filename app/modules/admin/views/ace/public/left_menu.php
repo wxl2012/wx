@@ -1,10 +1,7 @@
-<?php 
-	$seller = \Session::get('seller', false);
-	if( ! $seller){
-		return;
-	}
-	$ot = \Input::get('order_type', false) ? '&order_type=' . \Input::get('order_type') : '';
+<?php
+$account = \Session::get('WXAccount');
 ?>
+
 <ul class="nav nav-list">
 	<li<?php echo (isset($menu) && $menu == 'dashboard') || ! isset($menu) || ! $menu ? ' class="active"' : '' ?>>
 		<a href="/admin">
@@ -16,7 +13,7 @@
 	</li>
 
 	<li<?php echo isset($menu) && $menu == 'wxaccount' ? ' class="active"' : '' ?>>
-		<a href="/admin/wxaccount/save/1">
+		<a href="/admin/wxaccount/save/<?= $account ? $account->id : 0; ?>">
 			<i class="menu-icon fa fa-wechat"></i>
 			<span class="menu-text"> 微信公众号设置 </span>
 		</a>
@@ -99,6 +96,38 @@
 				<a href="/admin/mp/function/reply">
 					<i class="menu-icon fa fa-caret-right"></i>
 					微信价值测算
+				</a>
+
+				<b class="arrow"></b>
+			</li>
+		</ul>
+	</li>
+
+	<li<?php echo isset($menu) && in_array($menu, array('seller')) ? ' class="open active"' : '' ?>>
+		<a href="javascript:;" class="dropdown-toggle">
+			<i class="menu-icon fa fa-wechat"></i>
+			<span class="menu-text">
+				商户管理
+			</span>
+
+			<b class="arrow fa fa-angle-down"></b>
+		</a>
+
+		<b class="arrow"></b>
+
+		<ul class="submenu">
+			<li<?php echo isset($menu) && 'seller' == $menu ? ' class="active"' : '' ?>>
+				<a href="/admin/seller">
+					<i class="menu-icon fa fa-caret-right"></i>
+					商家管理
+				</a>
+
+				<b class="arrow"></b>
+			</li>
+			<li<?php echo isset($menu) && 'account' == $menu ? ' class="active"' : '' ?> style="display:none;">
+				<a href="/admin/wxaccount">
+					<i class="menu-icon fa fa-caret-right"></i>
+					公众号管理
 				</a>
 
 				<b class="arrow"></b>
