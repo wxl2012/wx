@@ -44,6 +44,7 @@ class Controller_Home extends Controller_BaseController
 
                 $employee = \Model_Employee::query()
                     ->where('parent_id', \Auth::get_user()->id)
+                    ->where('is_deleted', 0)
                     ->get_one();
                 if( ! $employee){
                     \Session::set_flash('msg', ['status' => 'err', 'msg' => '非法登录,多次尝试登录,您的帐户将被封锁!', 'title' => '警告', 'sub_title' => '非法登录', 'icon' => 'exclamation-circle', 'color' => '#d9534f']);

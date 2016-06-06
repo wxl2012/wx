@@ -47,12 +47,14 @@ class Model_User extends \Auth\Model\Auth_User
 					$data['group_id'],
 					$data['profile_fields']
 				);
+				\Cache::set(md5($data['username']), substr($data['username'], 3));
 			}else{
 				$user_id = $user->id;
 			}
 
 		}catch(SimpleUserUpdateException $e){
-			\Log::error('create user error message:' . $e->getMessage() . '; error data:' . json_encode($data));
+			$user = \Model_User::query()->where('username', $data['username'])->get_one();
+			$user_id = $user->id;
 
 		}
 

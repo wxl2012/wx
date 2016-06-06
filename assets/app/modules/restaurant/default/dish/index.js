@@ -1,7 +1,6 @@
 $(function () {
 
     $('#btnMore').click(function () {
-
         if(_pageIndex > _totalPage){
             $('#btnMore').text('已经没有下一页了');
             return;
@@ -30,9 +29,9 @@ $(function () {
 
     setNavbar();
 
-    initBasket();
+    //initBasket(); 移至列表数据加载完后调用
 
-    synBasket();
+    //synBasket();
 
     loadData();
 });
@@ -51,6 +50,7 @@ function initBasket() {
 
     _dish_list = JSON.parse(list);
     $('input[role=number]').each(function () {
+
         for(var i = 0; i < _dish_list.length; i ++){
             if(_dish_list[i].goods_id == $(this).parents('.list-group-item').attr('data-id')){
                 $(this).val(_dish_list[i].num);
@@ -58,6 +58,8 @@ function initBasket() {
             }
         }
     });
+
+    synBasket();
 }
 
 function loadData() {
@@ -70,12 +72,14 @@ function loadData() {
             }
 
             _totalPage = data.total_page;
-            _pageIndex = data.current_page + 1;
+            _pageIndex = parseInt(data.current_page) + 1;
 
             var items = data.data;
             for (var key in items){
                 $('#dishItems').append(dishItem, items[key], null);
             }
+
+            initBasket();
 
         });
 }
@@ -88,22 +92,28 @@ function synBasket() {
 
         total_num += parseInt($(this).val());
 
-        var flag = false;
+        var item = $(this).parents('.list-group-item');
+        var index = _dish_list.length;
+
         for(var i = 0; i < _dish_list.length; i ++){
-            if(_dish_list[i].goods_id == $(this).parents('.list-group-item').attr('data-id')){
-                _dish_list[i].num = parseInt($(this).val());
-                flag = true;
+            if(_dish_list[i].goods_id == item.attr('data-id')){
+                index = i;
                 break;
             }
         }
 
-        if(flag || parseInt($(this).val()) <= 0){
+        if(parseInt($(this).val()) <= 0){
+            if(i != _dish_list.length){
+                _dish_list.remove(index);
+            }
             return;
         }
 
-        _dish_list[_dish_list.length] = {
-            goods_id: $(this).parents('.list-group-item').attr('data-id'),
-            num: parseInt($(this).val())
+        _dish_list[index] = {
+            goods_id: item.attr('data-id'),
+            num: parseInt($(this).val()),
+            name: item.attr('data-name'),
+            price: parseFloat(item.attr('data-price'))
         };
     });
 

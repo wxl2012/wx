@@ -31,6 +31,10 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Rest {
 
         $flag = false;
 
+        if(\Fuel::$env == \Fuel::DEVELOPMENT){
+            return true;
+        }
+        
         if( ! \Input::get('access_token', false)){
             return $flag;
         }

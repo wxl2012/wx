@@ -34,30 +34,18 @@
                 </div>
 
             </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    红烧肉
-                </div>
-                <div class="col-xs-3 text-center" style="line-height: 26px">
-                    5000
-                </div>
-                <div class="col-xs-3 text-center" style="padding-left: 0px">
-                    <span role="minus">-</span>
-                    <input type="text" class="text-center" value="0" role="number" style="width:40px;">
-                    <span role="plus">+</span>
-                </div>
-            </div>
+
         </div>
         <div class="list-group-item">
             <div class="row">
                 <div class="col-xs-12 text-right">
-                    合计: ￥0元
+                    合计: ￥<span id="total_fee"></span>元
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row" style="padding-bottom: 20px;">
+    <div id="btns" class="row" style="padding-bottom: 20px;">
         <div class="col-xs-12 text-center">
             <a class="btn btn-primary" style="width: 90%;">立即下单</a>
         </div>
@@ -107,12 +95,29 @@
     </div>
 </div>
 
+<script type="text/x-jquery-tmpl" id="dishItem">
+    <div class="row" data-id="${goods_id}" data-name="${name}" data-price="${price}">
+        <div class="col-xs-6">
+            ${name}
+        </div>
+        <div class="col-xs-3 text-center" style="line-height: 26px">
+            ${price}
+        </div>
+        <div class="col-xs-3 text-center" style="padding-left: 0px; color: #333;">
+            <span role="minus" style="font-size:15pt;">-</span>
+            <label class="text-center" style="width: 30px;">${num}</label>
+            <input type="text" class="text-center" value="${num}" role="number" style="width:40px; display:none;">
+            <span role="plus" style="font-size:15pt;">+</span>
+        </div>
+    </div>
+</script>
+
 <?php
 $script = <<<js
     var _dish_list = [];
 js;
 
 \Asset::js($script, [], 'before-script', true);
-\Asset::js(['icheck/icheck.min.js', 'modules/restaurant/default/trolley/index.js'], [], 'js-files', false);
+\Asset::js(['tools.js', 'jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'icheck/icheck.min.js', 'modules/restaurant/default/trolley/index.js'], [], 'js-files', false);
 \Asset::css(['icheck/skins/square/blue.css'], [], 'css-files', false);
 ?>

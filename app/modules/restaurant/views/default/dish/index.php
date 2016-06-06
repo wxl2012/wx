@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="list-group-item text-right" data-id="${id}">
+    <div class="list-group-item text-right" data-id="${id}" data-name="${goods.name}" data-price="${goods.sale_price}">
         <div class="row">
             <div class="col-xs-3">
             </div>
@@ -62,5 +62,5 @@ $script = <<<js
 js;
 
 \Asset::js($script, [], 'before-script', true);
-\Asset::js(['jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'modules/restaurant/default/dish/index.js'], [], 'js-files', false);
+\Asset::js(['tools.js', 'jquery-tmpl/jquery.tmpl.min.js', 'jquery-tmpl/jquery.tmplPlus.min.js', 'modules/restaurant/default/dish/index.js'], [], 'js-files', false);
 ?>

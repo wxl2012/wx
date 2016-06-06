@@ -60,14 +60,14 @@ class Controller_WXApi extends Controller_BaseController
 		//检验消息合法性
 		if( ! \handler\mp\Tool::checkSignature(\Input::get('signature', false), \Input::get('timestamp', false), \Input::get('nonce', false), $this->account->token)){
 			\Log::error('WXApi.php check signature account:' . json_encode($this->account->to_array()));
-			die('');
+			die('success');
 		}
 
 		//接入请求
 		if(\Input::get('echostr', false)){
 			if($this->account->status != 'NONE'){
 				\Log::error('account status error');
-				die();
+				die('success');
 			}else{
 				die(\Input::get('echostr'));
 			}

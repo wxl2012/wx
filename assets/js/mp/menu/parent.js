@@ -11,6 +11,15 @@ $(function(){
         increaseArea: '20%' // optional
     });
 
+    $('.table tfoot').delegate('#pagination a', 'click', function () {
+        var url = $(this).attr('original-url');
+        ///api/mp/material?start=2
+        url += '&access_token=' + _access_token + '&id=' + _account_id;
+        url = url.replace('?', '.json?');
+
+        loadMaterials(url);
+    });
+
     $('#category,#action,#value').click(function(){
         synFlag = false;
     });
@@ -50,7 +59,7 @@ $(function(){
                 if($(this).val() == 'media_id' || $(this).val() == 'view_limited'){
                     $('#current_menu_content').text('');
                     $('#content-input,table').show();
-                    loadMaterials();
+                    loadMaterials('/api/mp/material.json?access_token=' + _access_token + '&id=' + _account_id);
                 }
             }
 
@@ -112,13 +121,13 @@ function setMenuInfo(data) {
             $('#current_menu_content').text(data.media_id);
             $('#value').val(data.media_id);
             $('#content-input,table').show();
-            loadMaterials();
+            loadMaterials('/api/mp/material.json?access_token=' + _access_token + '&id=' + _account_id);;
             break;
         case 'view_limited':
             $('#current_menu_content').text(data.media_id);
             $('#value').val(data.media_id);
             $('#content-input,table').show();
-            loadMaterials();
+            loadMaterials('/api/mp/material.json?access_token=' + _access_token + '&id=' + _account_id);;
             break;
     }
 }
@@ -154,17 +163,23 @@ function syn(action) {
     }
 }
 
-function loadMaterials() {
-    $.get('/api/mp/material.json?access_token=' + _access_token + '&id=' + _account_id,
+function loadMaterials(url) {
+
+    $.get(url,
         function (data) {
             if(data.status == 'err'){
                 return;
             }
+            $('#materials').empty();
             var items = data.data;
             for(var key in items){
                 $('#materials').append(tr, items[key], null);
             }
             $('#pagination').html(data.pagination);
+            $('#pagination').find('a').each(function () {
+                $(this).attr('original-url', $(this).attr('href')).attr('href', 'javascript:;');
+            });
+
             $('#materials input').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
