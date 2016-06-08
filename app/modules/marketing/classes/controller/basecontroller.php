@@ -14,6 +14,9 @@ namespace marketing;
 
 abstract class Controller_BaseController extends \Controller_BaseController {
 
+    public $template = 'default/template';
+    public $theme = 'default';
+
     //活动数据对象
     protected $marketing;
 

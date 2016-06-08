@@ -96,5 +96,10 @@ class Model_Marketing extends \Orm\Model
             'key_from' => 'id',
             'key_to'   => 'marketing_id'
         ),
+        'candidates' => array(
+            'model_to' => 'Model_MarketingVoteCandidate',
+            'key_from' => 'id',
+            'key_to'   => 'marketing_id'
+        )
     );
 }
