@@ -213,6 +213,10 @@ class Controller_WXPay extends Controller_BaseController
      */
     public function action_index(){
 
+        if(\Input::get('action', false) == 'empty'){
+            die();
+        }
+
         $msg = false;
 
         if( ! \Input::get('account_id', false) && ! \Session::get('WXAccount', false)){

@@ -35,8 +35,7 @@ class Subscribe extends \handler\mp\action\Event {
      * 扫码操作
      */
     private function scan(){
-        $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
-        \Log::error($result ? '推荐关系已建立' : '推荐关系创建失败');
+        \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
     }
 
     /**
@@ -46,7 +45,7 @@ class Subscribe extends \handler\mp\action\Event {
 
         //是否扫码关注
         if($this->qrcode_key){
-            $result = \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
+            \Model_MemberRecommendRelation::addRelation($this->qrcode_key, $this->wechat->user_id, 2);
         }
 
         if(isset($this->account->subscribe_reply) && $this->account->subscribe_reply){

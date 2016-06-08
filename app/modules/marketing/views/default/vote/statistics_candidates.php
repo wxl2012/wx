@@ -42,7 +42,7 @@
 
                 <tbody>
                     <?php $index = 0; ?>
-                    <?php foreach ($vote->candidates as $item){ ?>
+                    <?php foreach ($items as $item){ ?>
                         <?php $index ++; ?>
                         <tr>
                             <td><?= $index; ?></td>

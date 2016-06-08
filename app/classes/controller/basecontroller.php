@@ -185,6 +185,11 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'actions' => []
 			],
 			[
+				'module' => 'marketing',
+				'controller' => 'vote',
+				'actions' => ['rank']
+			],
+			[
 				'module' => 'admin',
 				'controller' => 'login',
 				'actions' => []

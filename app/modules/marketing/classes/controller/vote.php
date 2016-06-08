@@ -18,7 +18,7 @@ class Controller_Vote extends Controller_BaseController {
         parent::before();
     }
 
-    public function action_index(){
+    public function action_rank(){
 
         $id = \Input::get('id', false);
 
@@ -26,7 +26,9 @@ class Controller_Vote extends Controller_BaseController {
             die('');
         }
 
-        $params = [];
+        $params = [
+            'title' => '评选排行榜'
+        ];
 
         $vote = \Model_Marketing::find($id);
 
@@ -34,6 +36,11 @@ class Controller_Vote extends Controller_BaseController {
             \Session::set_flash('msg', ['status' => 'err', 'msg' => '活动不存在', 'errcode' => 10]);
             return $this->show_message();
         }
+
+        $params['items'] = \Model_MarketingVoteCandidate::query()
+            ->where('marketing_id', $id)
+            ->order_by(['total_gain' => 'desc'])
+            ->get();
         $params['vote'] = $vote;
         
         \View::set_global($params);

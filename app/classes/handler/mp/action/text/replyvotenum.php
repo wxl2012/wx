@@ -33,7 +33,9 @@ class ReplyVoteNum extends \handler\mp\action\Text {
             $this->reply_text('抱歉，该选手不存在！');
         }
 
-        $this->reply_text("{$candidate->no}号选手{$candidate->title}，总票数为{$candidate->total_gain}票");
+        $base_url = \Config::get('base_url');
+        $this->reply_text("<a href='{$base_url}marketing/vote/rank?id={$candidate->marketing_id}'>点击查看</a>");
+        //$this->reply_text("{$candidate->no}号选手{$candidate->title}，总票数为{$candidate->total_gain}票");
     }
 
     private function reply_text($content){
