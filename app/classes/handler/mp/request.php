@@ -106,6 +106,8 @@ class Request {
 					'subscribe_time' => $wechatInfo->subscribe_time,
 				]);
 				$this->wechat->save();
+
+				\handler\mp\Wechat::getWechatHeadImage($wechatInfo->headimgurl);
 			}
 		}
 
