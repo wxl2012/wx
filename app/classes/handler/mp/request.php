@@ -38,37 +38,29 @@ class Request {
 	 * 去重复请求
 	 **/
 	public function is_repeat(){
+
 		$count = 0;
 		if(strtolower($this->data->MsgType) == 'event'){
-			/*$count = \Model_WXRequest::query()
-				->where([
-					'from_id' => $this->data->FromUserName,
-					'msg_created_at' => $this->data->CreateTime,
-				])
-				->count();*/
 			$key = "{$this->data->FromUserName}{$this->data->CreateTime}";
+			$key = md5($key);
 			try {
-				$count = \Cache::get(md5("{$key}"));
+				$count = \Cache::get($key);
 			} catch (\CacheNotFoundException $e) {
-				\Cache::set(md5("{$key}"), '1', 15);
+				\Cache::set($key, json_encode($this->data), 60 * 60 * 1);
 			}
 		}else if(strtolower($this->data->MsgType) == 'text'){
-			/*$count = \Model_WXRequest::query()
-				->where([
-					'msg_id' => $this->data->MsgId,
-				]);*/
 			$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
-
+			$key = md5("wx{$key}");
 			try {
-				$count = intval(\Cache::get(md5("wx{$key}")));
+				$count = intval(\Cache::get($key));
 			} catch (\CacheNotFoundException $e) {
 				//缓存记录请求消息ID
-				\Cache::set(md5("{$key}"), '1', 15);
+				\Cache::set($key, json_encode($this->data), 60 * 60 * 1);
 			}
 		}
 
 		if($count > 0){
-			\handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
+			//\handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
 			die('success');
 		}
 	}
@@ -78,6 +70,10 @@ class Request {
 	 *
 	 */
 	public function init_wechat(){
+
+		if( ! isset(\Session::get('WXAccount')->is_create_openid) && \Session::get('WXAccount')->is_create_openid){
+			return true;
+		}
 
 		$openid = \Model_WechatOpenid::getItem($this->data->FromUserName);
 		if( ! $openid){
