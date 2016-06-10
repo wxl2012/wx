@@ -20,20 +20,20 @@
         <?php if(isset($items) && $items){ ?>
             <table id="simple-table" class="table table-striped table-bordered table-hover">
                 <thead>
-                <tr>
-                    <th class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </th>
-                    <th>标题</th>
-                    <th class="hide">作者</th>
-                    <th class="hide">描述</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>最后同步时间</th>
-                </tr>
+                    <tr>
+                        <th class="center">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>标题</th>
+                        <th class="hide">作者</th>
+                        <th class="hide">描述</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>最后同步时间</th>
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -55,13 +55,13 @@
                 <?php } ?>
                 </tbody>
                 <?php if(isset($pagination) && $pagination){ ?>
-                    <tfoot>
+                <tfoot>
                     <tr>
-                        <td colspan="9" style="text-align: right;">
+                        <td colspan="7" style="text-align: right;">
                             <?php echo isset($pagination) && $pagination ? htmlspecialchars_decode($pagination) : ''; ?>
                         </td>
                     </tr>
-                    </tfoot>
+                </tfoot>
                 <?php } ?>
             </table>
         <?php }else{ ?>

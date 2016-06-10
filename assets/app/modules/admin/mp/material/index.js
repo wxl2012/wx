@@ -1,12 +1,23 @@
+var loading = false;
+
 $(function () {
 
     $('#btnSyn').click(function () {
 
+        if(loading){
+            return;
+        }
+        loading = true;
+
+        $('#btnSyn').find('i').addClass('fa-spin');
         $.get('/admin/mp/material/syn',
             {
                 account_id: $('#account_id').val()
             },
             function (data) {
+
+                $('#btnSyn').find('i').removeClass('fa-spin');
+                loading = false;
                 if(data.status == 'err'){
                     alert(data.msg);
                     return false;
