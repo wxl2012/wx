@@ -3,6 +3,10 @@ $seller = \Session::get('seller', false);
 ?>
 <div class="row">
     <div class="col-xs-12">
+        <div>
+            <a href="http://www.tudou.com/programs/view/p76Kh-AR5G0/" target="_blank">如何设置公众号?</a><br>
+            <a href="http://www.tudou.com/programs/view/1FZDC4za504/" target="_blank">如何接入平台?</a>
+        </div>
         <div class="alert alert-danger" style="display:none; text-align: center; font-size:20px;" id="ajaxResult"></div>
         <!-- PAGE CONTENT BEGINS -->
         <form class="form-horizontal" method="post" role="form">
@@ -75,7 +79,7 @@ $seller = \Session::get('seller', false);
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 关注回复 </label>
                 <div class="col-sm-9">
-                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="subscribe_reply" name="subscribe_reply" placeholder="关注公众号时回复的内容"  value="<?php echo isset($item) && $item && isset($item->subscribe_reply) ? $item->subscribe_reply : ''; ?>">
+                    <textarea class="col-xs-10 col-sm-5 col-md-7" id="subscribe_reply" name="subscribe_reply" placeholder="关注公众号时回复的内容"><?php echo isset($item) && $item && isset($item->subscribe_reply) ? $item->subscribe_reply : ''; ?></textarea>
                 </div>
             </div>
             <!--
@@ -85,48 +89,48 @@ $seller = \Session::get('seller', false);
                     <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_found_content" name="keyword_not_found_content" placeholder="回复任意字符时的触发的内容"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
                 </div>
             </div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> wechat_ticket </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="wechat_ticket" name="wechat_ticket" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> wechat_ticket_valid </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="wechat_ticket_valid" name="wechat_ticket_valid" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> is_subscribe_member </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="is_subscribe_member" name="is_subscribe_member" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> keyword_not_fond </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_fond" name="keyword_not_fond" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否开启创建页面功能 </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="is_fans_create_page" name="is_fans_create_page" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 开始制作关键字 </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="fans_create_page_keyword" name="fans_create_page_keyword" placeholder="如:“ok”"  value="<?php echo isset($item) && isset($item->fans_create_page_keyword) ? $item->fans_create_page_keyword : ''; ?>">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 结束制作关键字 </label>
-				<div class="col-sm-9">
-					<input type="text" class="col-xs-10 col-sm-5 col-md-7" id="fans_create_page_over_keyword" name="fans_create_page_over_keyword" placeholder="如:“over”"  value="<?php echo isset($item) && isset($item->fans_create_page_over_keyword) ? $item->fans_create_page_over_keyword : ''; ?>">
-				</div>
-			</div>-->
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> wechat_ticket </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="wechat_ticket" name="wechat_ticket" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> wechat_ticket_valid </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="wechat_ticket_valid" name="wechat_ticket_valid" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> is_subscribe_member </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="is_subscribe_member" name="is_subscribe_member" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> keyword_not_fond </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="keyword_not_fond" name="keyword_not_fond" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否开启创建页面功能 </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="is_fans_create_page" name="is_fans_create_page" placeholder="对接时的token"  value="<?php echo isset($item) && $item ? $item->token : md5(time() . 'ray'); ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 开始制作关键字 </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="fans_create_page_keyword" name="fans_create_page_keyword" placeholder="如:“ok”"  value="<?php echo isset($item) && isset($item->fans_create_page_keyword) ? $item->fans_create_page_keyword : ''; ?>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 结束制作关键字 </label>
+                <div class="col-sm-9">
+                    <input type="text" class="col-xs-10 col-sm-5 col-md-7" id="fans_create_page_over_keyword" name="fans_create_page_over_keyword" placeholder="如:“over”"  value="<?php echo isset($item) && isset($item->fans_create_page_over_keyword) ? $item->fans_create_page_over_keyword : ''; ?>">
+                </div>
+            </div>-->
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 公众号链接 </label>
                 <div class="col-sm-9">

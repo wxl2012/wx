@@ -21,11 +21,11 @@ class Controller_MP_Material extends Controller_BaseController
         );
 
         $params['items'] = \Model_WXAccountMpMaterial::query()
-                ->where([
-                    'account_id' => \Session::get('WXAccount')->id
-                ])
-                ->order_by(['menu_keyword' => 'DESC'])
-                ->get();
+            ->where([
+                'account_id' => \Session::get('WXAccount')->id
+            ])
+            ->order_by(['menu_keyword' => 'DESC'])
+            ->get();
         \View::set_global($params);
         $this->template->content = \View::forge("ace/mp/material/index");
     }
@@ -312,7 +312,10 @@ class Controller_MP_Material extends Controller_BaseController
         $id = $id ? $id : \Session::get('WXAccount')->id;
         $account = \Model_WXAccount::find($id);
         $account->checkToken();
-        \handler\mp\Api::syn_material($account->temp_token);
+        $result = \handler\mp\Api::syn_material($account->temp_token);
+        if($result !== true){
+            die(json_encode(['status' => 'err', 'msg' => $result, 'errcode' => 10]));
+        }
     }
 
     /**

@@ -47,7 +47,7 @@
 
     <div id="btns" class="row" style="padding-bottom: 20px;">
         <div class="col-xs-12 text-center">
-            <a class="btn btn-primary" style="width: 90%;">立即下单</a>
+            <a id="btnPay" class="btn btn-primary" style="width: 90%;">立即下单</a>
         </div>
         <div class="col-xs-12 text-center" style="padding-top: 5px;">
             <img src="/assets/img/wxpay.png" alt="" style="width: 15px;" />
@@ -113,7 +113,10 @@
 </script>
 
 <?php
+$user_id = \Auth::check() ? \Auth::get_user()->id : 0;
 $script = <<<js
+    var _access_token = '';
+    var _user_id = {$user_id};
     var _dish_list = [];
 js;
 

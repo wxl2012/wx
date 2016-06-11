@@ -151,9 +151,13 @@ class Api{
     public static function syn_material($access_token){
         # 获取素材总数
         $url = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={$access_token}";
-        $result = \handler\common\UrlTool::request($url);
-        $result = json_decode($result->body);
+        $ret = \handler\common\UrlTool::request($url);
 
+        $result = json_decode($ret->body);
+
+        if( ! isset($result->news_count)){
+            return $result->body;
+        }
         # 计算分页数量
         $pageTotal = intval(($result->news_count + (20 - 1)) / 20);
 
@@ -194,6 +198,8 @@ class Api{
                 }
             }
         }
+
+        return true;
     }
 }
 

@@ -38,6 +38,37 @@ $(function () {
     $('#btnChangePayment').click(function () {
         $('#payments').fadeIn();
     });
+    
+    $('#btnPay').click(function () {
+        //history.pushState({title: '标题', url: '/wxpay', otherkey: 'test'}, '', '/restaurant/order')
+
+        var dishes = [];
+
+        for (var i = 0;i < _dish_list.length; i ++){
+            dishes[dishes.length] = {
+                id: _dish_list[i].goods_id,
+                num: _dish_list[i].num
+            }
+        }
+
+
+        $.post('/api/order/dish/create?access_token=' + _access_token,
+            {
+                from_id: 1,
+                buyer_id: _user_id,
+                payment_type: 'wxpay',
+                dishes: dishes
+            },
+            function (data) {
+                if(data.status == 'err'){
+                    return;
+                }
+                
+                localStorage.removeItem('CHOICE_DISH_LIST')
+                history.replaceState(null, '标题', '/wxpay');
+            }, 'json');
+
+    });
 
     setNavbar();
 
