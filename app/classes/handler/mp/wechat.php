@@ -58,7 +58,7 @@ class Wechat {
         $span = DS;
         $filePath = DOCROOT . "uploads{$span}tmp{$span}photos{$span}{$filename}.jpg";
 
-        $result = \handler\common\UrlTool::request('http://wx.qlogo.cn/mmopen/ibOYIic5ANNwVyvIXBNGJYvXmsAQtyTS8nSefGc5v0paMmw6jtuHDjY9ia2mSkhW6ZhiaFFicz3cicra68geeTZrJJBAqiaVnhxibchc/132');
+        $result = \handler\common\UrlTool::request($url);
 
         $file = fopen($filePath, 'w');
         if($file === false){
