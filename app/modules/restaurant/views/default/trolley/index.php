@@ -114,10 +114,14 @@
 
 <?php
 $user_id = \Auth::check() ? \Auth::get_user()->id : 0;
+$account_id = \Session::get('WXAccount', false) ? \Session::get('WXAccount')->id : 0;
+$openid = \Session::get('OpenID', false) ? \Session::get('OpenID')->openid : '';
 $script = <<<js
     var _access_token = '';
     var _user_id = {$user_id};
     var _dish_list = [];
+    var _account_id = {$account_id};
+    var _opendid = '{$openid}';
 js;
 
 \Asset::js($script, [], 'before-script', true);

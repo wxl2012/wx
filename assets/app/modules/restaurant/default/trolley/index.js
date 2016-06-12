@@ -65,7 +65,8 @@ $(function () {
                 }
                 
                 localStorage.removeItem('CHOICE_DISH_LIST')
-                history.replaceState(null, '标题', '/wxpay');
+                history.replaceState(null, '标题', '/wxpay?action=empty');
+                wxpay(data.data.id);
             }, 'json');
 
     });
@@ -76,6 +77,9 @@ $(function () {
 
 });
 
+/**
+ * 读取本地购物车中的数据
+ */
 function loadData() {
 
     var list = localStorage.getItem('CHOICE_DISH_LIST');
@@ -99,11 +103,17 @@ function loadData() {
     synBasket();
 }
 
+/**
+ * 设置标题栏内容
+ */
 function setNavbar() {
     $('#navTitle').text('购物车');
     //$('#navRight').html('<a href="/store/finance/cashback_records">明细</a>');
 }
 
+/**
+ * 设置菜篮子显示的数字
+ */
 function synBasket() {
 
     var total_num = 0;
@@ -150,6 +160,9 @@ function synBasket() {
     }
 }
 
+/**
+ * 计算总金额
+ */
 function reckon() {
 
     var list = localStorage.getItem('CHOICE_DISH_LIST');
@@ -166,4 +179,16 @@ function reckon() {
     }
 
     $('#total_fee').text(total_fee.toFixed(2));
+}
+
+function wxpay(id) {
+    $.get('/wxpay',
+        {
+            account_id: _account_id,
+            openid: _opendid,
+            order_id: id
+        },
+        function (data) {
+
+        }, 'json');
 }

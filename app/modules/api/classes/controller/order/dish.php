@@ -68,8 +68,8 @@ class Controller_Order_Dish extends Controller_Order {
         if(\Input::method() == 'POST'){
             $msg = [
                 'msg' => '',
-                'errcode' => 0,
-                'status' => 'succ'
+                'errcode' => 20,
+                'status' => 'err'
             ];
             //检测必要的订单信息
 
@@ -92,12 +92,15 @@ class Controller_Order_Dish extends Controller_Order {
                 $this->load_preferential($data['coupons']);
             }
 
-            if( ! $this->save($data)){
+            if($this->save($data)){
                 $msg = [
-                    'msg' => $this->result_message,
-                    'errcode' => 20,
-                    'status' => 'err'
+                    'msg' => '',
+                    'errcode' => 0,
+                    'status' => 'succ',
+                    'data' => $this->order->to_array()
                 ];
+            }else{
+                $msg['msg'] = $this->result_message;
             }
 
             if(\Input::is_ajax()){

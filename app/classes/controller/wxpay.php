@@ -247,7 +247,7 @@ class Controller_WXPay extends Controller_BaseController
             ->get_one();
 
         $result = \handler\mp\Tool::wxpay_order($account, $order, $access, $openid);
-
+die('443' . $result);
         $params = array(
             'appId' => $account->app_id,
             'timeStamp' => strval(time()),
