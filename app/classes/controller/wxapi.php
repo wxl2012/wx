@@ -43,23 +43,32 @@ class Controller_WXApi extends Controller_BaseController
 			die(json_decode(['status' => 'err', 'msg' => '非法请求', 'errcode' => 2010]));
 		}
 
-		if(is_numeric($appid)){
-			$this->account = \Model_WXAccount::find($appid);
-		}else if(is_string($appid)){
-			$this->account = \Model_WXAccount::query()
-				->where('app_id', $appid)
-				->get_one();
+		//获取微信公众号信息
+		$key = "wx_account_{$appid}";
+
+		try{
+			$account = \Cache::get($key);
+			$this->account = unserialize($account);
+		}catch (\CacheNotFoundException $e){
+			if(is_numeric($appid)){
+				$this->account = \Model_WXAccount::find($appid);
+			}else if(is_string($appid)){
+				$this->account = \Model_WXAccount::query()
+					->where('app_id', $appid)
+					->get_one();
+			}
+			$this->account->seller;
+			\Cache::set($key, serialize($this->account));
 		}
+
 
 		if( ! $this->account){
 			die(json_decode(['status' => 'err', 'msg' => '该公众号不存在', 'errcode' => 2011]));
 		}
 
-		\Session::set($this->SESSION_WXACCOUNT_KEY, $this->account);
-
 		//检验消息合法性
 		if( ! \handler\mp\Tool::checkSignature(\Input::get('signature', false), \Input::get('timestamp', false), \Input::get('nonce', false), $this->account->token)){
-			\Log::error('WXApi.php check signature account:' . json_encode($this->account->to_array()));
+			\Log::error('WXApi.php check signature error!');
 			die('success');
 		}
 
@@ -221,7 +230,7 @@ class Controller_WXApi extends Controller_BaseController
 			$data = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 		}
 
-		$request = new \handler\mp\Request($data);
+		$request = new \handler\mp\Request($data, $this->account);
 		$request->is_repeat();
 		$request->write_record();
 		$request->handle();

@@ -26,11 +26,11 @@ class Request {
 	private $wechat;
 	private $seller;
 
-	function __construct($argument)
+	function __construct($data, $account)
 	{
-		$this->data = $argument;
-		$this->account = \Session::get('WXAccount');
-		$this->seller = \Session::get('seller');
+		$this->data = $data;
+		$this->account = $account;
+		$this->seller = $account->seller;
 		$this->init_wechat();
 	}
 
@@ -46,7 +46,7 @@ class Request {
 			try {
 				$result = \Cache::get($key);
 			} catch (\CacheNotFoundException $e) {
-				\Cache::set($key, json_encode($this->data), 60);
+				\Cache::set($key, json_encode($this->data), 10);
 			}
 		}else if(strtolower($this->data->MsgType) == 'text'){
 			$key = isset($this->data->MsgId) ? $this->data->MsgId : 0;
@@ -55,12 +55,11 @@ class Request {
 				$result = intval(\Cache::get($key));
 			} catch (\CacheNotFoundException $e) {
 				//缓存记录请求消息ID
-				\Cache::set($key, json_encode($this->data), 60);
+				\Cache::set($key, json_encode($this->data), 10);
 			}
 		}
 
 		if($result > 0){
-			//\handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
 			die('success');
 		}
 	}
@@ -71,19 +70,13 @@ class Request {
 	 */
 	public function init_wechat(){
 
-		if( ! isset(\Session::get('WXAccount')->is_create_openid) || ! \Session::get('WXAccount')->is_create_openid){
+		if( ! isset($this->account->is_create_openid) || ! $this->account->is_create_openid){
 			return true;
 		}
 
 		$openid = \Model_WechatOpenid::getItem($this->data->FromUserName);
 		if( ! $openid){
-			try {
-				$key = $this->data->FromUserName;
-				$openid = \Cache::get(md5("wx_{$key}"));
-			} catch (\CacheNotFoundException $e) {
-				$this->account->checkToken();
-				$openid = \handler\mp\Account::createWechatAccount($this->data->FromUserName, $this->account);
-			}
+			$openid = \handler\mp\Account::createWechatAccount($this->data->FromUserName, $this->account);
 		}
 
 		if(isset($openid->wechat)){
@@ -92,9 +85,11 @@ class Request {
 
 		if( $this->wechat && (! $this->wechat->nickname || ! $this->wechat->headimgurl)){
 			$wechatInfo = \handler\mp\Wechat::getWechatInfo($this->account->temp_token, $openid->openid);
-			if( ! $wechatInfo){
+			if($wechatInfo === false){
+				\Log::error('未获取到微信详细信息');
 				return false;
 			}
+
 			if(isset($wechatInfo->nickname)){
 				$this->wechat->set([
 					'nickname' => $wechatInfo->nickname,
@@ -105,9 +100,10 @@ class Request {
 					'headimgurl' => $wechatInfo->headimgurl,
 					'subscribe_time' => $wechatInfo->subscribe_time,
 				]);
-				$this->wechat->save();
-
-				\handler\mp\Wechat::getWechatHeadImage($wechatInfo->headimgurl);
+				if($this->wechat->save()){
+					//将头像下载至本地
+					\handler\mp\Wechat::getWechatHeadImage($this->wechat->headimgurl);
+				}
 			}
 		}
 
@@ -118,11 +114,50 @@ class Request {
 	 *
 	 */
 	public function write_record(){
+
+		if( ! isset($this->account->is_record_request) || ! $this->account->is_record_request){
+			return true;
+		}
+
 		$msg_content = isset($this->data->Content) ? $this->data->Content : '';
+
 		if(strtolower($this->data->MsgType) == 'image'){
-			$msg_content = json_encode(array('MediaId' => $this->data->MediaId, 'MsgId' => $this->data->MsgId));
+			$msg_content = json_encode(['MediaId' => $this->data->MediaId, 'MsgId' => $this->data->MsgId, 'PicUrl' => $this->data->PicUrl]);
 		}else if(strtolower($this->data->MsgType) == 'event' && isset($this->data->EventKey)){
-			$msg_content = $this->data->EventKey;
+			switch ($this->data->Event){
+				case 'LOCATION':
+					$msg_content = json_encode(['Latitude' => $this->data->Latitude, 'Longitude' => $this->data->Longitude, 'Precision' => $this->data->Precision]);
+					break;
+				case 'CLICK':
+					$msg_content = $this->data->EventKey;
+					break;
+				case 'VIEW':
+					$msg_content = $this->data->EventKey;
+					break;
+				case 'subscribe':
+					$msg_content = isset($this->data->EventKey) ? "【未关注情况下挚友】扫码关注:{$this->data->EventKey},Ticket:{$this->data->Ticket}" : '';
+					break;
+				case 'unsubscribe':
+					$msg_content = "取消关注";
+					break;
+				case 'SCAN':
+					$msg_content = isset($this->data->EventKey) ? "【关注情况下扫码】扫码关注:{$this->data->EventKey},Ticket:{$this->data->Ticket}" : '';
+					break;
+
+			}
+		}else if(strtolower($this->data->MsgType) == 'voice'){
+			$msg_content = json_encode(['MediaId' => $this->data->MediaId, 'Format' => $this->data->Format]);
+		}else if(strtolower($this->data->MsgType) == 'video'){
+			$msg_content = json_encode(['MediaId' => $this->data->MediaId, 'ThumbMediaId' => $this->data->ThumbMediaId]);
+		}else if(strtolower($this->data->MsgType) == 'shortvideo'){
+			$msg_content = json_encode(['MediaId' => $this->data->MediaId, 'ThumbMediaId' => $this->data->ThumbMediaId]);
+		}else if(strtolower($this->data->MsgType) == 'location'){
+			$msg_content = json_encode(['Location_X' => $this->data->Location_X,
+				'Location_Y' => $this->data->Location_Y,
+				'Scale' => $this->data->Scale,
+				'Label' => $this->data->Label]);
+		}else if(strtolower($this->data->MsgType) == 'link'){
+			$msg_content = json_encode(['Title' => $this->data->Title, 'Description' => $this->data->Description, 'Url' => $this->data->Url]);
 		}
 
 		$request = \Model_WXRequest::forge(
@@ -134,7 +169,7 @@ class Request {
 				'event' => strtolower($this->data->MsgType) == 'event' ? strtoupper($this->data->Event) : 'NONE',
 				'msg_content' => $msg_content,
 				'status' => 'NONE',
-				'msg_created_at' => $this->data->CreateTime,
+				'msg_created_at' => isset($this->data->CreateTime) ? $this->data->CreateTime : 0,
 			)
 		);
 		$request->save();
@@ -163,6 +198,9 @@ class Request {
 				break;
 			case 'location':
 				$handle = new \handler\mp\action\Location();
+				break;
+			default:
+				die('success');
 				break;
 		}
 		$handle->setWechat($this->wechat);

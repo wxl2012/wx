@@ -35,7 +35,11 @@ class Account {
      * @param $account 接受微信服务器推送数据的公众号实体对象
      * @return 创建成功返回微信OpenId数据对象,否则返回False
      */
-    public static function createWechatAccount($openid, $account = []){
+    public static function createWechatAccount($openid, $account = false){
+
+        if( ! $account){
+            return false;
+        }
 
         //创建微信信息
         $wechat = \Model_Wechat::forge([
@@ -48,12 +52,13 @@ class Account {
                 'username' => "wx_{$openid}",
                 'password' => "w{$account->id}#{$openid}",
                 'email' => "wx_{$openid}@{$account->id}.com",
-                'group_id' => $account->create_user_default_group
+                'group_id' => isset($account->create_user_default_group) ? $account->create_user_default_group : 0
             ];
             $user_id = \Model_User::createUser($params);
             if( ! $user_id){
                 return false;
             }
+            
             $wechat->user_id = $user_id;
             
             $params = [

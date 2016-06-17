@@ -37,25 +37,25 @@ class Model_User extends \Auth\Model\Auth_User
 		if( ! isset($data['profile_fields'])){
 			$data['profile_fields'] = [];
 		}
+
 		try{
+
 			$user = \Model_User::query()->where('username', $data['username'])->get_one();
-			if(! $user){
-				$user_id = \Auth::create_user(
-					$data['username'],
-					$data['password'],
-					$data['email'],
-					$data['group_id'],
-					$data['profile_fields']
-				);
-				\Cache::set(md5($data['username']), substr($data['username'], 3));
-			}else{
-				$user_id = $user->id;
+			if($user){
+				return $user->id;
 			}
 
-		}catch(SimpleUserUpdateException $e){
+			$user_id = \Auth::create_user(
+				$data['username'],
+				$data['password'],
+				$data['email'],
+				$data['group_id'],
+				$data['profile_fields']
+			);
+
+		}catch(\SimpleUserUpdateException $e){
 			$user = \Model_User::query()->where('username', $data['username'])->get_one();
 			$user_id = $user->id;
-
 		}
 
 		return $user_id;
