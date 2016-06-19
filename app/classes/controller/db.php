@@ -1,6 +1,7 @@
 <?php
 /**
- *
+ * 基于FuelPHP的微信第三方程序库
+ * 
  * @package    Fuel
  * @version    1.7
  * @author     王晓雷 zyr.wxl@gmail.com

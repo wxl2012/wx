@@ -11,24 +11,22 @@
  */
 
 /**
- * 商户管理控制器
+ * 模  块: 书法名字数据库模块
+ * 
+ * 基础控制器
  *
  * @package  app
  * @extends  Controller
  */
-namespace admin;
+namespace calligrapher;
 
-class Controller_Seller extends Controller_BaseController
+abstract class Controller_BaseController extends \Controller_BaseController
 {
+    public $template = 'default/template';
+    public $theme = 'default';
+    protected $result_message = false;
+
     public function before(){
         parent::before();
-    }
-
-    public function action_index(){
-        $this->template->content = \View::forge("{$this->theme}/dashboard");
-    }
-
-    public function action_register(){
-        return \Response::forge(\View::forge("{$this->theme}/seller/register"));
     }
 }

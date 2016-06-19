@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * 基于FuelPHP的微信第三方程序库
  *
  * @package    Fuel
  * @version    1.7

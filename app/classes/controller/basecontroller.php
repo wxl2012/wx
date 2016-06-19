@@ -1,9 +1,10 @@
 <?php
 /**
- *
+ * 基于FuelPHP的微信第三方程序库
+ * 
  * @package    Fuel
  * @version    1.7
- * @author     王晓雷 zyr.wxl@gmail.com
+ * @author     Ray zyr.wxl@gmail.com
  * @license    MIT License
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn

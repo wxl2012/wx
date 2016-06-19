@@ -1,13 +1,13 @@
 <?php
 /**
- * 微信公众号控制器
+ * 基于FuelPHP的微信第三方程序库
  *
- * @package    app
- * @version    1.0
- * @author     Ray 33705910@qq.com
+ * @package    Fuel
+ * @version    1.7
+ * @author     Ray zyr.wxl@gmail.com
  * @license    MIT License
- * @copyright  2013 - 2015 Ray
- * @link       http://wangxiaolei.cn
+ * @copyright  2015 PMonkey Team
+ * @link       http://mnzone.cn
  */
 
 /**
