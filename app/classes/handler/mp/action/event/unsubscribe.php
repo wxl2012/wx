@@ -18,6 +18,15 @@ class UnSubscribe extends \handler\mp\action\Event {
         # code...
     }
 
-    function handle(){}
+    function handle(){
+        $where = [
+            'openid' => $this->data->FromUserName,
+        ];
+
+        $result = \DB::delete("marketing_records")
+            ->where($where)
+            ->execute();
+
+    }
 
 }

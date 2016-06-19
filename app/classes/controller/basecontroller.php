@@ -1,9 +1,10 @@
 <?php
 /**
- *
+ * 基于FuelPHP的微信第三方程序库
+ * 
  * @package    Fuel
  * @version    1.7
- * @author     王晓雷 zyr.wxl@gmail.com
+ * @author     Ray zyr.wxl@gmail.com
  * @license    MIT License
  * @copyright  2015 PMonkey Team
  * @link       http://mnzone.cn
@@ -39,11 +40,9 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			$this->load_wechat();
 
 			$client_type = 'wechat';
+		}else{
+			$this->load_seller();
 		}
-
-
-
-		$this->load_seller();
 
 		$this->getToken();
 
@@ -117,10 +116,42 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 			}
 			\Session::set('wechat', $wxopenid->wechat);
 			\Session::set('OpenID', $wxopenid);
+			$employee = \Model_Employee::query()
+				->where('user_id', $wxopenid->wechat->user_id)
+				->get_one();
+			if($employee){
+				\Session::set('employee', $employee);
+			}
 			\Auth::force_login($wxopenid->wechat->user_id);
 		}else if( ! \Auth::check() && \Session::get('wechat')->user_id){
 			\Auth::force_login(\Session::get('wechat')->user_id);
 		}
+	}
+	
+	/**
+	 * 检测用户是否登录
+	 *
+	 * @param bool $url
+	 * @return bool
+	 */
+	protected function checkLogin($url = false){
+
+		if(\Auth::check()){
+			return true;
+		}
+
+		if($this->getNotOpenidAllowed()){
+			return true;
+		}
+
+		if($url){
+			\Response::redirect($url);
+		}else{
+			$url = \Uri::current();
+			$params = \Uri::build_query_string(\Input::get());
+			\Response::redirect("/ucenter/login?to_url={$url}?{$params}");
+		}
+
 	}
 
 	/**
@@ -148,8 +179,24 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'module' => 'wxapi',
 				'controller' => 'oauth2_callback',
 				'actions' => []
+			],
+			[
+				'module' => 'ucenter',
+				'controller' => 'login',
+				'actions' => []
+			],
+			[
+				'module' => 'marketing',
+				'controller' => 'vote',
+				'actions' => ['rank']
+			],
+			[
+				'module' => 'admin',
+				'controller' => 'login',
+				'actions' => []
 			]
 		];
+
 		foreach($allowed as $item){
 			if(( ! $item['module'] || $item['module'] == \Uri::segment(1, ''))
 				&& ( ! $item['controller'] || $item['controller'] == \Uri::segment(2, ''))

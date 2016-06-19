@@ -49,7 +49,7 @@ class Controller_Qrcode extends Controller_BaseController {
         \QRcode::png($content, $qrFilePath, $errLevel, $size, $margin);
         $QRFile = imagecreatefromstring(file_get_contents($qrFilePath));
         // 是否嵌入Logo
-        if($embedLogo){
+        if($embedLogo && file_exists($logoFilePath)){
             $this->embedLogo($QRFile, $logoFilePath);
         }
 

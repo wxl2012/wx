@@ -15,7 +15,7 @@ namespace marketing;
 class Controller_Questionnaire extends Controller_BaseController {
 
     public $theme = 'default';
-    public $template = 'questionnaire/default/template';
+    public $template = 'default/questionnaire/template';
 
     public function before(){
         parent::before();
@@ -30,6 +30,6 @@ class Controller_Questionnaire extends Controller_BaseController {
 
         \View::set_global($params);
 
-        $this->template->content = \View::forge("questionnaire/{$this->theme}/index");
+        $this->template->content = \View::forge("{$this->theme}/questionnaire/index");
     }
 }

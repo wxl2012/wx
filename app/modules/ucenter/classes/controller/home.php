@@ -12,6 +12,8 @@
 
 namespace ucenter;
 
+use handler\common\UrlTool;
+
 class Controller_Home extends Controller_BaseController {
 
     public function before(){
@@ -44,6 +46,13 @@ class Controller_Home extends Controller_BaseController {
 
         if(\Input::method() == 'POST'){
             if(\Auth::login()){
+                if(\Input::get('to_url', false)){
+                    \Response::redirect(\Input::get('to_url'));
+                }
+                
+                $result = \handler\common\UrlTool::request(\Config::get('base_url') . 'api/token.json?user_id=' . \Auth::get_user()->id);
+                $token = json_decode($result->body);
+                \Session::set('access_token', $token->access_token);
                 die('登录成功');
             }
             die('登录失败');

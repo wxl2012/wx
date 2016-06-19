@@ -19,13 +19,8 @@ abstract class Controller_BaseController extends \Controller_BaseController {
 
     public function before(){
         parent::before();
-        /*if( ! \Session::get('store', false)){
-            $store = \Model_Store::find(1);
-            if( ! $store){
-                die();
-            }
-            \Session::set('store', $store);
-        }*/
 
+        $this->checkLogin();
+        
     }
 }

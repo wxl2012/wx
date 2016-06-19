@@ -27,23 +27,8 @@
         color: #aaa;
     }
 </style>
-<nav class="navbar navbar-blue navbar-fixed-top">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-3" style="line-height: 50px;">
-                <a href="javascript:history.back(-1);"><i class="fa fa-angle-left" style="font-size: 1.5em;"></i></a>
-            </div>
-            <div class="col-xs-6 text-center" style="line-height: 50px;">
-                提现记录
-            </div>
-            <div class="col-xs-3 text-right" style="line-height: 50px;">
-                <!--<a href="javascript:;">筛选</a>-->
-            </div>
-        </div>
-    </div>
-</nav>
 
-<div class="container" style="margin-top: 55px; padding: 0px;">
+<div class="container" style="margin-top: 5px; padding: 0px;">
     <ul class="list-group" id="items">
         <?php for($i = 0; $i < 10; $i ++) { ?>
             <li class="list-group-item">
@@ -76,3 +61,14 @@
         <a id="btnMore">已经是最后一页了</a>
     </div>
 </div>
+
+<?php
+$script = <<<js
+    var _balance = 0;
+    var _account_id = 0;
+js;
+
+\Asset::js($script, [], 'before-script', true);
+
+\Asset::js(['modules/store/default/finance/cashback_records.js'], [], 'js-files', false);
+?>

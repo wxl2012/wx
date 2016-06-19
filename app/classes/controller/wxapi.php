@@ -43,31 +43,40 @@ class Controller_WXApi extends Controller_BaseController
 			die(json_decode(['status' => 'err', 'msg' => '非法请求', 'errcode' => 2010]));
 		}
 
-		if(is_numeric($appid)){
-			$this->account = \Model_WXAccount::find($appid);
-		}else if(is_string($appid)){
-			$this->account = \Model_WXAccount::query()
-				->where('app_id', $appid)
-				->get_one();
+		//获取微信公众号信息
+		$key = "wx_account_{$appid}";
+
+		try{
+			$account = \Cache::get($key);
+			$this->account = unserialize($account);
+		}catch (\CacheNotFoundException $e){
+			if(is_numeric($appid)){
+				$this->account = \Model_WXAccount::find($appid);
+			}else if(is_string($appid)){
+				$this->account = \Model_WXAccount::query()
+					->where('app_id', $appid)
+					->get_one();
+			}
+			$this->account->seller;
+			\Cache::set($key, serialize($this->account));
 		}
+
 
 		if( ! $this->account){
 			die(json_decode(['status' => 'err', 'msg' => '该公众号不存在', 'errcode' => 2011]));
 		}
 
-		\Session::set($this->SESSION_WXACCOUNT_KEY, $this->account);
-
 		//检验消息合法性
 		if( ! \handler\mp\Tool::checkSignature(\Input::get('signature', false), \Input::get('timestamp', false), \Input::get('nonce', false), $this->account->token)){
-			\Log::error('WXApi.php check signature account:' . json_encode($this->account->to_array()));
-			die('');
+			\Log::error('WXApi.php check signature error!');
+			die('success');
 		}
 
 		//接入请求
 		if(\Input::get('echostr', false)){
 			if($this->account->status != 'NONE'){
 				\Log::error('account status error');
-				die();
+				die('success');
 			}else{
 				die(\Input::get('echostr'));
 			}
@@ -109,8 +118,9 @@ class Controller_WXApi extends Controller_BaseController
 		$wechatOpenID = \Model_WechatOpenid::query()
 			->where(['openid' => $result->openid])
 			->get_one();
+
 		//openid存在,不需要创建
-		if($wechatOpenID){
+		if($wechatOpenID && $wechatOpenID->wechat->nickname && $wechatOpenID->wechat->headimgurl){
 			\Response::redirect($to_url);
 			return;
 		}
@@ -124,8 +134,13 @@ class Controller_WXApi extends Controller_BaseController
 			return $this->show_message();
 		}
 
+
 		//查询微信用户信息是否存在
 		$wechat = \Model_Wechat::query()
+			->where([
+				'nickname' => $result->openid
+			])
+			->or_where_open()
 			->where([
 				'nickname' => $result->nickname,
 				'sex' => $result->sex,
@@ -133,20 +148,26 @@ class Controller_WXApi extends Controller_BaseController
 				'province' => $result->province,
 				'country' => $result->country,
 				'headimgurl' => $result->headimgurl
-			])->get_one();
+			])
+			->or_where_close()
+			->get_one();
 
-		//存在则直接赋值微信信息记录
-		if($wechat){
-			$wechatOpenID->wechat_id = $wechatOpenID->id;
-			return;
+		if($wechat && ! $wechatOpenID) {
+			$wechatOpenID = \Model_WechatOpenid::forge([
+				'openid' => $result->openid,
+				'account_id' => $this->account->id,
+				'wechat_id' => $wechat->id,
+			]);
+			$wechatOpenID->save();
+		}else if(! $wechat && ! $wechatOpenID){
+			//创建openid数据及微信信息
+			$wechatOpenID = handler\mp\Account::createWechatAccount($result->openid, $this->account);
+			if(! $wechatOpenID){
+				\Session::set_flash('msg', ['status' => 'err', 'msg' => '微信信息保存失败! 缺少必要信息,系统终止!', 'title' => '错误']);
+				return $this->show_message();
+			}
 		}
 
-		//创建openid数据及微信信息
-		$wechatOpenID = handler\mp\Account::createWechatAccount($result->openid, $this->account);
-		if(! $wechatOpenID){
-			\Session::set_flash('msg', ['status' => 'err', 'msg' => '微信信息保存失败! 缺少必要信息,系统终止!', 'title' => '错误']);
-			return $this->show_message();
-		}
 		$wechat = $wechatOpenID->wechat;
 		# 保存拉取到的用户信息
 		$wechat->nickname = $result->nickname;
@@ -159,7 +180,6 @@ class Controller_WXApi extends Controller_BaseController
 		$wechat->subscribe_time = isset($result->subscribe_time) ? $result->subscribe_time : 0;
 		$wechat->subscribe = isset($result->subscribe) ? $result->subscribe : 0;
 		$wechat->save();
-
 		\Response::redirect($to_url);
 	}
 
@@ -210,7 +230,9 @@ class Controller_WXApi extends Controller_BaseController
 			$data = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
 		}
 
-		$request = new \handler\mp\Request($data);
+		$request = new \handler\mp\Request($data, $this->account);
+		$request->is_repeat();
+		$request->write_record();
 		$request->handle();
 	}
 }

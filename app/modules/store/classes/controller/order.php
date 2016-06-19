@@ -18,6 +18,9 @@ class Controller_Order extends Controller_BaseController {
         parent::before();
     }
 
+    /**
+     * 我店铺的订单
+     */
     public function action_index(){
         $params = [
 
@@ -33,6 +36,9 @@ class Controller_Order extends Controller_BaseController {
         $this->template->content = \View::forge("{$this->theme}/order/index");
     }
 
+    /**
+     * 订单概况
+     */
     public function action_dashboard(){
         $params = [
 
@@ -48,6 +54,9 @@ class Controller_Order extends Controller_BaseController {
         $this->template->content = \View::forge("{$this->theme}/order/dashboard");
     }
 
+    /**
+     * 待返现的订单列表
+     */
     public function action_cashback(){
 
         $params = [
@@ -66,6 +75,9 @@ class Controller_Order extends Controller_BaseController {
         $this->template->content = \View::forge("{$this->theme}/order/cashback");
     }
 
+    /**
+     * 我的会员
+     */
     public function action_cashback_members(){
         $params = [
 

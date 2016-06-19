@@ -57,11 +57,7 @@ class UrlTool{
         $curl = \Request::forge($url, 'curl');
         $curl->set_method($method);
 
-        if($params){
-            $curl->set_params($params);
-        }
-
-        if($is_ssl){
+        if(stripos($url, 'https://') !== false){
             $curl->set_option(CURLOPT_SSL_VERIFYPEER, false);
         }
 
@@ -80,10 +76,13 @@ class UrlTool{
         }
 
         $curl->set_options(array(
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT => 30
             )
         );
+
+        if($params){
+            $curl->set_params($params);
+        }
 
         $result = false;
 
@@ -120,7 +119,7 @@ class UrlTool{
 
         $curl->set_options(array(
                 CURLOPT_TIMEOUT => 30,
-                CURLOPT_FOLLOWLOCATION => true,
+                //CURLOPT_FOLLOWLOCATION => true,
                 CURLOPT_HEADER => FALSE,
                 CURLOPT_RETURNTRANSFER => TRUE,
             )

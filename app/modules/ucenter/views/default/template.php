@@ -13,6 +13,17 @@
     ]);
     ?>
 
+    <style type="text/css">
+        .ns-effect-genie{
+            bottom: 55px !important;
+            background-color: #d9534f !important;
+        }
+        
+        .ns-effect-genie .ns-close::after, .ns-effect-genie .ns-close::before{
+            background-color: #efefef !important;
+        }
+    </style>
+
 </head>
 
 <body>

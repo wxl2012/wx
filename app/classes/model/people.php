@@ -130,7 +130,7 @@ class Model_People extends \Orm\Model
     public function _event_before_insert()
     {
         // assign the user id that lasted updated this record
-        //$this->user_id = ($this->user_id = \Auth::get_user_id()) ? $this->user_id[1] : 0;
+        $this->user_id = ($this->user_id = \Auth::get_user_id()) ? $this->user_id[1] : 0;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Fuel is a fast, lightweight, community driven PHP5 framework.
+ * 基于FuelPHP的微信第三方程序库
  *
  * @package    Fuel
  * @version    1.7
@@ -21,25 +21,109 @@
  */
 class Controller_Test extends Controller {
 
+    public function action_a(){
+        var_dump(php_uname('s'));
+        var_dump(PHP_OS);
+    }
+
+    public function action_reply_vote(){
+        $data = [
+            'ToUserName' => 'gh_541a80a156f0',
+            'FromUserName' => 'oNKHljlqPtz_lIVC0s-Vik7Vyobg',
+            'CreateTime' => time(),
+            'MsgType' => 'text',
+            'Content' => '1',
+            'MsgId' => time()
+        ];
+        $reply = new \handler\mp\action\text\ReplyVote();
+        $reply->setAccount(\Model_WXAccount::find(1));
+        $reply->setSeller(\Model_Seller::find(1));
+        $reply->setWechat(\Model_Wechat::find(1));
+        $reply->setPostData(json_decode(json_encode($data)));
+        $reply->handle();
+    }
+
+    public function action_remove_vote(){
+        $data = [
+            'ToUserName' => 'gh_541a80a156f0',
+            'FromUserName' => 'oNKHljlqPtz_lIVC0s-Vik7Vyobg',
+            'CreateTime' => time(),
+            'MsgType' => 'text',
+            'Content' => '1',
+            'MsgId' => time()
+        ];
+        $reply = new \handler\mp\action\event\UnSubscribe();
+        $reply->setAccount(\Model_WXAccount::find(1));
+        $reply->setSeller(\Model_Seller::find(1));
+        $reply->setWechat(\Model_Wechat::find(1));
+        $reply->setPostData(json_decode(json_encode($data)));
+        $reply->handle();
+    }
+
+    public function action_get_material(){
+        \Session::set('WXAccount', \Model_WXAccount::find(1));
+        $token = 'Si_TyC7nFksspSSpJMjgEbePSP7EWK0Yi1xmoxociVwRw1-cxcHBNN3I7Zzu2W3cvieZCGgqHfDzVkTTJypaz1C9u5rWfMG6Tyx8OBtt_UBkqbCotcf_SjqW7QHgfrVIYSQjAIAPJH';
+        //$url = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token={$token}";
+        \handler\mp\Api::syn_material($token);
+
+    }
+
+    public function action_index(){
+
+        $result = \handler\common\UrlTool::request('http://wx.qlogo.cn/mmopen/ibOYIic5ANNwVyvIXBNGJYvXmsAQtyTS8nSefGc5v0paMmw6jtuHDjY9ia2mSkhW6ZhiaFFicz3cicra68geeTZrJJBAqiaVnhxibchc/132');
+
+        //保存文件
+        $time = time();
+        $target_path = "/Users/fqwl/wwwroot/wx/uploads/tmp/photos/{$time}.jpg";
+        $file = fopen($target_path, 'w');
+        if($file === false){
+            return;
+        }else if(fwrite($file, $result) === false){
+            return;
+        }
+        fclose($file);
+    }
+
+    public function action_ab(){
+        \Log::error(json_encode(\Input::post('media')));
+        var_dump(\Input::post());die();
+    }
+
     public function action_image(){
 
-        $image = imagecreatefromjpeg(DOCROOT . 'uploads/tmp/bg.jpg');
+        $image = imagecreatefromjpeg(DOCROOT . 'assets/img/fate.jpg');
 
-        $this->addTextToImage($image, "81岁", 50);
+        $fontColor = imagecolorallocate($image, 255, 0, 0);
+        $this->addTextToImage($image, "86", $fontColor, 100, 255, 250);
+        $this->addTextToImage($image, "岁", $fontColor, 20, 260, 370);
+        $this->addTextToImage($image, "孙超的命运是", $fontColor, 18, 380, 0);
+        $this->addTextToImage($image, "活到86岁", $fontColor, 18, 400, 0);
 
-        $this->addTextToImage($image, "王晨芯的命运是", 100);
+        $fonts = ['房', '子', ' ：', '洛', '杉', '矶', '霍', '尔', '姆', '比', '山', '庄', '园'];
+        $this->addFontToImage($image, $fonts, 430, 230);
 
-        $this->addTextToImage($image, "寿命: 81岁", 150);
+        $fonts = ['车', '子', ' ：', '科', '迈', '罗', 'RS', '限', '量', '版'];
+        $this->addFontToImage($image, $fonts, 430, 285);
 
-        $this->addTextToImage($image, "家庭: 21岁结婚后得", 200);
+        $fonts = ['家', '庭', ' ：', '二', '十', '六', '岁', '结', '婚', '后', '得'];
+        $this->addFontToImage($image, $fonts, 430, 340);
 
-        $this->addTextToImage($image, "车子: 法拉利458 Speciale", 250);
+        $fonts = ['寿', '命', ' ：', '八', '十', '六', '岁'];
+        $this->addFontToImage($image, $fonts, 430, 395);
 
-        $this->addTextToImage($image, "房子: 利奥波德别墅", 300);
 
         $this->addPortraitToImage($image);
 
-        imagepng($image);
+        imagepng($image, DOCROOT . 'uploads/tmp/fates/sc_fate.jpg');
+    }
+
+    private function addFontToImage($image, $fonts, $startY, $x){
+        $y = $startY;
+        foreach ($fonts as $font){
+            $y += 20;
+            //$this->addTextToImage($image, $font, false, 18, $y, $x);
+            $this->addTextToImage($image, $font, false, 15, $y, $x);
+        }
     }
 
     /**
@@ -48,17 +132,17 @@ class Controller_Test extends Controller {
      * @param $image
      */
     function addPortraitToImage($image){
-        $portrait = DOCROOT . 'uploads/tmp/logo.png';
+        $portrait = DOCROOT . 'uploads/tmp/qrcode/1461322395.png';
         $portraitFile = imagecreatefromstring(file_get_contents($portrait));
         //头像尺寸
         $portraitWidth = imagesx($portraitFile);
         $portraitHeight = imagesy($portraitFile);
 
         //原图尺寸
-        $imageWidth = 50;
-        $imageHeight = 50;
-        $x = 250;
-        $y = 50;
+        $imageWidth = 130;
+        $imageHeight = 130;
+        $x = 165;
+        $y = 740;
         imagecopyresampled($image, $portraitFile, $x, $y, 0, 0, $imageWidth, $imageHeight, $portraitWidth, $portraitHeight);
     }
 
@@ -75,19 +159,31 @@ class Controller_Test extends Controller {
      *
      * @param $image	图片对象
      * @param $text		文字内容
+     * @param $color	字体颜色
+     * @param int $size 字体大小
      * @param int $y	y坐标
+     * @param int $x    x坐标,当x为0时居中显示
      */
-    function addTextToImage($image, $text, $y = 0){
+    function addTextToImage($image, $text, $color, $size = 0, $y = 0, $x = 0){
 
         $imageWidth = imagesx($image);
 
-        $fontColor = imagecolorallocate($image, 255, 255, 255);
+        $fontColor = imagecolorallocate($image, 0, 0, 0);
+        if($color){
+            $fontColor = $color;
+        }
 
-        $font = '/Library/Fonts/Baoli.ttc';
+        //$font = '/Library/Fonts/Hannotate.ttc';
+        //$font = '/Library/Fonts/Hanzipen.ttc';
+        $font = '/Library/Fonts/Libian.ttc';
 
-        $fontBox = imagettfbbox(20, 0, $font, $text);
+        if( ! $x){
+            $fontBox = imagettfbbox($size, 0, $font, $text);
+            $x = ceil(($imageWidth - $fontBox[2]) / 2);
+        }
 
-        imagettftext($image, 20, 0, ceil(($imageWidth - $fontBox[2]) / 2), $y, $fontColor, $font, $text);
+
+        imagettftext($image, $size, 0, $x, $y, $fontColor, $font, $text);
     }
 }
 ?>

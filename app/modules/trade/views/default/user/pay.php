@@ -2,9 +2,6 @@
     .navbar-blue{
         background-color: #337ab7;
     }
-    .row .col-xs-3{
-        padding-right: 0px;
-    }
     .list-group-item:first-child{
         border-top-left-radius: 0px;
         border-top-right-radius: 0px;
@@ -17,9 +14,6 @@
         margin-bottom: 0px;
         font-size: 9pt;
         color: #c20202;
-    }
-    .list-group-item .row .col-xs-3:first-child{
-        line-height: 30px;
     }
     body{
         background-color: #efefef;
@@ -47,7 +41,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12" style="padding-top: 15px;">
             <ul class="list-group">
 
                 <?php echo \Form::csrf();?>
@@ -57,28 +51,32 @@
                         请使用微信扫一扫
                     </div>
                     <div>
-                        <img src="/common/qrcode/generate?content=http://cn.bing.com" alt="" style="width: 100%;"/>
+
+                        <img src="/common/qrcode/generate?content=<?php echo \Config::get('base_url') . "trade/seller/create?" . (isset($key) ? "id={$key}" : "buyer_id={$user->id}");?>" alt="" style="width: 100%;" id="imgQrcode"/>
                     </div>
                 </li>
             </ul>
         </div>
 
         <div class="col-xs-12 text-center input-panel">
-            <input type="number" class="form-control text-center" placeholder="请填写付款金额" id="txtFee" name="fee" />
+            <input type="number" class="form-control text-center" placeholder="请填写付款金额" id="txtFee" name="fee" <?php echo isset($key) ? 'style="display:none;"' : '';?>/>
             <p class="help-block"></p>
         </div>
         <div class="col-xs-12 text-center input-panel" style="padding-top: 10px;">
-            <textarea class="form-control" placeholder="付款备注" id="txtRemark" name="remark"></textarea>
+            <textarea class="form-control" placeholder="付款备注" id="txtRemark" name="remark" <?php echo isset($key) ? 'style="display:none;"' : '';?>></textarea>
             <p class="help-block"></p>
         </div>
         <div class="col-xs-12 text-center" style="padding-top: 10px;">
-            <a class="btn btn-warning" style="width: 100%;" id="btnPay">付款</a>
+            <a class="btn btn-danger" style="width: 100%;<?php echo isset($key) ? '' : 'display: none;';?>" id="btnCancelPay">撤消付款</a>
+            <a class="btn btn-warning" style="width: 100%;<?php echo isset($key) ? 'display: none;' : '';?>" id="btnPay">付款</a>
         </div>
     </div>
 </div>
 
 <?php
+$base_url = \Config::get('base_url');
 $script = <<<js
+    var _base_url = '{$base_url}'; 
 js;
 
 \Asset::js($script, [], 'before-script', true);

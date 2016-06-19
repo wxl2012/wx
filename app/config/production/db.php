@@ -5,10 +5,28 @@
 
 return array(
 	'default' => array(
-		'connection'  => array(
-			'dsn'        => 'mysql:host=localhost;dbname=fuel_prod',
-			'username'   => 'fuel_app',
-			'password'   => 'super_secret_password',
+		'type'           => 'mysqli',
+		'connection'     => array(
+			'hostname'   => 'localhost',
+			'port'       => '3306',
+			'database'   => 'mnzone',
+			'username'   => 'ray',
+			'password'   => 'ray214521',
+			'persistent' => false,
+			'compress'   => false,
 		),
+		'identifier'     => '`',
+		'table_prefix'   => '',
+		'charset'        => 'utf8',
+		'enable_cache'   => true,
+		'profiling'      => false,
+	),
+	'redis' => array(
+		'default'     => array(
+			'hostname'   => '127.0.0.1',
+			'port'       => '6379',
+			'database'   => '1',
+			'password'   => ''
+		)
 	),
 );
