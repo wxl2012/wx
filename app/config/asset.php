@@ -65,9 +65,11 @@ return array(
 	 */
 	'folders' => array(
 		'css' => array(
+			'assets/admin/',
 			'assets/third-party/'
 		),
 		'js'  => array(
+			'assets/admin/',
 			'assets/app/',
 			'assets/third-party/'
 		),
@@ -98,8 +100,8 @@ return array(
 	'indent_level' => 1,
 
 	/**
-	* What to use for indenting.
-	*/
+	 * What to use for indenting.
+	 */
 	'indent_with' => "\t",
 
 	/**

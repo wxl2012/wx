@@ -84,10 +84,20 @@ class Model_People extends \Orm\Model
             'key_from' => 'parent_id',
             'key_to'   => 'user_id',
         ),
+        'employees' => array(
+            'model_to' => 'Model_Employee',
+            'key_from' => 'parent_id',
+            'key_to'   => 'user_id',
+        ),
         'orders' => array(
             'model_to' => 'Model_Order',
             'key_from' => 'parent_id',
             'key_to'   => 'buyer_id',
+        ),
+        'trades' => array(
+            'model_to' => 'Model_PeopleTrade',
+            'key_from' => 'parent_id',
+            'key_to'   => 'user_id',
         ),
         'properties' => array(
             'model_to' => 'Model_PeoplePropertie',
@@ -100,6 +110,32 @@ class Model_People extends \Orm\Model
             'key_to'   => 'parent_id',
         ),
 
+    );
+
+    /**
+     * @var array	belongs_to relationships
+     */
+    protected static $_belongs_to = array(
+        'country' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'country_id',
+            'key_to'   => 'id'
+        ),
+        'province' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'province_id',
+            'key_to'   => 'id'
+        ),
+        'city' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'city_id',
+            'key_to'   => 'id'
+        ),
+        'county' => array(
+            'model_to' => 'Model_Region',
+            'key_from' => 'county_id',
+            'key_to'   => 'id'
+        )
     );
 
     /**
@@ -140,4 +176,18 @@ class Model_People extends \Orm\Model
     {
         $this->_event_before_insert();
     }
+
+    public static $_maps = [
+        'method' => [
+            'EXPEND' => '支出',
+            'INCOME' => '收入',
+            'NONE' => '未知'
+        ],
+        'entity' => [
+            'GIFT' => '礼金',
+            'SCORE' => '积分',
+            'MONEY' => '余额',
+            'NONE' => '未知'
+        ],
+    ];
 }

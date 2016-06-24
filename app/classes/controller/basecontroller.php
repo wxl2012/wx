@@ -113,7 +113,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				->get_one();
 			if( ! $wxopenid){
 				\Session::set_flash('msg', ['status' => 'err', 'msg' => '未找到您的微信信息,无法确认您的身份! 系统无法为您提供服务!', 'title' => '拒绝服务']);
-				return $this->show_mesage();
+				return $this->show_message();
 			}
 			\Session::set('wechat', $wxopenid->wechat);
 			\Session::set('OpenID', $wxopenid);
@@ -148,8 +148,24 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				'module' => 'wxapi',
 				'controller' => 'oauth2_callback',
 				'actions' => []
+			],
+			[
+				'module' => 'ucenter',
+				'controller' => 'login',
+				'actions' => []
+			],
+			[
+				'module' => 'marketing',
+				'controller' => 'vote',
+				'actions' => ['rank']
+			],
+			[
+				'module' => 'admin',
+				'controller' => 'login',
+				'actions' => []
 			]
 		];
+
 		foreach($allowed as $item){
 			if(( ! $item['module'] || $item['module'] == \Uri::segment(1, ''))
 				&& ( ! $item['controller'] || $item['controller'] == \Uri::segment(2, ''))
