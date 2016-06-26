@@ -46,7 +46,12 @@ class Model_WechatOpenid extends \Orm\Model
 			'model_to' => 'Model_Wechat',
 			'key_from' => 'wechat_id',
 			'key_to'   => 'id',
-		)
+		),
+		'account' => [
+			'model_to' => 'Model_WXAccount',
+			'key_from' => 'account_id',
+			'key_to'   => 'id',
+		]
 	);
 
 	/**

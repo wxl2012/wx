@@ -115,6 +115,7 @@ abstract class Controller_BaseController extends \Fuel\Core\Controller_Template
 				\Session::set_flash('msg', ['status' => 'err', 'msg' => '未找到您的微信信息,无法确认您的身份! 系统无法为您提供服务!', 'title' => '拒绝服务']);
 				return $this->show_message();
 			}
+			$this->load_seller($wxopenid->account->seller_id);
 			\Session::set('wechat', $wxopenid->wechat);
 			\Session::set('OpenID', $wxopenid);
 			\Auth::force_login($wxopenid->wechat->user_id);
