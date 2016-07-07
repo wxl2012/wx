@@ -21,7 +21,7 @@ abstract class Controller_BaseController extends \Controller_BaseController {
         parent::before();
 
         if( ! \Auth::check() && ! $this->getNotLoginAllowed()){
-            \Response::redirect('/ucenter/login');
+            \Response::redirect('/ucenter/login?to_url=' . \Input::uri());
         }
     }
 
